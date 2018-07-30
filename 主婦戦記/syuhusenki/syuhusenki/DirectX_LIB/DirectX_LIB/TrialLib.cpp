@@ -8,13 +8,13 @@
 #define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
 LPDIRECT3D9 g_pDirect3D;		//	Direct3Dのインターフェイス
-LPDIRECT3DTEXTURE9	  g_pTexture[TEXMAX];	//	画像の情報を入れておく為のポインタ配列
+LPDIRECT3DTEXTURE9	  g_pTexture[128];	//	画像の情報を入れておく為のポインタ配列
 IDirect3DDevice9*	  g_pD3Device = NULL;		//	Direct3Dのデバイス
 D3DDISPLAYMODE		  g_D3DdisplayMode;
 D3DPRESENT_PARAMETERS g_D3dPresentParameters;
 LPDIRECTINPUT8 g_pDinput = NULL;
 LPDIRECTINPUTDEVICE8 g_pKeyDevice = NULL;
-LPD3DXFONT g_pFont[FONTMAX];
+LPD3DXFONT g_pFont[128];
 
 XINPUT_STATE g_Xinput;
 PADSTATE PadState[buttomindexMAX];

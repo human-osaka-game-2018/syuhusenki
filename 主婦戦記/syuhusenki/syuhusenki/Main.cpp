@@ -48,13 +48,15 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	DirectSound::CreateInstance(hWnd);
 
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
+	ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
+	ReadInTexture(NULL, BLANK);
+
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, FONT);
 	soundManager.Load("Sound/Buppigan.wav");
 
 	FlameRoop(gameRoop);
 
 }
-
 void gameRoop() {
 	sound();
 	switch (g_scene) {
@@ -117,7 +119,7 @@ void control(void) {
 
 void render(void) {
 	BeginSetTexture();
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, TEXMAX);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
 
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
 
@@ -126,7 +128,9 @@ void render(void) {
 		WriteWord("心はMadam", testWord, DT_CENTER, RED, FONT);
 		break;
 	case SCENE_TITLE:
-		WriteWord("主婦戦記", testWord, DT_CENTER, RED, FONT);
+		//WriteWord("主婦戦記", testWord, DT_CENTER, RED, FONT);
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TITLE_TEX);
+
 		break;
 	case SCENE_SERECTCHAR:
 		WriteWord("キャラ選択", testWord, DT_CENTER, RED, FONT);

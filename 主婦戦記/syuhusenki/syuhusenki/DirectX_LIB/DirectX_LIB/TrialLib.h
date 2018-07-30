@@ -72,13 +72,13 @@ struct CIRCLE_STATE{
 };
 
 extern LPDIRECT3D9 g_pDirect3D;		//	Direct3Dのインターフェイス
-extern LPDIRECT3DTEXTURE9	  g_pTexture[TEXMAX];	//	画像の情報を入れておく為のポインタ配列
+extern LPDIRECT3DTEXTURE9	  g_pTexture[128];	//	画像の情報を入れておく為のポインタ配列
 extern IDirect3DDevice9*	  g_pD3Device;		//	Direct3Dのデバイス
 extern D3DDISPLAYMODE		  g_D3DdisplayMode;
 extern D3DPRESENT_PARAMETERS g_D3dPresentParameters;
 extern LPDIRECTINPUT8 g_pDinput;
 extern LPDIRECTINPUTDEVICE8 g_pKeyDevice;
-extern LPD3DXFONT g_pFont[FONTMAX];
+extern LPD3DXFONT g_pFont[128];
 extern PADSTATE PadState[buttomindexMAX];
 extern PADSTATE PadOldState[buttomindexMAX];
 
