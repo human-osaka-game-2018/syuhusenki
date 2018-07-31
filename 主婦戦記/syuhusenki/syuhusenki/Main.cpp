@@ -1,41 +1,11 @@
-#include "DirectX_LIB/DirectX_LIB/TrialLib.h"
-
-
-#include "SoundLib/DirectSound.h"
-#include "SoundLib/SoundManager.h"
-
-
-
-#ifdef _DEBUG
-#pragma comment(lib, "SoundLib/Debug/Sound.lib")
-#pragma comment(lib, "DirectX_LIB/Debug/DirectX_LIB.lib")
-#else
-#pragma comment(lib, "SoundLib/Release/Sound.lib")
-#pragma comment(lib, "DirectX_LIB/Release/DirectX_LIB.lib")
-#endif //_DEBUG
-
-#define WIDTH 1200
-#define HEIGHT 1024
-#define RED 0xFFFF0000
+#include "Main.h"
+#include "GameMain.h"
 
 SoundManager& soundManager = SoundManager::GetInstance();
 
-enum SCENE {
-	SCENE_TEAMLOGO,
-	SCENE_TITLE,
-	SCENE_SERECTCHAR,
-	SCENE_SERECTSTEGE,
-	SCENE_MAIN,
-	SCENE_RESULT,
-};
 
 RECT testWord = { 100,200,1100,500 };
-
-void render(void);//‰¼
-void control(void);//‰¼
-void sound(void);//‰¼
-void gameRoop(void);
-void gamePad(void);
+void gameRoop();
 int g_scene = SCENE_TEAMLOGO;
 bool seOn = false;
 
@@ -53,6 +23,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, FONT);
 	soundManager.Load("Sound/Buppigan.wav");
+	soundManager.Load("Sound/Buppigan2.wav");
 
 	FlameRoop(gameRoop);
 
@@ -77,8 +48,7 @@ void gameRoop() {
 		render();
 		break;
 	case SCENE_MAIN:
-		control();
-		render();
+		gameMain();
 		break;
 	case SCENE_RESULT:
 		control();
@@ -109,7 +79,7 @@ void control(void) {
 			g_scene = SCENE_MAIN;
 			break;
 		case SCENE_MAIN:
-			g_scene = SCENE_RESULT;
+			//g_scene = SCENE_RESULT;
 			break;
 		case SCENE_RESULT:
 			g_scene = SCENE_TITLE;
