@@ -90,7 +90,9 @@ void gameRoop() {
 
 void control(void) {
 	gamePad();
-	if (InputKEY(DIK_RETURN))// ←キーを押してる
+	
+	CheckKeyState(DIK_RETURN);
+	if (KeyState[DIK_RETURN] == PadRelease)// ←キーを押してる
 	{
 		seOn = true;
 		switch (g_scene) {
@@ -114,7 +116,6 @@ void control(void) {
 			break;
 		}
 	}
-
 }
 
 void render(void) {

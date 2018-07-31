@@ -19,6 +19,8 @@ LPD3DXFONT g_pFont[128];
 XINPUT_STATE g_Xinput;
 PADSTATE PadState[buttomindexMAX];
 PADSTATE PadOldState[buttomindexMAX] = { PadOff };
+BYTE KeyState[256];
+BYTE KeyOldState[256] = { PadOff };
 
 
 void FreeDx()
@@ -27,7 +29,7 @@ void FreeDx()
 	SAFE_RELEASE(g_pDirect3D);
 	SAFE_RELEASE(g_pDinput);
 
-	for (int i = 0; i < TEXMAX; i++)
+	for (int i = 0; i <= TEXMAX; i++)
 	{
 		SAFE_RELEASE(g_pTexture[i]);
 	}
@@ -799,6 +801,42 @@ bool InputKEY(int KeyName) {
 		else return false;
 	}
 }
+void CheckKeyState(int KeyName)
+{
+
+		HRESULT hr = g_pKeyDevice->Acquire();
+		if ((hr == DI_OK) || (hr == S_FALSE)) {
+			BYTE diks[256];
+			g_pKeyDevice->GetDeviceState(sizeof(diks), &diks);
+
+			if (diks[KeyName] & 0x80)
+			{
+				if (KeyOldState[KeyName] == PadOn)
+				{
+					KeyState[KeyName] = PadOn;
+				}
+				else
+				{
+					KeyState[KeyName] = PadPush;
+				}
+
+				KeyOldState[KeyName] = PadOn;
+			}
+			else
+			{
+				if (KeyOldState[KeyName] == PadOn)
+				{
+					KeyState[KeyName] = PadRelease;
+				}
+				else
+				{
+					KeyState[KeyName] = PadOff;
+				}
+				KeyOldState[KeyName] = PadOff;
+			}
+		}
+}
+
 //XInput
 void GetControl(int GamePadNumber)
 {
@@ -879,7 +917,7 @@ bool GetAnalogR(Analog AnalogState)
 
 void CheckButtonState(WORD ButtomID, int ButtomIndex)
 {
-	if (g_Xinput.Gamepad.wButtons&ButtomID)
+	if (g_Xinput.Gamepad.wButtons & ButtomID)
 	{
 		if (PadOldState[ButtomIndex] == PadOn)
 		{

@@ -81,6 +81,10 @@ extern LPDIRECTINPUTDEVICE8 g_pKeyDevice;
 extern LPD3DXFONT g_pFont[128];
 extern PADSTATE PadState[buttomindexMAX];
 extern PADSTATE PadOldState[buttomindexMAX];
+extern BYTE KeyState[256];
+extern BYTE KeyOldState[256];
+
+
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HRESULT InitD3d(HWND hWnd, LPCSTR pSrcFile);
@@ -147,6 +151,7 @@ void OvalCircularMotion(CUSTOMVERTEX* Vertex, float Rad, CENTRAL_STATE Central, 
 
 //Dinputキーボード
 bool InputKEY(int KeyName);
+void CheckKeyState(int KeyName);
 //XInput
 void GetControl(int GamePadNumber);
 PADSTATE GetButton(ButtonIndex index);
