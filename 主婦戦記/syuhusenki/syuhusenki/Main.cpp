@@ -47,9 +47,9 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	DirectSound::CreateInstance(hWnd);
 
+	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
 	ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
-	ReadInTexture(NULL, BLANK);
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, FONT);
 	soundManager.Load("Sound/Buppigan.wav");
