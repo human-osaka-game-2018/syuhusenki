@@ -811,28 +811,28 @@ void CheckKeyState(int KeyName)
 
 			if (diks[KeyName] & 0x80)
 			{
-				if (KeyOldState[KeyName] == PadOn)
+				if (KeyOldState[KeyName] == KeyOn)
 				{
-					KeyState[KeyName] = PadOn;
+					KeyState[KeyName] = KeyOn;
 				}
 				else
 				{
-					KeyState[KeyName] = PadPush;
+					KeyState[KeyName] = KeyPush;
 				}
 
-				KeyOldState[KeyName] = PadOn;
+				KeyOldState[KeyName] = KeyOn;
 			}
 			else
 			{
-				if (KeyOldState[KeyName] == PadOn)
+				if (KeyOldState[KeyName] == KeyOn)
 				{
-					KeyState[KeyName] = PadRelease;
+					KeyState[KeyName] = KeyRelease;
 				}
 				else
 				{
-					KeyState[KeyName] = PadOff;
+					KeyState[KeyName] = KeyOff;
 				}
-				KeyOldState[KeyName] = PadOff;
+				KeyOldState[KeyName] = KeyOff;
 			}
 		}
 }

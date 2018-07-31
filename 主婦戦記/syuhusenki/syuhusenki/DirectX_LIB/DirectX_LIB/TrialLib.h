@@ -26,6 +26,13 @@ enum PADSTATE
 	PadPush,
 	PadRelease
 };
+enum KEYSTATE
+{
+	KeyOff,
+	KeyOn,
+	KeyPush,
+	KeyRelease
+};
 
 enum ButtonIndex
 {

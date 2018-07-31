@@ -92,7 +92,7 @@ void control(void) {
 	gamePad();
 	
 	CheckKeyState(DIK_RETURN);
-	if (KeyState[DIK_RETURN] == PadRelease)// ←キーを押してる
+	if (KeyState[DIK_RETURN] == KeyRelease)// ←キーを押してる
 	{
 		seOn = true;
 		switch (g_scene) {
