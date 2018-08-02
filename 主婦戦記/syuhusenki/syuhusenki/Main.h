@@ -18,8 +18,8 @@
 #pragma comment(lib, "DirectX_LIB/Release/DirectX_LIB.lib")
 #endif //_DEBUG
 
-#define WIDTH 1200
-#define HEIGHT 1024
+#define WIDTH 1920
+#define HEIGHT 1080
 #define RED 0xFFFF0000
 
 enum SCENE {

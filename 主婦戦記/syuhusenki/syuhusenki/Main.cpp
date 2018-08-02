@@ -19,7 +19,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
-	ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
+	ReadInTexture("Texture/karititle.png", BG_TEX);
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, FONT);
 	soundManager.Load("Sound/Buppigan.wav");
@@ -100,7 +100,7 @@ void render(void) {
 		break;
 	case SCENE_TITLE:
 		//WriteWord("éÂïwêÌãL", testWord, DT_CENTER, RED, FONT);
-		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TITLE_TEX);
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TEX);
 
 		break;
 	case SCENE_SERECTCHAR:
