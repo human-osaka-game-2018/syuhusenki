@@ -20,6 +20,8 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
 	ReadInTexture("Texture/karititle.png", BG_TEX);
+	ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
+
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, FONT);
 	soundManager.Load("Sound/Buppigan.wav");
