@@ -7,6 +7,8 @@ SoundManager& soundManager = SoundManager::GetInstance();
 RECT testWord = { 100,200,1100,500 };
 void gameRoop();
 int g_scene = SCENE_TEAMLOGO;
+//int g_scene = SCENE_MAIN;
+
 bool seOn = false;
 
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdShow) {
@@ -19,21 +21,34 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
-	ReadInTexture("Texture/karititle.png", BG_TEX);
+	ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
 	ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
 
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, FONT);
 	soundManager.Load("Sound/Buppigan.wav");
 	soundManager.Load("Sound/Buppigan2.wav");
+	//soundManager.Load("Sound/.wav");
+	//soundManager.Play("Sound/.wav", true);
 
 	FlameRoop(gameRoop);
 
 }
 void gameRoop() {
+	static bool isFirst = true;
 	sound();
 	switch (g_scene) {
 	case SCENE_TEAMLOGO:
+		if (isFirst) {
+
+		ReadInTexture("Texture/Blank.jpg", BLANK);
+		ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
+		ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
+		ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
+
+		isFirst = false;
+		}
+
 		control();
 		render();
 		break;
@@ -64,7 +79,7 @@ void control(void) {
 	gamePad();
 	
 	CheckKeyState(DIK_RETURN);
-	if (KeyState[DIK_RETURN] == KeyRelease)// Å©ÉLÅ[ÇâüÇµÇƒÇÈ
+	if (KeyState[DIK_RETURN] == KeyRelease)
 	{
 		seOn = true;
 		switch (g_scene) {
@@ -102,7 +117,7 @@ void render(void) {
 		break;
 	case SCENE_TITLE:
 		//WriteWord("éÂïwêÌãL", testWord, DT_CENTER, RED, FONT);
-		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TEX);
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TITLE_TEX);
 
 		break;
 	case SCENE_SERECTCHAR:

@@ -1,6 +1,7 @@
 #include "Main.h"
 
-#define PLAYERSCALE 100
+#define PLAYER_FLOA_SCALE 100
+#define PLAYER_BLOWOFF_SCALE 250
 #define MOVE_MILEAGE 8
 #define MOVE_MILEAGE_STICK 2
 
@@ -24,14 +25,34 @@ enum FLOA {
 
 int gameScene = FLOAMOVE;
 int seletFloa = FOOD;
+static bool isBlowOff = false;
+static bool isFirst = true;
+static int effectCount = 0;
+static int fallCount = 0;
+
 
 RECT testText = { 100,600,1100,1000 };
 //プレイヤーの画像頂点
 CUSTOMVERTEX playerFloa[4];
-CENTRAL_STATE playerCentralFloa = {800,800,PLAYERSCALE,PLAYERSCALE };
+CENTRAL_STATE playerCentralFloa = {800,800,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
+
+
 //モブの画像頂点
 CUSTOMVERTEX mobFloa[4];
-CENTRAL_STATE mobCentralFloa = { 500,500 ,PLAYERSCALE,PLAYERSCALE };
+CENTRAL_STATE mobCentralFloa = { 500,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
+
+CENTRAL_STATE mobCentralBlowOff[5]{
+//{ 900,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE },
+//{ 1100,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE},
+//{ 1300,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE},
+//{ 1500,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE},
+//{ 1700,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE}
+};
+
+//エフェクト
+CUSTOMVERTEX effectExplosion[4];
+CENTRAL_STATE effectExplosionCentral = {1000,800,300,300};
+
 
 
 void gameControl();
@@ -42,22 +63,29 @@ void floaMoveRender();
 void keyControl(CENTRAL_STATE* central);
 void mobMoving(CENTRAL_STATE* mob);
 
-
+void blowOff();
+void blowOffControl();
+void blowOffRender();
+void blowOffDeviseControl();
+void madamBlowOff();
 
 void gameMain() {
+	srand((unsigned int)time(NULL));
 	switch (gameScene) {
 	case FLOAMOVE:
 		floaMove();
-		//WriteWord("フロア移動", testText, DT_CENTER, RED, FONT);
 		break;
 	case PUSHENEMY:
-		gameControl();
-		gameRender();
-		WriteWord("モブ主婦排除", testText, DT_CENTER, RED, FONT);
+		blowOff();		
 		break;
 	case PICKGOODS:
 		gameControl();
 		gameRender();
+		effectCount = 0;
+		fallCount = 0;
+
+		isFirst = true;
+
 		WriteWord("セール品入手", testText, DT_CENTER, RED, FONT);
 		break;
 	
@@ -68,7 +96,7 @@ void gameControl() {
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
 
-	if (KeyState[DIK_RETURN] == KeyRelease)// ←キーを押してる
+	if (KeyState[DIK_RETURN] == KeyRelease)
 	{
 		soundManager.Play("Sound/Buppigan2.wav", false);
 
@@ -85,7 +113,7 @@ void gameControl() {
 			break;
 		}
 	}
-	if (PadState[ButtonA] == KeyRelease)// ←キーを押してる
+	if (PadState[ButtonA] == KeyRelease)
 	{
 		soundManager.Play("Sound/Buppigan2.wav", false);
 
@@ -104,7 +132,8 @@ void gameControl() {
 	}
 }
 
-void gameRender() {
+void gameRender() 
+{
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
 
@@ -128,13 +157,24 @@ void gameRender() {
 }
 //フロア移動場面
 void floaMove() {
-	static bool isFirst = true;
+	
 	if (isFirst) {
+
 		ReadInTexture("Texture/testFrame.png", FRAME_TEX);
 		ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
 		ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
+		ReadInTexture("Texture/supermarket.jpg", BG_BLOWOFF_TEX);
+		ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
 		
+		mobCentralBlowOff[0] = { 900,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[1] = { 1100,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[2] = { 1300,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[3] = { 1500,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[4] = { 1700,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
 
+		effectExplosionCentral = { 1000,800,300,300 };
+
+		isBlowOff = false;
 		isFirst = false;
 	}
 	floaMoveControl();
@@ -150,7 +190,7 @@ void floaMoveControl() {
 
 	keyControl(&playerCentralFloa);
 
-	if (KeyState[DIK_RETURN] == KeyRelease)// ←キーを押してる
+	if (KeyState[DIK_RETURN] == KeyRelease)
 	{
 		soundManager.Play("Sound/Buppigan2.wav", false);
 
@@ -158,7 +198,7 @@ void floaMoveControl() {
 	}
 
 	GetControl(0);
-	if (PadState[ButtonA] == KeyRelease)// ←キーを押してる
+	if (PadState[ButtonA] == KeyRelease)
 	{
 		soundManager.Play("Sound/Buppigan2.wav", false);
 
@@ -181,8 +221,8 @@ void floaMoveRender() {
 		EasyCreateSquareVertex(20, 20, 1520, 1000, CLOTH_STAGE_TEX);
 		break;
 	}
-	SetUpTexture(playerFloa, YASUKO_TEX);
 	SetUpTexture(mobFloa, MOB_TEX);
+	SetUpTexture(playerFloa, YASUKO_TEX);
 
 	WriteWord("フロア移動", testText, DT_CENTER, RED, FONT);
 
@@ -292,6 +332,134 @@ void mobMoving(CENTRAL_STATE* mob) {
 //コマンド入力場面
 
 void blowOff() {
+	blowOffControl();
+	blowOffRender();
+}
+void blowOffControl() {
+	CreateSquareVertex(effectExplosion, effectExplosionCentral);
+	blowOffDeviseControl();
+	if (isBlowOff) {
+		madamBlowOff();
+		effectExplosionCentral.scaleX++;
+		effectExplosionCentral.scaleY++;
+		if (effectCount > 270) {
+			gameScene = PICKGOODS;
+		}
+	}
+}
+void blowOffRender() {
+	
+	effectCount++;
+	BeginSetTexture();
 
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_BLOWOFF_TEX);
+	for (int i = 0; i < 5; i++) {
+		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
+		if(isBlowOff){
+
+			static float Rad = 0;
+			Rad += 0.9;
+
+			if (Rad < 0)
+			{
+				Rad = Rad * -1;
+			}
+			if (i % 2)
+			{
+				Rad = Rad * -1;
+			}
+			RevolveZ(mobFloa, Rad, mobCentralBlowOff[i]);
+		}
+		SetUpTexture(mobFloa, MOB_TEX);
+	}
+	if ((effectCount < 20) || isBlowOff) {
+		SetUpTexture(effectExplosion, EXPLOSION_TEX);
+	}
+	//SetUpTexture(playerFloa, YASUKO_TEX);
+
+	WriteWord("モブ主婦排除", testText, DT_CENTER, RED, FONT);
+	EndSetTexture();
+}
+
+void blowOffDeviseControl() {
+	BottonCheck();
+	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_A);
+	CheckKeyState(DIK_D);
+	CheckKeyState(DIK_W);
+	CheckKeyState(DIK_S);
+
+	if (KeyState[DIK_RETURN] == KeyRelease)
+	{
+		gameScene = PICKGOODS;
+		soundManager.Play("Sound/Buppigan2.wav", false);
+
+	}
+
+	if (KeyState[DIK_A])
+	{
+		isBlowOff = true;
+	}
+	if (KeyState[DIK_D])
+	{
+
+	}
+	if (KeyState[DIK_W])
+	{
+
+	}
+	if (KeyState[DIK_S])
+	{
+
+	}
+	//XInputデバイス操作
+	GetControl(0);
+	BottonCheck();
+
+	if (PadState[ButtonA] == KeyRelease)
+	{
+		gameScene = PICKGOODS;
+		soundManager.Play("Sound/Buppigan2.wav", false);
+
+
+	}
+	if (PadState[ButtonB] == KeyRelease)
+	{
+
+	}
+	if (PadState[ButtonX] == KeyRelease)
+	{
+		isBlowOff = true;
+	}
+	if (PadState[ButtonY] == KeyRelease)
+	{
+
+	}
+
+}
+
+void madamBlowOff() {
+	fallCount++;
+
+	mobCentralBlowOff[0].x -= rand() % 15;
+	mobCentralBlowOff[0].y -= rand() % 5;
+
+	mobCentralBlowOff[1].x += rand() % 10;
+	mobCentralBlowOff[1].y -= rand() % 10;
+
+	mobCentralBlowOff[2].x += rand() % 3;
+	mobCentralBlowOff[2].y -= rand() % 10;
+
+	mobCentralBlowOff[3].x -= rand() % 8;
+	mobCentralBlowOff[3].y -= rand() % 10;
+
+	mobCentralBlowOff[4].x += rand() % 25;
+	mobCentralBlowOff[4].y -= rand() % 30;
+
+	if (fallCount > 120) {
+		for (int i = 0; i < 5; i++) {
+			mobCentralBlowOff[i].y += 35;
+		}
+	}
 
 }
