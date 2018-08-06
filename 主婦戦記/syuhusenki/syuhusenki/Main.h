@@ -22,6 +22,11 @@
 #define HEIGHT 1080
 #define RED 0xFFFF0000
 
+enum SOUND {
+	SE1,
+	SE2,
+	SOUND_MAX
+};
 enum SCENE {
 	SCENE_TEAMLOGO,
 	SCENE_TITLE,

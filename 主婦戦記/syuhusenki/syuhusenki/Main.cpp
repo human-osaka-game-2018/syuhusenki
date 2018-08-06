@@ -3,9 +3,11 @@
 
 SoundManager& soundManager = SoundManager::GetInstance();
 
+const char* soundNum[SOUND_MAX];
 
 RECT testWord = { 100,200,1100,500 };
 void gameRoop();
+void soundLoad();
 int g_scene = SCENE_TEAMLOGO;
 //int g_scene = SCENE_MAIN;
 
@@ -24,10 +26,10 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
 	ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
 
-
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, FONT);
-	soundManager.Load("Sound/Buppigan.wav");
-	soundManager.Load("Sound/Buppigan2.wav");
+	soundLoad();
+	soundManager.Load(soundNum[SE1]);
+	soundManager.Load(soundNum[SE2]);
 	//soundManager.Load("Sound/.wav");
 	//soundManager.Play("Sound/.wav", true);
 
@@ -172,5 +174,11 @@ void gamePad() {
 		}
 
 	}
+
+}
+
+void soundLoad() {
+	soundNum[SE1] = "Sound/Buppigan.wav";
+	soundNum[SE2] = "Sound/Buppigan2.wav";
 
 }
