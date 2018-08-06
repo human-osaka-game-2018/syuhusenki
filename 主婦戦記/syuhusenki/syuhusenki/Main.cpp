@@ -16,9 +16,11 @@ bool seOn = false;
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdShow) {
 	HWND hWnd = NULL;
 
-
+#ifdef _DEBUG
 	InitWindowEx("™å•wí‹L™", &hWnd, WIDTH, HEIGHT, hInst, hInstance, NULL, "Texture/Yasuko.png");
-
+#else
+	InitWindowFullscreenEx("™å•wí‹L™", &hWnd, WIDTH, HEIGHT, hInst, hInstance, NULL, "Texture/Yasuko.png");
+#endif
 	DirectSound::CreateInstance(hWnd);
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
