@@ -52,7 +52,6 @@ void gameRoop() {
 
 		isFirst = false;
 		}
-
 		control();
 		render();
 		break;

@@ -1,7 +1,7 @@
 #include "Main.h"
 
 #define PLAYER_FLOA_SCALE 100
-#define PLAYER_BLOWOFF_SCALE 250
+#define PLAYER_BLOWOFF_SCALE 150
 #define MOVE_MILEAGE 8
 #define MOVE_MILEAGE_STICK 2
 
@@ -28,10 +28,11 @@ int seletFloa = FOOD;
 static bool isBlowOff = false;
 static bool isFirst = true;
 static int effectCount = 0;
-static int fallCount = 0;
+//static int fallCount = 0;
+static bool isTake[2] = {false,false};
+static float goodsScale[2] = { 50,50 };
 
-
-RECT testText = { 100,600,1100,1000 };
+RECT testText = { 100,200,900,500 };
 //プレイヤーの画像頂点
 CUSTOMVERTEX playerFloa[4];
 CENTRAL_STATE playerCentralFloa = {800,800,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
@@ -53,6 +54,13 @@ CENTRAL_STATE mobCentralBlowOff[5]{
 CUSTOMVERTEX effectExplosion[4];
 CENTRAL_STATE effectExplosionCentral = {1000,800,300,300};
 
+CUSTOMVERTEX goodsA[4];
+CUSTOMVERTEX goodsB[4];
+
+CENTRAL_STATE goodsCentral[2]{
+	{500,500,goodsScale[0],goodsScale[0]},
+	{500,500,goodsScale[1],goodsScale[1]}
+};
 
 
 void gameControl();
@@ -69,6 +77,11 @@ void blowOffRender();
 void blowOffDeviseControl();
 void madamBlowOff();
 
+void pickGoods();
+void pickGoodsControl();
+void pickGoodsRender();
+void pickGoodsDeviseControl();
+
 void gameMain() {
 	srand((unsigned int)time(NULL));
 	switch (gameScene) {
@@ -79,14 +92,11 @@ void gameMain() {
 		blowOff();		
 		break;
 	case PICKGOODS:
-		gameControl();
-		gameRender();
+		pickGoods();
 		effectCount = 0;
-		fallCount = 0;
+		//fallCount = 0;
 
 		isFirst = true;
-
-		WriteWord("セール品入手", testText, DT_CENTER, RED, FONT);
 		break;
 	
 	}
@@ -165,14 +175,18 @@ void floaMove() {
 		ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
 		ReadInTexture("Texture/supermarket.jpg", BG_BLOWOFF_TEX);
 		ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
-		
-		mobCentralBlowOff[0] = { 900,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[1] = { 1100,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[2] = { 1300,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[3] = { 1500,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[4] = { 1700,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		ReadInTexture("Texture/wagonsele.jpg", BG_PICKGGOODS_TEX);
+		ReadInTexture("Texture/beef.png", BEEF_TEX);
+		ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
+		ReadInTexture("Texture/pork.png", PORK_TEX);
 
-		effectExplosionCentral = { 1000,800,300,300 };
+		mobCentralBlowOff[0] = { 850,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[1] = { 900,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[2] = { 950,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[3] = { 1000,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[4] = { 1050,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+
+		effectExplosionCentral = { 900,750,300,300 };
 
 		isBlowOff = false;
 		isFirst = false;
@@ -205,8 +219,8 @@ void floaMoveControl() {
 			gameScene = PUSHENEMY;
 	}
 	mobMoving(&mobCentralFloa);
-	MoveInToErea(&playerCentralFloa, 20, 20, 1520, 1000);
-	MoveInToErea(&mobCentralFloa, 20, 20, 1520, 1000);
+	MoveInToErea(&playerCentralFloa, 10, 60, 1000, 680);
+	MoveInToErea(&mobCentralFloa, 10, 60, 1000, 680);
 }
 
 void floaMoveRender() {
@@ -215,10 +229,10 @@ void floaMoveRender() {
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FRAME_TEX);
 	switch (seletFloa) {
 	case FOOD:
-		EasyCreateSquareVertex(20, 20, 1520, 1000, FOOD_STAGE_TEX);
+		EasyCreateSquareVertex(10, 15, 1000, 680, FOOD_STAGE_TEX);
 		break;
 	case CLOTH:
-		EasyCreateSquareVertex(20, 20, 1520, 1000, CLOTH_STAGE_TEX);
+		EasyCreateSquareVertex(10, 15, 1000, 680, CLOTH_STAGE_TEX);
 		break;
 	}
 	SetUpTexture(mobFloa, MOB_TEX);
@@ -342,20 +356,20 @@ void blowOffControl() {
 		madamBlowOff();
 		effectExplosionCentral.scaleX++;
 		effectExplosionCentral.scaleY++;
-		if (effectCount > 270) {
+		if (effectCount >= 2000) {
 			gameScene = PICKGOODS;
 		}
 	}
 }
 void blowOffRender() {
 	
-	effectCount++;
 	BeginSetTexture();
 
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_BLOWOFF_TEX);
 	for (int i = 0; i < 5; i++) {
 		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
 		if(isBlowOff){
+		effectCount++;
 
 			static float Rad = 0;
 			Rad += 0.9;
@@ -372,7 +386,7 @@ void blowOffRender() {
 		}
 		SetUpTexture(mobFloa, MOB_TEX);
 	}
-	if ((effectCount < 20) || isBlowOff) {
+	if ((effectCount > 20) && isBlowOff) {
 		SetUpTexture(effectExplosion, EXPLOSION_TEX);
 	}
 	//SetUpTexture(playerFloa, YASUKO_TEX);
@@ -439,7 +453,7 @@ void blowOffDeviseControl() {
 }
 
 void madamBlowOff() {
-	fallCount++;
+	
 
 	mobCentralBlowOff[0].x -= rand() % 15;
 	mobCentralBlowOff[0].y -= rand() % 5;
@@ -456,10 +470,134 @@ void madamBlowOff() {
 	mobCentralBlowOff[4].x += rand() % 25;
 	mobCentralBlowOff[4].y -= rand() % 30;
 
-	if (fallCount > 120) {
+	if (effectCount > 1200) {
 		for (int i = 0; i < 5; i++) {
 			mobCentralBlowOff[i].y += 35;
 		}
+	}
+
+}
+
+
+
+//商品取得場面
+
+void pickGoods() {
+	pickGoodsControl();
+	pickGoodsRender();
+}
+
+void pickGoodsControl() {
+	CreateSquareVertex(goodsA, goodsCentral[0]);
+	CreateSquareVertex(goodsB, goodsCentral[1]);
+	if (goodsCentral[0].x >= 650) {
+		goodsScale[0] -= 5;
+	}						
+	if (goodsCentral[1].x >= 650) {
+		goodsScale[1] -= 5;
+	}
+
+	if (isTake[0]) {
+		goodsCentral[0].x += 5;
+		goodsCentral[0].y += 2;
+	}
+	if (isTake[1]) {
+		goodsCentral[1].x += 5;
+		goodsCentral[1].y += 2;
+	}
+
+	if (!goodsScale[0]) {
+		goodsScale[0] = 50;
+		goodsCentral[0] = { 500,500,goodsScale[0],goodsScale[0] };
+		isTake[0] = false;
+	}
+	if (!goodsScale[1]) {
+		goodsScale[1] = 50;
+		goodsCentral[1] = { 500,500,goodsScale[1],goodsScale[1] };
+		isTake[1] = false;
+	}
+
+	pickGoodsDeviseControl();
+
+}
+
+void pickGoodsRender() {
+
+	BeginSetTexture();
+
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_PICKGGOODS_TEX);
+
+	EasyCreateSquareVertex(500, 300, 900, HEIGHT, YASUKO_TEX);
+
+	if (isTake[0]) {
+		SetUpTexture(goodsA, BEEF_TEX);
+	}
+	if (isTake[1]) {
+		SetUpTexture(goodsB, PORK_TEX);
+	}
+
+	
+
+	WriteWord("セール品入手", testText, DT_CENTER, RED, FONT);
+
+
+	EndSetTexture();
+}
+
+void pickGoodsDeviseControl() {
+	BottonCheck();
+	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_A);
+	CheckKeyState(DIK_D);
+	CheckKeyState(DIK_W);
+	CheckKeyState(DIK_S);
+
+	if (KeyState[DIK_RETURN] == KeyRelease)
+	{
+		soundManager.Play("Sound/Buppigan2.wav", false);
+
+		g_scene = SCENE_RESULT;
+		gameScene = FLOAMOVE;
+	}
+
+	if (KeyState[DIK_A])
+	{
+		isTake[0] = true;
+	}
+	if (KeyState[DIK_D])
+	{
+		isTake[1] = true;
+	}
+	if (KeyState[DIK_W])
+	{
+
+	}
+	if (KeyState[DIK_S])
+	{
+
+	}
+	//XInputデバイス操作
+	GetControl(0);
+	BottonCheck();
+
+	if (PadState[ButtonA] == KeyRelease)
+	{
+		soundManager.Play("Sound/Buppigan2.wav", false);
+
+		g_scene = SCENE_RESULT;
+		gameScene = FLOAMOVE;
+	}
+	if (PadState[ButtonB] == KeyRelease)
+	{
+		isTake[1] = true;
+	}
+	if (PadState[ButtonX] == KeyRelease)
+	{
+		isTake[0] = true;
+	}
+	if (PadState[ButtonY] == KeyRelease)
+	{
+
 	}
 
 }
