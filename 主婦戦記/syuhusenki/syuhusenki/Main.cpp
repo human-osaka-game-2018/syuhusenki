@@ -1,7 +1,10 @@
 #include "Main.h"
 #include "GameMain.h"
 
-SoundManager& soundManager = SoundManager::GetInstance();
+//SoundManager& soundManager = SoundManager::GetInstance();
+SoundLib::SoundsManager soundsManager;
+
+bool SoundSuccess;
 
 const char* soundNum[SOUND_MAX];
 
@@ -10,6 +13,12 @@ void gameRoop();
 void soundLoad();
 int g_scene = SCENE_TEAMLOGO;
 //int g_scene = SCENE_MAIN;
+void render(void);//âº
+void control(void);//âº
+void sound(void);//âº
+
+void gamePad(void);
+
 
 bool seOn = false;
 
@@ -21,7 +30,8 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 #else
 	InitWindowFullscreenEx("ÅôéÂïwêÌãLÅô", &hWnd, WIDTH, HEIGHT, hInst, hInstance, NULL, "Texture/Yasuko.png");
 #endif
-	DirectSound::CreateInstance(hWnd);
+	//DirectSound::CreateInstance(hWnd);
+	SoundSuccess = soundsManager.Initialize();
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
@@ -30,8 +40,12 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, FONT);
 	soundLoad();
-	soundManager.Load(soundNum[SE1]);
-	soundManager.Load(soundNum[SE2]);
+	soundsManager.AddFile("Sound/foodbgm.mp3", "FOOD");
+
+	SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
+
+	//soundManager.Load(soundNum[SE1]);
+	//soundManager.Load(soundNum[SE2]);
 	//soundManager.Load("Sound/.wav");
 	//soundManager.Play("Sound/.wav", true);
 
@@ -137,7 +151,7 @@ void render(void) {
 }
 void sound(void) {
 	if (seOn) {
-		soundManager.Play("Sound/Buppigan.wav", false);
+		//soundManager.Play("Sound/Buppigan.wav", false);
 		seOn = false;
 	}
 
@@ -171,7 +185,6 @@ void gamePad() {
 }
 
 void soundLoad() {
-	soundNum[SE1] = "Sound/Buppigan.wav";
-	soundNum[SE2] = "Sound/Buppigan2.wav";
-
+	//soundNum[SE1] = "Sound/Buppigan.wav";
+	//soundNum[SE2] = "Sound/Buppigan2.wav";
 }
