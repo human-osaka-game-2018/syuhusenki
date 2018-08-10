@@ -470,7 +470,7 @@ void madamBlowOff() {
 	mobCentralBlowOff[4].x += rand() % 25;
 	mobCentralBlowOff[4].y -= rand() % 30;
 
-	if (effectCount > 1200) {
+	if (effectCount > 500) {
 		for (int i = 0; i < 5; i++) {
 			mobCentralBlowOff[i].y += 35;
 		}

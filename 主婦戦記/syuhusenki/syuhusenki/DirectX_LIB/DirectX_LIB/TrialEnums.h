@@ -1,9 +1,14 @@
 #ifndef ENUM_H
 #define ENUM_H
+/**
+* @enum TEXTURE
+* テクスチャ配列の配列番号
+*/
 enum TEXTURE
 {
 	YASUKO_TEX,
 	MOB_TEX,
+	TEAMLOGO_TEX,
 	BG_TITLE_TEX,
 	BG_BLOWOFF_TEX,
 	BG_PICKGGOODS_TEX,
@@ -17,7 +22,10 @@ enum TEXTURE
 	BLANK,
 	TEXMAX
 };
-
+/**
+* @enum FONT
+* フォント配列の配列番号
+*/
 enum FONT {
 	FONT,
 	FONTMAX

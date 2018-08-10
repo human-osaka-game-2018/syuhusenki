@@ -5,7 +5,7 @@ SoundManager& soundManager = SoundManager::GetInstance();
 
 const char* soundNum[SOUND_MAX];
 
-RECT testWord = { 100,200,1100,500 };
+RECT testWord = { 50,200,1200,500 };
 void gameRoop();
 void soundLoad();
 int g_scene = SCENE_TEAMLOGO;
@@ -49,7 +49,7 @@ void gameRoop() {
 		ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
 		ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
 		ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
-
+		ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
 		isFirst = false;
 		}
 		control();
@@ -59,11 +59,7 @@ void gameRoop() {
 		control();
 		render();
 		break;
-	case SCENE_SERECTCHAR:
-		control();
-		render();
-		break;
-	case SCENE_SERECTSTEGE:
+	case SCENE_SERECTCHARANDSTAGE:
 		control();
 		render();
 		break;
@@ -90,12 +86,9 @@ void control(void) {
 			g_scene = SCENE_TITLE;
 			break;
 		case SCENE_TITLE:
-			g_scene = SCENE_SERECTCHAR;
+			g_scene = SCENE_SERECTCHARANDSTAGE;
 			break;
-		case SCENE_SERECTCHAR:
-			g_scene = SCENE_SERECTSTEGE;
-			break;
-		case SCENE_SERECTSTEGE:
+		case SCENE_SERECTCHARANDSTAGE:
 			g_scene = SCENE_MAIN;
 			break;
 		case SCENE_MAIN:
@@ -112,27 +105,29 @@ void render(void) {
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
 
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
 
 	switch (g_scene) {
 	case SCENE_TEAMLOGO:
-		WriteWord("心はMadam", testWord, DT_CENTER, RED, FONT);
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, TEAMLOGO_TEX);
 		break;
 	case SCENE_TITLE:
 		//WriteWord("主婦戦記", testWord, DT_CENTER, RED, FONT);
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TITLE_TEX);
 
 		break;
-	case SCENE_SERECTCHAR:
-		WriteWord("キャラ選択", testWord, DT_CENTER, RED, FONT);
-		break;
-	case SCENE_SERECTSTEGE:
-		WriteWord("ステージ選択", testWord, DT_CENTER, RED, FONT);
+	case SCENE_SERECTCHARANDSTAGE:
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
+
+		WriteWord("キャラ&ステージ\n選択", testWord, DT_CENTER, RED, FONT);
 		break;
 	case SCENE_MAIN:
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
+
 		WriteWord("メインゲーム", testWord, DT_CENTER, RED, FONT);
 		break;
 	case SCENE_RESULT:
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
+
 		WriteWord("リザルト", testWord, DT_CENTER, RED, FONT);
 		break;
 	}
@@ -158,12 +153,9 @@ void gamePad() {
 			g_scene = SCENE_TITLE;
 			break;
 		case SCENE_TITLE:
-			g_scene = SCENE_SERECTCHAR;
+			g_scene = SCENE_SERECTCHARANDSTAGE;
 			break;
-		case SCENE_SERECTCHAR:
-			g_scene = SCENE_SERECTSTEGE;
-			break;
-		case SCENE_SERECTSTEGE:
+		case SCENE_SERECTCHARANDSTAGE:
 			g_scene = SCENE_MAIN;
 			break;
 		case SCENE_MAIN:

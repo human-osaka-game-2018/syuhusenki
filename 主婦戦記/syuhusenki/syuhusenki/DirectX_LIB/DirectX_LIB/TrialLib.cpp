@@ -17,8 +17,8 @@ LPDIRECTINPUTDEVICE8 g_pKeyDevice = NULL;
 LPD3DXFONT g_pFont[128];
 
 XINPUT_STATE g_Xinput;
-PADSTATE PadState[buttomindexMAX];
-PADSTATE PadOldState[buttomindexMAX] = { PadOff };
+PADSTATE PadState[ButtomIndexMAX];
+PADSTATE PadOldState[ButtomIndexMAX] = { PadOff };
 BYTE KeyState[256];
 BYTE KeyOldState[256] = { PadOff };
 
@@ -93,7 +93,7 @@ HRESULT InitD3d(HWND hWnd, LPCSTR pSrcFile)
 	}
 	return S_OK;
 }
-HRESULT InitD3dFullscreen(HWND hWnd, LPCSTR pSrcFile)
+HRESULT InitD3dFullscreen(HWND hWnd, LPCSTR pSrcFile, int ResolutionWidth, int ResolutionHeight)
 {
 	// 「Direct3D」オブジェクトの作成
 	if (!(g_pDirect3D = Direct3DCreate9(D3D_SDK_VERSION)))
@@ -105,7 +105,8 @@ HRESULT InitD3dFullscreen(HWND hWnd, LPCSTR pSrcFile)
 	// 「DIRECT3Dデバイス」オブジェクトの作成
 	D3DPRESENT_PARAMETERS d3dpp;
 	ZeroMemory(&d3dpp, sizeof(d3dpp));
-
+	d3dpp.BackBufferWidth = ResolutionWidth;
+	d3dpp.BackBufferHeight = ResolutionHeight;
 	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 	d3dpp.BackBufferCount = 1;
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
@@ -229,12 +230,12 @@ HRESULT InitDirectX(HWND hWnd, LPCSTR pSrcFile) {
 }
 HRESULT InitDirectXFullscreen(HWND hWnd, LPCSTR pSrcFile,int ResolutionWidth,int ResolutionHeight) {
 	//ダイレクト３Dの初期化関数を呼ぶ
-	if (FALSE(InitD3dFullscreen(hWnd, pSrcFile)))
+	if (FALSE(InitD3dFullscreen(hWnd, pSrcFile, ResolutionWidth, ResolutionHeight)))
 	{
 		MessageBox(0, "DirectXの初期化に失敗しました", "", MB_OK);
 		return 0;
 	}
-	else InitD3dFullscreen(hWnd, pSrcFile);
+	else InitD3dFullscreen(hWnd, pSrcFile, ResolutionWidth, ResolutionHeight);
 
 	//ダイレクトインプットの初期化関数を呼ぶ
 	if (FAILED(InitDinput(hWnd)))
@@ -260,8 +261,8 @@ HRESULT InitDirectXFullscreen(HWND hWnd, LPCSTR pSrcFile,int ResolutionWidth,int
 	g_D3dPresentParameters.BackBufferHeight = ResolutionHeight;
 	g_D3dPresentParameters.BackBufferFormat = D3DFMT_X8R8G8B8;
 	g_D3dPresentParameters.BackBufferCount = 1;
-	//g_D3dPresentParameters.MultiSampleType = D3DMULTISAMPLE_NONE;
-	//g_D3dPresentParameters.MultiSampleQuality = 0;
+	g_D3dPresentParameters.MultiSampleType = D3DMULTISAMPLE_NONE;
+	g_D3dPresentParameters.MultiSampleQuality = 0;
 	g_D3dPresentParameters.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	g_D3dPresentParameters.hDeviceWindow = hWnd;
 	g_D3dPresentParameters.Windowed = FALSE;
@@ -484,21 +485,21 @@ void EndSetTexture() {
 }
 
 //画像読み込み
-void ReadInTexture(LPCSTR pTextureName,int TexNum) {
+void ReadInTexture(LPCSTR pTextureName, int TexNum) {
 	D3DXCreateTextureFromFile(
 		g_pD3Device,
 		pTextureName,
 		&g_pTexture[TexNum]);
 }
 //画像表示
-void SetUpTexture(CUSTOMVERTEX* Vertex,int TexNum) {
+void SetUpTexture(CUSTOMVERTEX* Vertex, int TexNum) {
 	g_pD3Device->SetTexture(0, g_pTexture[TexNum]);
 	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, Vertex, sizeof(CUSTOMVERTEX));
 }
 
 //DXフォント
 //文字設定
-void SetUpFont(int WordHeight,int WordWidth,int CharSet,LPCSTR FontName,int FontNum) {
+void SetUpFont(int WordHeight,int WordWidth,int CharSet,LPCSTR FontName, int FontNum) {
 	D3DXCreateFont(
 		g_pD3Device,
 		WordHeight,
@@ -514,7 +515,7 @@ void SetUpFont(int WordHeight,int WordWidth,int CharSet,LPCSTR FontName,int Font
 		&g_pFont[FontNum]);
 }
 //描画設定
-void WriteWord(LPCSTR Texts,RECT Vertex,int TextFormat,int color,int FontNum) {
+void WriteWord(LPCSTR Texts,RECT Vertex,int TextFormat,int color, int FontNum) {
 	g_pFont[FontNum]->DrawText(
 		NULL,							
 		Texts,					// 描画テキスト
@@ -1078,7 +1079,7 @@ bool GetAnalogR(Analog AnalogState)
 	return false;
 }
 
-void CheckButtonState(WORD ButtomID, int ButtomIndex)
+void CheckButtonState(WORD ButtomID, ButtonIndex ButtomIndex)
 {
 	if (g_Xinput.Gamepad.wButtons & ButtomID)
 	{
@@ -1123,8 +1124,8 @@ void BottonCheck() {
 	CheckButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, ButtonRIGHT);
 	CheckButtonState(XINPUT_GAMEPAD_START, ButtonStart);
 	CheckButtonState(XINPUT_GAMEPAD_BACK, ButtonBack);
-	CheckButtonState(XINPUT_GAMEPAD_LEFT_SHOULDER, ButtonLB);
-	CheckButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, ButtonRB);
+	CheckButtonState(XINPUT_GAMEPAD_LEFT_THUMB, ButtonLeftThumb);
+	CheckButtonState(XINPUT_GAMEPAD_RIGHT_THUMB, ButtonRightThumb);
 
 }
 //当たり判定
@@ -1136,8 +1137,8 @@ bool CtoCContact(float PosX1,float PosY1,float Radius1, float PosX2, float PosY2
 	}
 	else return false;
 }
-bool CtoCContact(CIRCLE_STATE* a, CIRCLE_STATE* b) {
-	if ((pow(a->x - b->x, 2) + pow(a->y - b->y, 2) <= pow(a->r + b->r, 2)) || (pow(b->x - a->x, 2) + pow(b->y - a->y, 2) <= pow(a->r + b->r, 2))) {
+bool CtoCContact(CIRCLE_STATE* CircleA, CIRCLE_STATE* CircleB) {
+	if ((pow(CircleA->x - CircleB->x, 2) + pow(CircleA->y - CircleB->y, 2) <= pow(CircleA->r + CircleB->r, 2)) || (pow(CircleB->x - CircleA->x, 2) + pow(CircleB->y - CircleA->y, 2) <= pow(CircleA->r + CircleB->r, 2))) {
 		return true;
 	}
 	else return false;

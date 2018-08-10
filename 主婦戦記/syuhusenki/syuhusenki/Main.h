@@ -5,16 +5,16 @@
 #include "DirectX_LIB/DirectX_LIB/TrialLib.h"
 
 
-#include "SoundLib/DirectSound.h"
-#include "SoundLib/SoundManager.h"
+#include "Sound_Lib/DirectSound.h"
+#include "Sound_Lib/SoundManager.h"
 
 
 
 #ifdef _DEBUG
-#pragma comment(lib, "SoundLib/Debug/Sound.lib")
+#pragma comment(lib, "Sound_Lib/Debug/Sound.lib")
 #pragma comment(lib, "DirectX_LIB/Debug/DirectX_LIB.lib")
 #else
-#pragma comment(lib, "SoundLib/Release/Sound.lib")
+#pragma comment(lib, "Sound_Lib/Release/Sound.lib")
 #pragma comment(lib, "DirectX_LIB/Release/DirectX_LIB.lib")
 #endif //_DEBUG
 
@@ -30,8 +30,7 @@ enum SOUND {
 enum SCENE {
 	SCENE_TEAMLOGO,
 	SCENE_TITLE,
-	SCENE_SERECTCHAR,
-	SCENE_SERECTSTEGE,
+	SCENE_SERECTCHARANDSTAGE,
 	SCENE_MAIN,
 	SCENE_RESULT,
 };
