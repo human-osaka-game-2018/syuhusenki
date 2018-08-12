@@ -1,7 +1,6 @@
 #include "Main.h"
 #include "GameMain.h"
 
-//SoundManager& soundManager = SoundManager::GetInstance();
 SoundLib::SoundsManager soundsManager;
 
 bool SoundSuccess;
@@ -30,7 +29,6 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 #else
 	InitWindowFullscreenEx("ÅôéÂïwêÌãLÅô", &hWnd, WIDTH, HEIGHT, hInst, hInstance, NULL, "Texture/Yasuko.png");
 #endif
-	//DirectSound::CreateInstance(hWnd);
 	SoundSuccess = soundsManager.Initialize();
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
@@ -44,10 +42,6 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
 
-	//soundManager.Load(soundNum[SE1]);
-	//soundManager.Load(soundNum[SE2]);
-	//soundManager.Load("Sound/.wav");
-	//soundManager.Play("Sound/.wav", true);
 
 	FlameRoop(gameRoop);
 
@@ -151,7 +145,6 @@ void render(void) {
 }
 void sound(void) {
 	if (seOn) {
-		//soundManager.Play("Sound/Buppigan.wav", false);
 		seOn = false;
 	}
 
@@ -185,6 +178,4 @@ void gamePad() {
 }
 
 void soundLoad() {
-	//soundNum[SE1] = "Sound/Buppigan.wav";
-	//soundNum[SE2] = "Sound/Buppigan2.wav";
 }

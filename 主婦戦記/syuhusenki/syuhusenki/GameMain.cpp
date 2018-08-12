@@ -108,7 +108,6 @@ void gameControl() {
 
 	if (KeyState[DIK_RETURN] == KeyRelease)
 	{
-		//soundManager.Play("Sound/Buppigan2.wav", false);
 
 		switch (gameScene) {
 		//case FLOAMOVE:
@@ -125,7 +124,6 @@ void gameControl() {
 	}
 	if (PadState[ButtonA] == KeyRelease)
 	{
-		//soundManager.Play("Sound/Buppigan2.wav", false);
 
 		switch (gameScene) {
 		case FLOAMOVE:
@@ -206,7 +204,6 @@ void floaMoveControl() {
 
 	if (KeyState[DIK_RETURN] == KeyRelease)
 	{
-		//soundManager.Play("Sound/Buppigan2.wav", false);
 
 			gameScene = PUSHENEMY;
 	}
@@ -214,7 +211,6 @@ void floaMoveControl() {
 	GetControl(0);
 	if (PadState[ButtonA] == KeyRelease)
 	{
-		//soundManager.Play("Sound/Buppigan2.wav", false);
 
 			gameScene = PUSHENEMY;
 	}
@@ -406,7 +402,6 @@ void blowOffDeviseControl() {
 	if (KeyState[DIK_RETURN] == KeyRelease)
 	{
 		gameScene = PICKGOODS;
-		//soundManager.Play("Sound/Buppigan2.wav", false);
 
 	}
 
@@ -433,7 +428,6 @@ void blowOffDeviseControl() {
 	if (PadState[ButtonA] == KeyRelease)
 	{
 		gameScene = PICKGOODS;
-		//soundManager.Play("Sound/Buppigan2.wav", false);
 
 
 	}
@@ -554,7 +548,6 @@ void pickGoodsDeviseControl() {
 
 	if (KeyState[DIK_RETURN] == KeyRelease)
 	{
-		//soundManager.Play("Sound/Buppigan2.wav", false);
 
 		g_scene = SCENE_RESULT;
 		gameScene = FLOAMOVE;
@@ -582,7 +575,6 @@ void pickGoodsDeviseControl() {
 
 	if (PadState[ButtonA] == KeyRelease)
 	{
-		//soundManager.Play("Sound/Buppigan2.wav", false);
 
 		g_scene = SCENE_RESULT;
 		gameScene = FLOAMOVE;

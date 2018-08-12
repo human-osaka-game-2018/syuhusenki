@@ -5,21 +5,14 @@
 #include "DirectX_LIB/DirectX_LIB/TrialLib.h"
 
 
-//#include "Sound_Lib/DirectSound.h"
-//#include "Sound_Lib/SoundManager.h"
-
-
 
 #ifdef _DEBUG
-//#pragma comment(lib, "Sound_Lib/Debug/Sound.lib")
 #include "SoundLib/Debug_x86/Include/SoundsManager.h"
 #pragma comment(lib,"SoundLib/Debug_x86/Lib/SoundLib.lib")
 #pragma comment(lib, "DirectX_LIB/Debug/DirectX_LIB.lib")
 #else
 #include "SoundLib/Release_x86/Include/SoundsManager.h"
 #pragma comment(lib,"SoundLib/Release_x86/Lib/SoundLib.lib")
-
-//#pragma comment(lib, "Sound_Lib/Release/Sound.lib")
 #pragma comment(lib, "DirectX_LIB/Release/DirectX_LIB.lib")
 #endif //_DEBUG
 
@@ -39,7 +32,6 @@ enum SCENE {
 	SCENE_MAIN,
 	SCENE_RESULT,
 };
-//extern SoundManager& soundManager;
 extern SoundLib::SoundsManager soundsManager;
 
 extern const char* soundNum[SOUND_MAX];
