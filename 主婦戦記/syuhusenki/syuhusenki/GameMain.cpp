@@ -23,8 +23,8 @@ enum FLOA {
 	CLOTH
 };
 
-//int gameScene = FLOAMOVE;
-int gameScene = PUSHENEMY;
+int gameScene = FLOAMOVE;
+//int gameScene = PUSHENEMY;
 //int gameScene = PICKGOODS;
 int seletFloa = FOOD;
 static bool isBlowOff = false;
@@ -83,7 +83,8 @@ void blowOffRender();
 void blowOffDeviseControl(int* i,int comand[]);
 void madamBlowOff();
 bool comandCheck(int comand[], int inputComand[]);
-
+void comandMake();
+char comandButton(int comand);
 
 void pickGoods();
 void pickGoodsControl();
@@ -93,17 +94,19 @@ void pickGoodsDeviseControl();
 void gameMain() {
 	srand((unsigned int)time(NULL));
 	if (isFirst) {
-
-		ReadInTexture("Texture/testFrame.png", FRAME_TEX);
-		ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
-		ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
-		ReadInTexture("Texture/supermarket.jpg", BG_BLOWOFF_TEX);
-		ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
-		ReadInTexture("Texture/wagonsele.jpg", BG_PICKGGOODS_TEX);
-		ReadInTexture("Texture/beef.png", BEEF_TEX);
-		ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
-		ReadInTexture("Texture/pork.png", PORK_TEX);
-
+		static bool canRead = true;
+		if (canRead) {
+			ReadInTexture("Texture/testFrame.png", FRAME_TEX);
+			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
+			ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
+			ReadInTexture("Texture/supermarket.jpg", BG_BLOWOFF_TEX);
+			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
+			ReadInTexture("Texture/wagonsele.jpg", BG_PICKGGOODS_TEX);
+			ReadInTexture("Texture/beef.png", BEEF_TEX);
+			ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
+			ReadInTexture("Texture/pork.png", PORK_TEX);
+			canRead = false;
+		}
 		mobCentralBlowOff[0] = { 850,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
 		mobCentralBlowOff[1] = { 900,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
 		mobCentralBlowOff[2] = { 950,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
@@ -125,8 +128,6 @@ void gameMain() {
 	case PICKGOODS:
 		pickGoods();
 		effectCount = 0;
-		
-		isFirst = true;
 		break;
 	
 	}
@@ -135,8 +136,8 @@ void gameControl() {
 	GetControl(0);
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
-
-	if (KeyState[DIK_RETURN] == KeyRelease)
+	CheckKeyState(DIK_NUMPADENTER);
+	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
 
 		switch (gameScene) {
@@ -207,19 +208,20 @@ void floaMoveControl() {
 
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_NUMPADENTER);
 
 	keyControl(&playerCentralFloa);
 
-	if (KeyState[DIK_RETURN] == KeyRelease)
+	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
-
+		comandMake();
 			gameScene = PUSHENEMY;
 	}
 
 	GetControl(0);
 	if (PadState[ButtonA] == KeyRelease)
 	{
-
+		comandMake();
 			gameScene = PUSHENEMY;
 	}
 	mobMoving(&mobCentralFloa);
@@ -349,7 +351,7 @@ void mobMoving(CENTRAL_STATE* mob) {
 
 //コマンド入力場面
 int comandInput[5] = { 10,10,10,10,10 };
-int comandPresentment[5] = { rand() % 5,rand() % 5 ,rand() % 5 ,rand() % 5 ,rand() % 5 };
+int comandPresentment[5];
 int comandCount = 0;
 void blowOff() {
 	blowOffControl();
@@ -382,6 +384,7 @@ void blowOffControl()
 		effectExplosionCentral.scaleY++;
 		if (effectCount >= 600) {
 			gameScene = PICKGOODS;
+			isBlowOff = false;
 		}
 	}
 }
@@ -414,25 +417,25 @@ void blowOffRender() {
 	//SetUpTexture(playerFloa, YASUKO_TEX);
 
 	WriteWord("モブ主婦排除", testText, DT_CENTER, RED, HOGE_FONT);
-#ifdef _DEBUG
 	char debugComandInput[10];
 	char debugComandOutput[10];
 	char DebugCounter[10];
 	for (int i = 0; i < 5; i++)
 	{
-		sprintf_s(debugComandInput, 10, "%d", comandInput[i]);
+		sprintf_s(debugComandInput, 10, "%c", comandButton(comandInput[i]));
 
 		RECT DEBUGText = { 100+(i*50),500,900,600 };
 		WriteWord(debugComandInput, DEBUGText, DT_LEFT, 0xff0000ff, DEBUG_FONT);
 	}	
 	for (int i = 0; i < 5; i++)
 	{
-		sprintf_s(debugComandOutput, 10, "%d", comandPresentment[i]);
+		sprintf_s(debugComandOutput, 10, "%c", comandButton(comandPresentment[i]));
 
 		RECT DEBUGText = { 100 + (i * 50),450,900,600 };
 		WriteWord(debugComandOutput, DEBUGText, DT_LEFT, 0xff0000ff, DEBUG_FONT);
 	}
 
+#ifdef _DEBUG
 	sprintf_s(DebugCounter, 10, "%d", comandCount);
 	RECT DEBUGText = { 100 ,550,900,600 };
 	WriteWord(DebugCounter, DEBUGText, DT_LEFT, 0xff00ffff, DEBUG_FONT);
@@ -450,16 +453,46 @@ bool comandCheck(int comand[], int inputComand[])
 	}
 	return true;
 }
+void comandMake() {
+	comandPresentment[0] = rand() % 6;
+	comandPresentment[1]= rand() % 6;
+	comandPresentment[2]= rand() % 6;
+	comandPresentment[3]= rand() % 6;
+	comandPresentment[4]= rand() % 6;
+}
+
+char comandButton(int comand)
+{
+	switch (comand) {
+	case ButtonA:
+		return 'A';
+	case ButtonB:
+		return 'B';
+	case ButtonX:
+		return 'X';
+	case ButtonY:
+		return 'Y';
+	case ButtonRB:
+		return 'R';
+	case ButtonLB:
+		return 'L';
+	}
+
+}
+
 void blowOffDeviseControl(int* i,int comand[])
 {
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_NUMPADENTER);
 	CheckKeyState(DIK_A);
-	CheckKeyState(DIK_D);
-	CheckKeyState(DIK_W);
-	CheckKeyState(DIK_S);
+	CheckKeyState(DIK_B);
+	CheckKeyState(DIK_X);
+	CheckKeyState(DIK_Y);
+	CheckKeyState(DIK_R);
+	CheckKeyState(DIK_L);
 
-	if (KeyState[DIK_RETURN] == KeyRelease)
+	if (KeyState[DIK_RETURN]||KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
 		gameScene = PICKGOODS;
 
@@ -468,17 +501,43 @@ void blowOffDeviseControl(int* i,int comand[])
 	if (KeyState[DIK_A] == KeyRelease)
 	{
 		comand[*i] = ButtonA;
-	}
-	if (KeyState[DIK_D] == KeyRelease)
-	{
+		*i += 1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
 
 	}
-	if (KeyState[DIK_W] == KeyRelease)
+	if (KeyState[DIK_B] == KeyRelease)
 	{
+		comand[*i] = ButtonB;
+		*i += 1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
 
 	}
-	if (KeyState[DIK_S] == KeyRelease)
+	if (KeyState[DIK_X] == KeyRelease)
 	{
+		comand[*i] = ButtonX;
+		*i += 1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+
+	}
+	if (KeyState[DIK_Y] == KeyRelease)
+	{
+		comand[*i] = ButtonY;
+		*i += 1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+
+	}
+	if (KeyState[DIK_R] == KeyRelease)
+	{
+		comand[*i] = ButtonRB;
+		*i += 1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+
+	}
+	if (KeyState[DIK_L] == KeyRelease)
+	{
+		comand[*i] = ButtonLB;
+		*i += 1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
 
 	}
 	//XInputデバイス操作
@@ -628,14 +687,16 @@ void pickGoodsRender() {
 void pickGoodsDeviseControl() {
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_NUMPADENTER);
+
 	CheckKeyState(DIK_A);
 	CheckKeyState(DIK_D);
 	CheckKeyState(DIK_W);
 	CheckKeyState(DIK_S);
 
-	if (KeyState[DIK_RETURN] == KeyRelease)
+	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
-
+		isFirst = true;
 		g_scene = SCENE_RESULT;
 		gameScene = FLOAMOVE;
 	}
@@ -662,7 +723,7 @@ void pickGoodsDeviseControl() {
 
 	if (PadState[ButtonA] == KeyRelease)
 	{
-
+		isFirst = true;
 		g_scene = SCENE_RESULT;
 		gameScene = FLOAMOVE;
 	}

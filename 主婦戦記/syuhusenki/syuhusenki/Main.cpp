@@ -10,8 +10,8 @@ const char* soundNum[SOUND_MAX];
 RECT testWord = { 50,200,1200,500 };
 void gameRoop();
 void soundLoad();
-//int g_scene = SCENE_TEAMLOGO;
-int g_scene = SCENE_MAIN;
+int g_scene = SCENE_TEAMLOGO;
+//int g_scene = SCENE_MAIN;
 void render(void);//‰¼
 void control(void);//‰¼
 void sound(void);//‰¼
@@ -42,7 +42,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	soundLoad();
 	
 
-	//SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
+	
 
 
 	FlameRoop(gameRoop);
@@ -62,6 +62,7 @@ void gameRoop() {
 		ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
 		isFirst = false;
 		}
+		SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
 		control();
 		render();
 		break;
@@ -88,7 +89,9 @@ void control(void) {
 	gamePad();
 	
 	CheckKeyState(DIK_RETURN);
-	if (KeyState[DIK_RETURN] == KeyRelease)
+	CheckKeyState(DIK_NUMPADENTER);
+
+	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
 		seOn = true;
 		switch (g_scene) {
