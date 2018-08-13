@@ -10,8 +10,8 @@ const char* soundNum[SOUND_MAX];
 RECT testWord = { 50,200,1200,500 };
 void gameRoop();
 void soundLoad();
-int g_scene = SCENE_TEAMLOGO;
-//int g_scene = SCENE_MAIN;
+//int g_scene = SCENE_TEAMLOGO;
+int g_scene = SCENE_MAIN;
 void render(void);//仮
 void control(void);//仮
 void sound(void);//仮
@@ -36,11 +36,15 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
 	ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
 
-	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, FONT);
+	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);
+	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
+
 	soundLoad();
 	soundsManager.AddFile("Sound/foodbgm.mp3", "FOOD");
+	soundsManager.AddFile("Sound/bottun.mp3", "BOTTUN");
+	soundsManager.AddFile("Sound/thankyou.mp3", "BOW");
 
-	SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
+	//SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
 
 
 	FlameRoop(gameRoop);
@@ -126,17 +130,17 @@ void render(void) {
 	case SCENE_SERECTCHARANDSTAGE:
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
 
-		WriteWord("キャラ&ステージ\n選択", testWord, DT_CENTER, RED, FONT);
+		WriteWord("キャラ&ステージ\n選択", testWord, DT_CENTER, RED, HOGE_FONT);
 		break;
 	case SCENE_MAIN:
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
 
-		WriteWord("メインゲーム", testWord, DT_CENTER, RED, FONT);
+		WriteWord("メインゲーム", testWord, DT_CENTER, RED, HOGE_FONT);
 		break;
 	case SCENE_RESULT:
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
 
-		WriteWord("リザルト", testWord, DT_CENTER, RED, FONT);
+		WriteWord("リザルト", testWord, DT_CENTER, RED, HOGE_FONT);
 		break;
 	}
 

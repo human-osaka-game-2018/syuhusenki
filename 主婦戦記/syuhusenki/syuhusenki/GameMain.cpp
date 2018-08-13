@@ -33,6 +33,8 @@ static bool isTake[2] = {false,false};
 static float goodsScale[2] = { 50,50 };
 
 RECT testText = { 100,200,900,500 };
+
+
 //プレイヤーの画像頂点
 CUSTOMVERTEX playerFloa[4];
 CENTRAL_STATE playerCentralFloa = {800,800,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
@@ -71,11 +73,15 @@ void floaMoveRender();
 void keyControl(CENTRAL_STATE* central);
 void mobMoving(CENTRAL_STATE* mob);
 
+
+
 void blowOff();
 void blowOffControl();
 void blowOffRender();
-void blowOffDeviseControl();
+void blowOffDeviseControl(int* i,int comand[]);
 void madamBlowOff();
+void comandInputCount(int* comandCount, int comand[]);
+
 
 void pickGoods();
 void pickGoodsControl();
@@ -147,16 +153,16 @@ void gameRender()
 
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
 
-		WriteWord("メインゲーム", testWord, DT_CENTER, RED, FONT);
+		WriteWord("メインゲーム", testWord, DT_CENTER, RED, HOGE_FONT);
 	switch (gameScene) {
 	//case FLOAMOVE:
 	//	WriteWord("フロア移動", testText, DT_CENTER, RED, FONT);
 	//	break;
 	case PUSHENEMY:
-		WriteWord("モブ主婦排除", testText, DT_CENTER, RED, FONT);
+		WriteWord("モブ主婦排除", testText, DT_CENTER, RED, HOGE_FONT);
 		break;
 	case PICKGOODS:
-		WriteWord("セール品入手", testText, DT_CENTER, RED, FONT);
+		WriteWord("セール品入手", testText, DT_CENTER, RED, HOGE_FONT);
 		break;
 
 	}
@@ -234,7 +240,7 @@ void floaMoveRender() {
 	SetUpTexture(mobFloa, MOB_TEX);
 	SetUpTexture(playerFloa, YASUKO_TEX);
 
-	WriteWord("フロア移動", testText, DT_CENTER, RED, FONT);
+	WriteWord("フロア移動", testText, DT_CENTER, RED, HOGE_FONT);
 
 	EndSetTexture();
 }
@@ -340,28 +346,39 @@ void mobMoving(CENTRAL_STATE* mob) {
 
 
 //コマンド入力場面
-
+int comandInput[5] = { 10,10,10,10,10 };
+int comandPresentment[5];
+int comandCount = 0;
 void blowOff() {
 	blowOffControl();
 	blowOffRender();
 }
 void blowOffControl() {
 	CreateSquareVertex(effectExplosion, effectExplosionCentral);
-	blowOffDeviseControl();
+
+	if (comandCount < 5) {
+		blowOffDeviseControl(&comandCount,comandInput);
+		//comandInputCount(&comandCount,comandInput);
+	}
+	else comandCount = 0;
+
 	if (isBlowOff) {
 		madamBlowOff();
 		effectExplosionCentral.scaleX++;
 		effectExplosionCentral.scaleY++;
-		if (effectCount >= 2000) {
+		if (effectCount >= 600) {
 			gameScene = PICKGOODS;
 		}
 	}
 }
+void comandInputCount(int* comandCount, int comand[]) {
+	if (comand[*comandCount]<10) {
+		*comandCount++;
+	}
+}
 void blowOffRender() {
-	
 	BeginSetTexture();
-
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_BLOWOFF_TEX);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
 	for (int i = 0; i < 5; i++) {
 		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
 		if(isBlowOff){
@@ -387,11 +404,25 @@ void blowOffRender() {
 	}
 	//SetUpTexture(playerFloa, YASUKO_TEX);
 
-	WriteWord("モブ主婦排除", testText, DT_CENTER, RED, FONT);
+	WriteWord("モブ主婦排除", testText, DT_CENTER, RED, HOGE_FONT);
+#ifdef _DEBUG
+	char debugComandArray[10];
+	char DebugCounter[10];
+	for (int i = 0; i < 5; i++) {
+		sprintf_s(debugComandArray, 10, "%d", comandInput[i]);
+
+		RECT DEBUGText = { 100+(i*50),500,900,600 };
+		WriteWord(debugComandArray, DEBUGText, DT_LEFT, 0xff0000ff, DEBUG_FONT);
+	}
+	sprintf_s(DebugCounter, 10, "%d", comandCount);
+	RECT DEBUGText = { 100 ,550,900,600 };
+	WriteWord(DebugCounter, DEBUGText, DT_LEFT, 0xff00ffff, DEBUG_FONT);
+#endif
+
 	EndSetTexture();
 }
 
-void blowOffDeviseControl() {
+void blowOffDeviseControl(int* i,int comand[]) {
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_A);
@@ -405,42 +436,69 @@ void blowOffDeviseControl() {
 
 	}
 
-	if (KeyState[DIK_A])
+	if (KeyState[DIK_A] == KeyRelease)
 	{
-		isBlowOff = true;
+		comand[*i] = ButtonA;
 	}
-	if (KeyState[DIK_D])
-	{
-
-	}
-	if (KeyState[DIK_W])
+	if (KeyState[DIK_D] == KeyRelease)
 	{
 
 	}
-	if (KeyState[DIK_S])
+	if (KeyState[DIK_W] == KeyRelease)
+	{
+
+	}
+	if (KeyState[DIK_S] == KeyRelease)
 	{
 
 	}
 	//XInputデバイス操作
 	GetControl(0);
 	BottonCheck();
+	if (PadState[ButtonStart] == KeyRelease)
+	{
+		gameScene = PICKGOODS;
+	}
 
 	if (PadState[ButtonA] == KeyRelease)
 	{
-		gameScene = PICKGOODS;
-
-
+		comand[*i] = ButtonA;
+		*i+=1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
 	}
 	if (PadState[ButtonB] == KeyRelease)
 	{
+		comand[*i] = ButtonB;
+		*i+=1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
 
 	}
 	if (PadState[ButtonX] == KeyRelease)
 	{
-		isBlowOff = true;
+		comand[*i] = ButtonX;
+		*i+=1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+
 	}
 	if (PadState[ButtonY] == KeyRelease)
 	{
+		comand[*i] = ButtonY;
+		*i+=1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+
+	}
+	if (PadState[ButtonRB] == KeyRelease)
+	{
+		comand[*i] = ButtonRB;
+		*i+=1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+
+	}
+	if (PadState[ButtonLB] == KeyRelease)
+	{
+		comand[*i] = ButtonLB;
+		*i+=1;
+		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
 
 	}
 
@@ -532,7 +590,7 @@ void pickGoodsRender() {
 
 	
 
-	WriteWord("セール品入手", testText, DT_CENTER, RED, FONT);
+	WriteWord("セール品入手", testText, DT_CENTER, RED, HOGE_FONT);
 
 
 	EndSetTexture();
