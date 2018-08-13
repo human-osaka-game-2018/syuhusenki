@@ -40,9 +40,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
 
 	soundLoad();
-	soundsManager.AddFile("Sound/foodbgm.mp3", "FOOD");
-	soundsManager.AddFile("Sound/bottun.mp3", "BOTTUN");
-	soundsManager.AddFile("Sound/thankyou.mp3", "BOW");
+	
 
 	//SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
 
@@ -182,4 +180,9 @@ void gamePad() {
 }
 
 void soundLoad() {
+	soundsManager.AddFile("Sound/foodbgm.mp3", "FOOD");
+	soundsManager.AddFile("Sound/bottun.mp3", "BOTTUN");
+	soundsManager.AddFile("Sound/thankyou.mp3", "BOW");
+	soundsManager.AddFile("Sound/correct answer.mp3", "SUCCESS");
+	soundsManager.AddFile("Sound/mistake.mp3", "MISS");
 }

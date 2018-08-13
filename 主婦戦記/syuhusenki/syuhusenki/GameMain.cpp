@@ -23,7 +23,9 @@ enum FLOA {
 	CLOTH
 };
 
-int gameScene = FLOAMOVE;
+//int gameScene = FLOAMOVE;
+int gameScene = PUSHENEMY;
+//int gameScene = PICKGOODS;
 int seletFloa = FOOD;
 static bool isBlowOff = false;
 static bool isFirst = true;
@@ -80,7 +82,7 @@ void blowOffControl();
 void blowOffRender();
 void blowOffDeviseControl(int* i,int comand[]);
 void madamBlowOff();
-void comandInputCount(int* comandCount, int comand[]);
+bool comandCheck(int comand[], int inputComand[]);
 
 
 void pickGoods();
@@ -90,6 +92,29 @@ void pickGoodsDeviseControl();
 
 void gameMain() {
 	srand((unsigned int)time(NULL));
+	if (isFirst) {
+
+		ReadInTexture("Texture/testFrame.png", FRAME_TEX);
+		ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
+		ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
+		ReadInTexture("Texture/supermarket.jpg", BG_BLOWOFF_TEX);
+		ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
+		ReadInTexture("Texture/wagonsele.jpg", BG_PICKGGOODS_TEX);
+		ReadInTexture("Texture/beef.png", BEEF_TEX);
+		ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
+		ReadInTexture("Texture/pork.png", PORK_TEX);
+
+		mobCentralBlowOff[0] = { 850,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[1] = { 900,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[2] = { 950,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[3] = { 1000,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[4] = { 1050,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+
+		effectExplosionCentral = { 900,750,300,300 };
+
+		isBlowOff = false;
+		isFirst = false;
+	}
 	switch (gameScene) {
 	case FLOAMOVE:
 		floaMove();
@@ -100,8 +125,7 @@ void gameMain() {
 	case PICKGOODS:
 		pickGoods();
 		effectCount = 0;
-		//fallCount = 0;
-
+		
 		isFirst = true;
 		break;
 	
@@ -172,29 +196,7 @@ void gameRender()
 //フロア移動場面
 void floaMove() {
 	
-	if (isFirst) {
-
-		ReadInTexture("Texture/testFrame.png", FRAME_TEX);
-		ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
-		ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
-		ReadInTexture("Texture/supermarket.jpg", BG_BLOWOFF_TEX);
-		ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
-		ReadInTexture("Texture/wagonsele.jpg", BG_PICKGGOODS_TEX);
-		ReadInTexture("Texture/beef.png", BEEF_TEX);
-		ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
-		ReadInTexture("Texture/pork.png", PORK_TEX);
-
-		mobCentralBlowOff[0] = { 850,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[1] = { 900,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[2] = { 950,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[3] = { 1000,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[4] = { 1050,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-
-		effectExplosionCentral = { 900,750,300,300 };
-
-		isBlowOff = false;
-		isFirst = false;
-	}
+	
 	floaMoveControl();
 	floaMoveRender();
 }
@@ -347,21 +349,33 @@ void mobMoving(CENTRAL_STATE* mob) {
 
 //コマンド入力場面
 int comandInput[5] = { 10,10,10,10,10 };
-int comandPresentment[5];
+int comandPresentment[5] = { rand() % 5,rand() % 5 ,rand() % 5 ,rand() % 5 ,rand() % 5 };
 int comandCount = 0;
 void blowOff() {
 	blowOffControl();
 	blowOffRender();
 }
-void blowOffControl() {
+void blowOffControl() 
+{
 	CreateSquareVertex(effectExplosion, effectExplosionCentral);
 
-	if (comandCount < 5) {
+	if (comandCount < 5) 
+	{
 		blowOffDeviseControl(&comandCount,comandInput);
-		//comandInputCount(&comandCount,comandInput);
 	}
-	else comandCount = 0;
-
+	else
+	{
+		if (comandCheck(comandPresentment, comandInput)) 
+		{
+			SoundSuccess = soundsManager.Start("SUCCESS", false) && SoundSuccess;
+			isBlowOff = true;
+			comandCount = 0;
+		}
+		else {
+			SoundSuccess = soundsManager.Start("MISS", false) && SoundSuccess;
+			comandCount = 0;
+		}
+	}
 	if (isBlowOff) {
 		madamBlowOff();
 		effectExplosionCentral.scaleX++;
@@ -369,11 +383,6 @@ void blowOffControl() {
 		if (effectCount >= 600) {
 			gameScene = PICKGOODS;
 		}
-	}
-}
-void comandInputCount(int* comandCount, int comand[]) {
-	if (comand[*comandCount]<10) {
-		*comandCount++;
 	}
 }
 void blowOffRender() {
@@ -406,14 +415,24 @@ void blowOffRender() {
 
 	WriteWord("モブ主婦排除", testText, DT_CENTER, RED, HOGE_FONT);
 #ifdef _DEBUG
-	char debugComandArray[10];
+	char debugComandInput[10];
+	char debugComandOutput[10];
 	char DebugCounter[10];
-	for (int i = 0; i < 5; i++) {
-		sprintf_s(debugComandArray, 10, "%d", comandInput[i]);
+	for (int i = 0; i < 5; i++)
+	{
+		sprintf_s(debugComandInput, 10, "%d", comandInput[i]);
 
 		RECT DEBUGText = { 100+(i*50),500,900,600 };
-		WriteWord(debugComandArray, DEBUGText, DT_LEFT, 0xff0000ff, DEBUG_FONT);
+		WriteWord(debugComandInput, DEBUGText, DT_LEFT, 0xff0000ff, DEBUG_FONT);
+	}	
+	for (int i = 0; i < 5; i++)
+	{
+		sprintf_s(debugComandOutput, 10, "%d", comandPresentment[i]);
+
+		RECT DEBUGText = { 100 + (i * 50),450,900,600 };
+		WriteWord(debugComandOutput, DEBUGText, DT_LEFT, 0xff0000ff, DEBUG_FONT);
 	}
+
 	sprintf_s(DebugCounter, 10, "%d", comandCount);
 	RECT DEBUGText = { 100 ,550,900,600 };
 	WriteWord(DebugCounter, DEBUGText, DT_LEFT, 0xff00ffff, DEBUG_FONT);
@@ -421,8 +440,18 @@ void blowOffRender() {
 
 	EndSetTexture();
 }
-
-void blowOffDeviseControl(int* i,int comand[]) {
+bool comandCheck(int comand[], int inputComand[])
+{
+	for (int i = 0; i < 5; i++)
+	{
+		if (comand[i] != inputComand[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+void blowOffDeviseControl(int* i,int comand[])
+{
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_A);
