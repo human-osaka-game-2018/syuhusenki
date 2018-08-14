@@ -23,16 +23,18 @@ enum FLOA {
 	CLOTH
 };
 
-int gameScene = FLOAMOVE;
-//int gameScene = PUSHENEMY;
+//int gameScene = FLOAMOVE;
+int gameScene = PUSHENEMY;
 //int gameScene = PICKGOODS;
 int seletFloa = FOOD;
 static bool isBlowOff = false;
 static bool isFirst = true;
 static int effectCount = 0;
 //static int fallCount = 0;
-static bool isTake[2] = {false,false};
-static float goodsScale[2] = { 50,50 };
+static bool isTakeA[2] = {false,false};
+static bool isTakeB[2] = { false,false };
+
+static float goodsScale[4] = { 50,50,50,50 };
 
 RECT testText = { 100,200,900,500 };
 
@@ -60,10 +62,15 @@ CENTRAL_STATE effectExplosionCentral = {1000,800,300,300};
 
 CUSTOMVERTEX goodsA[4];
 CUSTOMVERTEX goodsB[4];
+CUSTOMVERTEX goodsA2[4];
+CUSTOMVERTEX goodsB2[4];
 
-CENTRAL_STATE goodsCentral[2]{
-	{500,500,goodsScale[0],goodsScale[0]},
-	{500,500,goodsScale[1],goodsScale[1]}
+
+CENTRAL_STATE goodsCentral[4]{
+	{ 500,500,goodsScale[0],goodsScale[0]},
+	{ 500,500,goodsScale[1],goodsScale[1]},
+	{ 500,500,goodsScale[2],goodsScale[2] },
+	{ 500,500,goodsScale[3],goodsScale[3] }
 };
 
 
@@ -82,7 +89,7 @@ void blowOffControl();
 void blowOffRender();
 void blowOffDeviseControl(int* i,int comand[]);
 void madamBlowOff();
-bool comandCheck(int comand[], int inputComand[]);
+int comandCheck(int comand[], int inputComand[], int count);
 void comandMake();
 char comandButton(int comand);
 
@@ -353,6 +360,7 @@ void mobMoving(CENTRAL_STATE* mob) {
 int comandInput[5] = { 10,10,10,10,10 };
 int comandPresentment[5];
 int comandCount = 0;
+int checkedComand = 2;
 void blowOff() {
 	blowOffControl();
 	blowOffRender();
@@ -364,17 +372,35 @@ void blowOffControl()
 	if (comandCount < 5) 
 	{
 		blowOffDeviseControl(&comandCount,comandInput);
+		checkedComand = comandCheck(comandPresentment, comandInput, comandCount);
+		if (1 == checkedComand)
+		{
+			SoundSuccess = soundsManager.Start("SUCCESS", false) && SoundSuccess;
+			checkedComand = 2;
+		}
+		if (!checkedComand)
+		{
+			checkedComand = 2;
+			SoundSuccess = soundsManager.Start("MISS", false) && SoundSuccess;
+			if (comandButton) {
+				comandCount -= 1;
+			}
+		}
 	}
 	else
 	{
-		if (comandCheck(comandPresentment, comandInput)) 
+		checkedComand = comandCheck(comandPresentment, comandInput, comandCount);
+		if (1 == checkedComand)
 		{
 			SoundSuccess = soundsManager.Start("SUCCESS", false) && SoundSuccess;
 			isBlowOff = true;
+			checkedComand = 2;
 			comandCount = 0;
 		}
-		else {
+		if (!checkedComand)
+		{
 			SoundSuccess = soundsManager.Start("MISS", false) && SoundSuccess;
+			checkedComand = 2;
 			comandCount = 0;
 		}
 	}
@@ -443,15 +469,24 @@ void blowOffRender() {
 
 	EndSetTexture();
 }
-bool comandCheck(int comand[], int inputComand[])
+int comandCheck(int comand[], int inputComand[],int count)
 {
-	for (int i = 0; i < 5; i++)
-	{
+	for (int i = 0; i < count; i++) {
+		if (inputComand[i] == 10) {
+			return 2;
+		}
+		if (comand[i] == inputComand[i]) {
+			if (i == count - 1) {
+				return 1;
+			}
+		}
 		if (comand[i] != inputComand[i]) {
-			return false;
+			if (i == count - 1) {
+				return 0;
+			}
 		}
 	}
-	return true;
+	return 2;
 }
 void comandMake() {
 	comandPresentment[0] = rand() % 6;
@@ -630,31 +665,58 @@ void pickGoods() {
 void pickGoodsControl() {
 	CreateSquareVertex(goodsA, goodsCentral[0]);
 	CreateSquareVertex(goodsB, goodsCentral[1]);
+	CreateSquareVertex(goodsA2, goodsCentral[2]);
+	CreateSquareVertex(goodsB2, goodsCentral[3]);
+
 	if (goodsCentral[0].x >= 650) {
 		goodsScale[0] -= 5;
 	}						
 	if (goodsCentral[1].x >= 650) {
 		goodsScale[1] -= 5;
 	}
+	if (goodsCentral[2].x >= 650) {
+		goodsScale[2] -= 5;
+	}
+	if (goodsCentral[3].x >= 650) {
+		goodsScale[3] -= 5;
+	}
 
-	if (isTake[0]) {
+	if (isTakeA[0]) {
 		goodsCentral[0].x += 5;
 		goodsCentral[0].y += 2;
 	}
-	if (isTake[1]) {
+	if (isTakeB[0]) {
 		goodsCentral[1].x += 5;
 		goodsCentral[1].y += 2;
+	}
+	if (isTakeA[1]) {
+		goodsCentral[2].x += 5;
+		goodsCentral[2].y += 2;
+	}
+	if (isTakeB[1]) {
+		goodsCentral[3].x += 5;
+		goodsCentral[3].y += 2;
 	}
 
 	if (!goodsScale[0]) {
 		goodsScale[0] = 50;
 		goodsCentral[0] = { 500,500,goodsScale[0],goodsScale[0] };
-		isTake[0] = false;
+		isTakeA[0] = false;
 	}
 	if (!goodsScale[1]) {
 		goodsScale[1] = 50;
 		goodsCentral[1] = { 500,500,goodsScale[1],goodsScale[1] };
-		isTake[1] = false;
+		isTakeB[0] = false;
+	}
+	if (!goodsScale[2]) {
+		goodsScale[2] = 50;
+		goodsCentral[2] = { 500,500,goodsScale[2],goodsScale[2] };
+		isTakeA[1] = false;
+	}
+	if (!goodsScale[3]) {
+		goodsScale[3] = 50;
+		goodsCentral[3] = { 500,500,goodsScale[3],goodsScale[3] };
+		isTakeB[1] = false;
 	}
 
 	pickGoodsDeviseControl();
@@ -669,11 +731,17 @@ void pickGoodsRender() {
 
 	EasyCreateSquareVertex(500, 300, 900, HEIGHT, YASUKO_TEX);
 
-	if (isTake[0]) {
+	if (isTakeA[0]) {
 		SetUpTexture(goodsA, BEEF_TEX);
+		if (isTakeA[1]) {
+			SetUpTexture(goodsA2, BEEF_TEX);
+		}
 	}
-	if (isTake[1]) {
+	if (isTakeB[0]) {
 		SetUpTexture(goodsB, PORK_TEX);
+		if (isTakeB[1]) {
+			SetUpTexture(goodsB2, PORK_TEX);
+		}
 	}
 
 	
@@ -701,13 +769,20 @@ void pickGoodsDeviseControl() {
 		gameScene = FLOAMOVE;
 	}
 
-	if (KeyState[DIK_A])
+	if (KeyState[DIK_A] == KeyRelease)
 	{
-		isTake[0] = true;
+		if (isTakeA[0]) {
+			isTakeA[1] = true;
+		}
+		else isTakeA[0] = true;
 	}
-	if (KeyState[DIK_D])
+	if (KeyState[DIK_D] == KeyRelease)
 	{
-		isTake[1] = true;
+		if (isTakeB[0]) {
+			isTakeB[1] = true;
+		}
+
+		else isTakeB[0] = true;
 	}
 	if (KeyState[DIK_W])
 	{
@@ -721,21 +796,29 @@ void pickGoodsDeviseControl() {
 	GetControl(0);
 	BottonCheck();
 
-	if (PadState[ButtonA] == KeyRelease)
+	if (PadState[ButtonA] == PadRelease)
 	{
 		isFirst = true;
 		g_scene = SCENE_RESULT;
 		gameScene = FLOAMOVE;
 	}
-	if (PadState[ButtonB] == KeyRelease)
+	if (PadState[ButtonB] == PadRelease)
 	{
-		isTake[1] = true;
+		if (isTakeB[0]) {
+			isTakeB[1] = true;
+		}
+
+		isTakeB[0] = true;
 	}
-	if (PadState[ButtonX] == KeyRelease)
+	if (PadState[ButtonX] == PadRelease)
 	{
-		isTake[0] = true;
+		if (isTakeA[0]) {
+			isTakeA[1] = true;
+		}
+
+		isTakeA[0] = true;
 	}
-	if (PadState[ButtonY] == KeyRelease)
+	if (PadState[ButtonY] == PadRelease)
 	{
 
 	}

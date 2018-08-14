@@ -10,8 +10,8 @@ const char* soundNum[SOUND_MAX];
 RECT testWord = { 50,200,1200,500 };
 void gameRoop();
 void soundLoad();
-int g_scene = SCENE_TEAMLOGO;
-//int g_scene = SCENE_MAIN;
+//int g_scene = SCENE_TEAMLOGO;
+int g_scene = SCENE_MAIN;
 void render(void);//‰¼
 void control(void);//‰¼
 void sound(void);//‰¼
