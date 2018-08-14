@@ -10,8 +10,8 @@ const char* soundNum[SOUND_MAX];
 RECT testWord = { 50,200,1200,500 };
 void gameRoop();
 void soundLoad();
-//int g_scene = SCENE_TEAMLOGO;
-int g_scene = SCENE_MAIN;
+int g_scene = SCENE_TEAMLOGO;
+//int g_scene = SCENE_MAIN;
 void render(void);//‰¼
 void control(void);//‰¼
 void sound(void);//‰¼
@@ -62,6 +62,7 @@ void gameRoop() {
 		ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
 		isFirst = false;
 		}
+		soundsManager.SetVolume("FOOD", 25);
 		SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
 		control();
 		render();
@@ -188,4 +189,5 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/thankyou.mp3", "BOW");
 	soundsManager.AddFile("Sound/correct answer.mp3", "SUCCESS");
 	soundsManager.AddFile("Sound/mistake.mp3", "MISS");
+	soundsManager.AddFile("Sound/explosion.mp3", "ATTACK");
 }

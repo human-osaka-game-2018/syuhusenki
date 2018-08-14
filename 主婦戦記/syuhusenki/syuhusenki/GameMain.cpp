@@ -23,19 +23,19 @@ enum FLOA {
 	CLOTH
 };
 
-//int gameScene = FLOAMOVE;
-int gameScene = PUSHENEMY;
+int gameScene = FLOAMOVE;
+//int gameScene = PUSHENEMY;
 //int gameScene = PICKGOODS;
 int seletFloa = FOOD;
 static bool isBlowOff = false;
 static bool isFirst = true;
 static int effectCount = 0;
 //static int fallCount = 0;
-static bool isTakeA[2] = {false,false};
-static bool isTakeB[2] = { false,false };
+static bool isTakeA[4] = { false,false,false,false };
+static bool isTakeB[4] = { false,false,false,false };
 
-static float goodsScale[4] = { 50,50,50,50 };
-
+static float goodsScaleA[4] = { 50,50,50,50 };
+static float goodsScaleB[4] = { 50,50,50,50 };
 RECT testText = { 100,200,900,500 };
 
 
@@ -64,13 +64,22 @@ CUSTOMVERTEX goodsA[4];
 CUSTOMVERTEX goodsB[4];
 CUSTOMVERTEX goodsA2[4];
 CUSTOMVERTEX goodsB2[4];
+CUSTOMVERTEX goodsA3[4];
+CUSTOMVERTEX goodsB3[4]; 
+CUSTOMVERTEX goodsA4[4];
+CUSTOMVERTEX goodsB4[4];
 
-
-CENTRAL_STATE goodsCentral[4]{
-	{ 500,500,goodsScale[0],goodsScale[0]},
-	{ 500,500,goodsScale[1],goodsScale[1]},
-	{ 500,500,goodsScale[2],goodsScale[2] },
-	{ 500,500,goodsScale[3],goodsScale[3] }
+CENTRAL_STATE goodsCentralA[4]{
+	{ 500,500,goodsScaleA[0],goodsScaleA[0]},
+	{ 500,500,goodsScaleA[1],goodsScaleA[1]},
+	{ 500,500,goodsScaleA[2],goodsScaleA[2] },
+	{ 500,500,goodsScaleA[3],goodsScaleA[3] }
+};
+CENTRAL_STATE goodsCentralB[4]{
+	{ 500,500,goodsScaleB[0],goodsScaleB[0] },
+	{ 500,500,goodsScaleB[1],goodsScaleB[1] },
+	{ 500,500,goodsScaleB[2],goodsScaleB[2] },
+	{ 500,500,goodsScaleB[3],goodsScaleB[3] }
 };
 
 
@@ -392,7 +401,7 @@ void blowOffControl()
 		checkedComand = comandCheck(comandPresentment, comandInput, comandCount);
 		if (1 == checkedComand)
 		{
-			SoundSuccess = soundsManager.Start("SUCCESS", false) && SoundSuccess;
+			SoundSuccess = soundsManager.Start("ATTACK", false) && SoundSuccess;
 			isBlowOff = true;
 			checkedComand = 2;
 			comandCount = 0;
@@ -663,60 +672,120 @@ void pickGoods() {
 }
 
 void pickGoodsControl() {
-	CreateSquareVertex(goodsA, goodsCentral[0]);
-	CreateSquareVertex(goodsB, goodsCentral[1]);
-	CreateSquareVertex(goodsA2, goodsCentral[2]);
-	CreateSquareVertex(goodsB2, goodsCentral[3]);
+	float deleatPosX = 650;
 
-	if (goodsCentral[0].x >= 650) {
-		goodsScale[0] -= 5;
-	}						
-	if (goodsCentral[1].x >= 650) {
-		goodsScale[1] -= 5;
+	CreateSquareVertex(goodsA, goodsCentralA[0]);
+	CreateSquareVertex(goodsB, goodsCentralB[0]);
+	CreateSquareVertex(goodsA2, goodsCentralA[1]);
+	CreateSquareVertex(goodsB2, goodsCentralB[1]);
+	CreateSquareVertex(goodsA3, goodsCentralA[2]);
+	CreateSquareVertex(goodsB3, goodsCentralB[2]); 
+	CreateSquareVertex(goodsA4, goodsCentralA[3]);
+	CreateSquareVertex(goodsB4, goodsCentralB[3]);
+
+	//画像消去
+	if (goodsCentralA[0].x >= deleatPosX) {
+		goodsScaleA[0] -= 5;  
+	}						  
+	if (goodsCentralB[0].x >= deleatPosX) {
+		goodsScaleB[0] -= 5;  
+	}						  
+	if (goodsCentralA[1].x >= deleatPosX) {
+		goodsScaleA[1] -= 5;  
+	}						  
+	if (goodsCentralB[1].x >= deleatPosX) {
+		goodsScaleB[1] -= 5;
 	}
-	if (goodsCentral[2].x >= 650) {
-		goodsScale[2] -= 5;
+	if (goodsCentralA[2].x >= deleatPosX) {
+		goodsScaleA[2] -= 5;
 	}
-	if (goodsCentral[3].x >= 650) {
-		goodsScale[3] -= 5;
+	if (goodsCentralB[2].x >= deleatPosX) {
+		goodsScaleB[2] -= 5;
+	}
+	if (goodsCentralA[3].x >= deleatPosX) {
+		goodsScaleA[3] -= 5;
+	}
+	if (goodsCentralB[3].x >= deleatPosX) {
+		goodsScaleB[3] -= 5;
 	}
 
+
+	//取得物の移動
 	if (isTakeA[0]) {
-		goodsCentral[0].x += 5;
-		goodsCentral[0].y += 2;
+		goodsCentralA[0].x += 5;
+		goodsCentralA[0].y += 2;
 	}
 	if (isTakeB[0]) {
-		goodsCentral[1].x += 5;
-		goodsCentral[1].y += 2;
+		goodsCentralB[0].x += 5;
+		goodsCentralB[0].y += 2;
 	}
 	if (isTakeA[1]) {
-		goodsCentral[2].x += 5;
-		goodsCentral[2].y += 2;
+		goodsCentralA[1].x += 5;
+		goodsCentralA[1].y += 2;
 	}
 	if (isTakeB[1]) {
-		goodsCentral[3].x += 5;
-		goodsCentral[3].y += 2;
+		goodsCentralB[1].x += 5;
+		goodsCentralB[1].y += 2;
+	}
+	if (isTakeA[2]) {
+		goodsCentralA[2].x += 5;
+		goodsCentralA[2].y += 2;
+	}				  
+	if (isTakeB[2]) { 
+		goodsCentralB[2].x += 5;
+		goodsCentralB[2].y += 2;
+	}
+	if (isTakeA[3]) {
+		goodsCentralA[3].x += 5;
+		goodsCentralA[3].y += 2;
+	}				  
+	if (isTakeB[3]) { 
+		goodsCentralB[3].x += 5;
+		goodsCentralB[3].y += 2;
 	}
 
-	if (!goodsScale[0]) {
-		goodsScale[0] = 50;
-		goodsCentral[0] = { 500,500,goodsScale[0],goodsScale[0] };
+
+
+	//取得物画像消去＆座標初期化
+	if (!goodsScaleA[0]) {
+		goodsScaleA[0] = 50;
+		goodsCentralA[0] = { 500,500,goodsScaleA[0],goodsScaleA[0] };
 		isTakeA[0] = false;
 	}
-	if (!goodsScale[1]) {
-		goodsScale[1] = 50;
-		goodsCentral[1] = { 500,500,goodsScale[1],goodsScale[1] };
+	if (!goodsScaleB[0]) {
+		goodsScaleB[0] = 50;
+		goodsCentralB[0] = { 500,500,goodsScaleB[0],goodsScaleB[0] };
 		isTakeB[0] = false;
 	}
-	if (!goodsScale[2]) {
-		goodsScale[2] = 50;
-		goodsCentral[2] = { 500,500,goodsScale[2],goodsScale[2] };
+	if (!goodsScaleA[1]) {
+		goodsScaleA[1] = 50;
+		goodsCentralA[1] = { 500,500,goodsScaleA[1],goodsScaleA[1] };
 		isTakeA[1] = false;
 	}
-	if (!goodsScale[3]) {
-		goodsScale[3] = 50;
-		goodsCentral[3] = { 500,500,goodsScale[3],goodsScale[3] };
+	if (!goodsScaleB[1]) {
+		goodsScaleB[1] = 50;
+		goodsCentralB[1] = { 500,500,goodsScaleB[1],goodsScaleB[1] };
 		isTakeB[1] = false;
+	}
+	if (!goodsScaleA[2]) {
+		goodsScaleA[2] = 50;
+		goodsCentralA[2] = { 500,500,goodsScaleA[2],goodsScaleA[2] };
+		isTakeA[2] = false;
+	}
+	if (!goodsScaleB[2]) {
+		goodsScaleB[2] = 50;
+		goodsCentralB[2] = { 500,500,goodsScaleB[2],goodsScaleB[2] };
+		isTakeB[2] = false;
+	}
+	if (!goodsScaleA[3]) {
+		goodsScaleA[3] = 50;
+		goodsCentralA[3] = { 500,500,goodsScaleA[3],goodsScaleA[3] };
+		isTakeA[3] = false;
+	}
+	if (!goodsScaleB[3]) {
+		goodsScaleB[3] = 50;
+		goodsCentralB[3] = { 500,500,goodsScaleB[3],goodsScaleB[3] };
+		isTakeB[3] = false;
 	}
 
 	pickGoodsDeviseControl();
@@ -731,24 +800,55 @@ void pickGoodsRender() {
 
 	EasyCreateSquareVertex(500, 300, 900, HEIGHT, YASUKO_TEX);
 
-	if (isTakeA[0]) {
+	if (isTakeA[0])
+	{
 		SetUpTexture(goodsA, BEEF_TEX);
-		if (isTakeA[1]) {
-			SetUpTexture(goodsA2, BEEF_TEX);
-		}
 	}
-	if (isTakeB[0]) {
-		SetUpTexture(goodsB, PORK_TEX);
-		if (isTakeB[1]) {
-			SetUpTexture(goodsB2, PORK_TEX);
-		}
+	if (isTakeA[1])
+	{
+		SetUpTexture(goodsA2, BEEF_TEX);
+	}
+	if (isTakeA[2])
+	{
+		SetUpTexture(goodsA3, BEEF_TEX);
+	}
+	if (isTakeA[3]) 
+	{
+		SetUpTexture(goodsA4, BEEF_TEX);
 	}
 
-	
+
+	if (isTakeB[0])
+	{
+		SetUpTexture(goodsB, PORK_TEX);
+	}
+	if (isTakeB[1])
+	{
+		SetUpTexture(goodsB2, PORK_TEX);
+	}
+	if (isTakeB[2])
+	{
+		SetUpTexture(goodsB3, PORK_TEX);
+	}
+	if (isTakeB[3]) 
+	{
+		SetUpTexture(goodsB4, PORK_TEX);
+	}
+
 
 	WriteWord("セール品入手", testText, DT_CENTER, RED, HOGE_FONT);
-
-
+#ifdef _DEBUG
+	char DebugTakeBoolA[10];
+	char DebugTakeBoolB[10];
+	for (int i = 0; i < 4; i++) {
+		sprintf_s(DebugTakeBoolA, 10, "%d ", isTakeA[i]);
+		RECT DEBUGTextA = { 100 + i * 50 ,500,900,600 };
+		WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
+		sprintf_s(DebugTakeBoolB, 10, "%d ", isTakeB[i]);
+		RECT DEBUGTextB = { 100 + i * 50 ,550,900,600 };
+		WriteWord(DebugTakeBoolB, DEBUGTextB, DT_LEFT, 0xff00ffff, DEBUG_FONT);
+	}
+#endif
 	EndSetTexture();
 }
 
@@ -771,18 +871,36 @@ void pickGoodsDeviseControl() {
 
 	if (KeyState[DIK_A] == KeyRelease)
 	{
-		if (isTakeA[0]) {
+		if (isTakeA[2])
+		{
+			isTakeA[3] = true;
+		}
+		if (isTakeA[1])
+		{
+			isTakeA[2] = true;
+		}
+		if (isTakeA[0])
+		{
 			isTakeA[1] = true;
 		}
-		else isTakeA[0] = true;
+
+		isTakeA[0] = true;
 	}
 	if (KeyState[DIK_D] == KeyRelease)
 	{
-		if (isTakeB[0]) {
+		if (isTakeB[2])
+		{
+			isTakeB[3] = true;
+		}
+		if (isTakeB[1])
+		{
+			isTakeB[2] = true;
+		}
+		if (isTakeB[0])
+		{
 			isTakeB[1] = true;
 		}
-
-		else isTakeB[0] = true;
+		isTakeB[0] = true;
 	}
 	if (KeyState[DIK_W])
 	{
@@ -804,18 +922,35 @@ void pickGoodsDeviseControl() {
 	}
 	if (PadState[ButtonB] == PadRelease)
 	{
-		if (isTakeB[0]) {
+		if (isTakeB[2])
+		{		  
+			isTakeB[3] = true;
+		}		  
+		if (isTakeB[1])
+		{		  
+			isTakeB[2] = true;
+		}		  
+		if (isTakeB[0])
+		{		  
 			isTakeB[1] = true;
 		}
-
 		isTakeB[0] = true;
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
-		if (isTakeA[0]) {
+		if (isTakeA[2]) 
+		{
+			isTakeA[3] = true;
+		}
+		if (isTakeA[1])
+		{
+			isTakeA[2] = true;
+		}
+		if (isTakeA[0])
+		{
 			isTakeA[1] = true;
 		}
-
+	
 		isTakeA[0] = true;
 	}
 	if (PadState[ButtonY] == PadRelease)
