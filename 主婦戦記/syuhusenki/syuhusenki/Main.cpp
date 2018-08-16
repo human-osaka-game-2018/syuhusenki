@@ -60,10 +60,10 @@ void gameRoop() {
 		ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
 		ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
 		ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
+		SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
 		isFirst = false;
 		}
 		soundsManager.SetVolume("FOOD", 25);
-		SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
 		control();
 		render();
 		break;
