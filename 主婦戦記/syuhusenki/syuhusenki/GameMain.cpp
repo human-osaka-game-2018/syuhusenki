@@ -31,11 +31,11 @@ static bool isBlowOff = false;
 static bool isFirst = true;
 static int effectCount = 0;
 //static int fallCount = 0;
-static bool isTakeA[4] = { false,false,false,false };
-static bool isTakeB[4] = { false,false,false,false };
+static bool isTakeA[8] = { false,false,false,false,false,false,false,false };
+static bool isTakeB[8] = { false,false,false,false,false,false,false,false };
 
-static float goodsScaleA[4] = { 50,50,50,50 };
-static float goodsScaleB[4] = { 50,50,50,50 };
+static float goodsScaleA[8] = { 60,60,60,60,60,60,60,60 };
+static float goodsScaleB[8] = { 60,60,60,60,60,60,60,60 };
 RECT testText = { 100,200,900,500 };
 static int goodsTakenNumA = 0;
 static int goodsTakenNumB = 0;
@@ -61,6 +61,10 @@ CENTRAL_STATE mobCentralBlowOff[5]{
 CUSTOMVERTEX effectExplosion[4];
 CENTRAL_STATE effectExplosionCentral = {1000,800,300,300};
 
+
+CUSTOMVERTEX playerHit[4];
+CENTRAL_STATE playerCentralHit = {200,350,300,250};
+
 CUSTOMVERTEX goodsA[4];
 CUSTOMVERTEX goodsB[4];
 CUSTOMVERTEX goodsA2[4];
@@ -69,18 +73,36 @@ CUSTOMVERTEX goodsA3[4];
 CUSTOMVERTEX goodsB3[4]; 
 CUSTOMVERTEX goodsA4[4];
 CUSTOMVERTEX goodsB4[4];
+CUSTOMVERTEX goodsA5[4];
+CUSTOMVERTEX goodsB5[4];
+CUSTOMVERTEX goodsA6[4];
+CUSTOMVERTEX goodsB6[4];
+CUSTOMVERTEX goodsA7[4];
+CUSTOMVERTEX goodsB7[4];
+CUSTOMVERTEX goodsA8[4];
+CUSTOMVERTEX goodsB8[4];
 
-CENTRAL_STATE goodsCentralA[4]{
-	{ 500,500,goodsScaleA[0],goodsScaleA[0]},
-	{ 500,500,goodsScaleA[1],goodsScaleA[1]},
-	{ 500,500,goodsScaleA[2],goodsScaleA[2] },
-	{ 500,500,goodsScaleA[3],goodsScaleA[3] }
+CENTRAL_STATE goodsCentralA[8]{
+	{ 600,550,goodsScaleA[0],goodsScaleA[0]},
+	{ 600,550,goodsScaleA[1],goodsScaleA[1]},
+	{ 600,550,goodsScaleA[2],goodsScaleA[2] },
+	{ 600,550,goodsScaleA[3],goodsScaleA[3] },
+	{ 600,550,goodsScaleA[4],goodsScaleA[4] },
+	{ 600,550,goodsScaleA[5],goodsScaleA[5] },
+	{ 600,550,goodsScaleA[6],goodsScaleA[6] },
+	{ 600,550,goodsScaleA[7],goodsScaleA[7] }
 };
-CENTRAL_STATE goodsCentralB[4]{
+
+CENTRAL_STATE goodsCentralB[8]{
 	{ 500,500,goodsScaleB[0],goodsScaleB[0] },
 	{ 500,500,goodsScaleB[1],goodsScaleB[1] },
 	{ 500,500,goodsScaleB[2],goodsScaleB[2] },
-	{ 500,500,goodsScaleB[3],goodsScaleB[3] }
+	{ 500,500,goodsScaleB[3],goodsScaleB[3] },
+	{ 600,550,goodsScaleB[4],goodsScaleB[4] },
+	{ 600,550,goodsScaleB[5],goodsScaleB[5] },
+	{ 600,550,goodsScaleB[6],goodsScaleB[6] },
+	{ 600,550,goodsScaleB[7],goodsScaleB[7] }
+
 };
 
 
@@ -120,12 +142,13 @@ void gameMain() {
 			ReadInTexture("Texture/testFrame.png", FRAME_TEX);
 			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
 			ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
-			ReadInTexture("Texture/supermarket.jpg", BG_BLOWOFF_TEX);
+			//ReadInTexture("Texture/", BG_BLOWOFF_TEX);
 			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
-			ReadInTexture("Texture/wagonsele.jpg", BG_PICKGGOODS_TEX);
+			//ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
 			ReadInTexture("Texture/beef.png", BEEF_TEX);
 			ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
 			ReadInTexture("Texture/pork.png", PORK_TEX);
+			ReadInTexture("Texture/cardboard.png", BOX_TEX);
 			canRead = false;
 		}
 		mobCentralBlowOff[0] = { 850,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
@@ -381,6 +404,7 @@ void blowOff() {
 }
 void blowOffControl() 
 {
+	
 	CreateSquareVertex(effectExplosion, effectExplosionCentral);
 
 	if (comandCount < 5) 
@@ -428,15 +452,23 @@ void blowOffControl()
 		}
 	}
 }
-void blowOffRender() {
+void blowOffRender() 
+{
+
+	CreateSquareVertex(playerHit, playerCentralHit);
+
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
+
+	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
+	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
+
 	for (int i = 0; i < 5; i++) {
 		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
 		if(isBlowOff){
 		effectCount++;
 
-			static float Rad = 0;
+			static float Rad = 0;//5:4 400:360
 			Rad += 0.9;
 
 			if (Rad < 0)
@@ -454,7 +486,7 @@ void blowOffRender() {
 	if ((effectCount > 20) && isBlowOff) {
 		SetUpTexture(effectExplosion, EXPLOSION_TEX);
 	}
-	//SetUpTexture(playerFloa, YASUKO_TEX);
+	SetUpTexture(playerHit, YASUKO_TEX);
 
 	WriteWord("モブ主婦排除", testText, DT_CENTER, RED, HOGE_FONT);
 	char debugComandInput[10];
@@ -551,42 +583,42 @@ void blowOffDeviseControl(int* i,int comand[])
 	{
 		comand[*i] = ButtonA;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	if (KeyState[DIK_B] == KeyRelease)
 	{
 		comand[*i] = ButtonB;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	if (KeyState[DIK_X] == KeyRelease)
 	{
 		comand[*i] = ButtonX;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	if (KeyState[DIK_Y] == KeyRelease)
 	{
 		comand[*i] = ButtonY;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	if (KeyState[DIK_R] == KeyRelease)
 	{
 		comand[*i] = ButtonRB;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	if (KeyState[DIK_L] == KeyRelease)
 	{
 		comand[*i] = ButtonLB;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	//XInputデバイス操作
@@ -601,41 +633,41 @@ void blowOffDeviseControl(int* i,int comand[])
 	{
 		comand[*i] = ButtonA;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 	}
 	if (PadState[ButtonB] == KeyRelease)
 	{
 		comand[*i] = ButtonB;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	if (PadState[ButtonX] == KeyRelease)
 	{
 		comand[*i] = ButtonX;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	if (PadState[ButtonY] == KeyRelease)
 	{
 		comand[*i] = ButtonY;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	if (PadState[ButtonRB] == KeyRelease)
 	{
 		comand[*i] = ButtonRB;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 	if (PadState[ButtonLB] == KeyRelease)
 	{
 		comand[*i] = ButtonLB;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN", false) && SoundSuccess;
+		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
 	}
 
@@ -676,7 +708,7 @@ void pickGoods() {
 }
 
 void pickGoodsControl() {
-	float deleatPosX = 650;
+	float deleatPosX = 250;
 
 	CreateSquareVertex(goodsA, goodsCentralA[0]);
 	CreateSquareVertex(goodsB, goodsCentralB[0]);
@@ -686,38 +718,65 @@ void pickGoodsControl() {
 	CreateSquareVertex(goodsB3, goodsCentralB[2]); 
 	CreateSquareVertex(goodsA4, goodsCentralA[3]);
 	CreateSquareVertex(goodsB4, goodsCentralB[3]);
+	CreateSquareVertex(goodsA5, goodsCentralA[4]);
+	CreateSquareVertex(goodsB5, goodsCentralB[4]);
+	CreateSquareVertex(goodsA6, goodsCentralA[5]);
+	CreateSquareVertex(goodsB6, goodsCentralB[5]);
+	CreateSquareVertex(goodsA7, goodsCentralA[6]);
+	CreateSquareVertex(goodsB7, goodsCentralB[6]);
+	CreateSquareVertex(goodsA8, goodsCentralA[7]);
+	CreateSquareVertex(goodsB8, goodsCentralB[7]);
 
 	goodsMoving(goodsA, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 0);
 	goodsMoving(goodsA2, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 1);
 	goodsMoving(goodsA3, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 2);
 	goodsMoving(goodsA4, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 3);
+	goodsMoving(goodsA5, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 4);
+	goodsMoving(goodsA6, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 5);
+	goodsMoving(goodsA7, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 6);
+	goodsMoving(goodsA8, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 7);
+
 	goodsMoving(goodsB, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 0);
 	goodsMoving(goodsB2, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 1);
 	goodsMoving(goodsB3, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 2);
 	goodsMoving(goodsB4, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 3);
+	goodsMoving(goodsB5, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 4);
+	goodsMoving(goodsB6, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 5);
+	goodsMoving(goodsB7, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 6);
+	goodsMoving(goodsB8, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 7);
 
 	pickGoodsDeviseControl();
 
 }
 
 void pickGoodsRender() {
+	CreateSquareVertex(playerHit, playerCentralHit);
 
 	BeginSetTexture();
 
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_PICKGGOODS_TEX);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
+	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
+	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
 
-	EasyCreateSquareVertex(500, 300, 900, HEIGHT, YASUKO_TEX);
+	SetUpTexture(playerHit, YASUKO_TEX);
 
 	goodsRender(goodsA, isTakeA, 0, BEEF_TEX);
 	goodsRender(goodsA2, isTakeA, 1, BEEF_TEX);
 	goodsRender(goodsA3, isTakeA, 2, BEEF_TEX);
 	goodsRender(goodsA4, isTakeA, 3, BEEF_TEX);
+	goodsRender(goodsA5, isTakeA, 4, BEEF_TEX);
+	goodsRender(goodsA6, isTakeA, 5, BEEF_TEX);
+	goodsRender(goodsA7, isTakeA, 6, BEEF_TEX);
+	goodsRender(goodsA8, isTakeA, 7, BEEF_TEX);
 
 	goodsRender(goodsB, isTakeB, 0, PORK_TEX);
 	goodsRender(goodsB2, isTakeB, 1, PORK_TEX);
 	goodsRender(goodsB3, isTakeB, 2, PORK_TEX);
 	goodsRender(goodsB4, isTakeB, 3, PORK_TEX);
-
+	goodsRender(goodsB5, isTakeB, 4, PORK_TEX);
+	goodsRender(goodsB6, isTakeB, 5, PORK_TEX);
+	goodsRender(goodsB7, isTakeB, 6, PORK_TEX);
+	goodsRender(goodsB8, isTakeB, 7, PORK_TEX);
 
 
 	WriteWord("セール品入手", testText, DT_CENTER, RED, HOGE_FONT);
@@ -734,7 +793,7 @@ void pickGoodsRender() {
 	RECT DEBUGGoodsB = { 100 ,250,900,600 };
 	WriteWord(goodsNumB, DEBUGGoodsB, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 8; i++) {
 		sprintf_s(DebugTakeBoolA, 10, "%d ", isTakeA[i]);
 		RECT DEBUGTextA = { 100 + i * 50 ,500,900,600 };
 		WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
@@ -766,12 +825,14 @@ void pickGoodsDeviseControl() {
 	if (KeyState[DIK_A] == KeyRelease)
 	{
 		goodsTakenNumA++;
-		takeingGoods(isTakeA, 4);
+		takeingGoods(isTakeA, 8);
+		SoundSuccess = soundsManager.Start("PICK1", false) && SoundSuccess;
 	}
 	if (KeyState[DIK_D] == KeyRelease)
 	{
 		goodsTakenNumB++;
-		takeingGoods(isTakeB, 4);
+		takeingGoods(isTakeB, 8);
+		SoundSuccess = soundsManager.Start("PICK1", false) && SoundSuccess;
 	}
 	if (KeyState[DIK_W])
 	{
@@ -794,12 +855,14 @@ void pickGoodsDeviseControl() {
 	if (PadState[ButtonB] == PadRelease)
 	{
 		goodsTakenNumB++;
-		takeingGoods(isTakeB, 4);
+		takeingGoods(isTakeB, 8);
+		SoundSuccess = soundsManager.Start("PICK1", false) && SoundSuccess;
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
 		goodsTakenNumA++;
-		takeingGoods(isTakeA, 4);
+		takeingGoods(isTakeA, 8);
+		SoundSuccess = soundsManager.Start("PICK1", false) && SoundSuccess;
 	}
 	if (PadState[ButtonY] == PadRelease)
 	{
@@ -811,6 +874,11 @@ void pickGoodsDeviseControl() {
 void takeingGoods(bool take[],int size) {
 	switch (size)
 	{
+	case 8:
+		if (take[6])
+		{
+			take[7] = true;
+		}
 	case 7:
 		if (take[5])
 		{
@@ -844,21 +912,18 @@ void takeingGoods(bool take[],int size) {
 	case 1:
 		take[0] = true;
 	}
+	
 }
 
 void goodsMoving(CUSTOMVERTEX vertex[],float goodsScale[],bool take[],CENTRAL_STATE goodsCentral[], float deleatPosX, int arreyNum) {
-	
-	if (goodsCentral[arreyNum].x >= deleatPosX) {
-		goodsScale[arreyNum] -= 5;
-	}
 
 	if (take[arreyNum]) {
-		goodsCentral[arreyNum].x += 5;
-		goodsCentral[arreyNum].y += 2;
+		goodsCentral[arreyNum].x -= 4;
+		goodsCentral[arreyNum].y -= 1;
 	}
-	if (!goodsScale[arreyNum]) {
-		goodsScale[arreyNum] = 50;
-		goodsCentral[arreyNum] = { 500,500,goodsScale[arreyNum],goodsScale[arreyNum] };
+	if (goodsCentral[arreyNum].x <= deleatPosX) {
+		goodsScale[arreyNum] = 60;
+		goodsCentral[arreyNum] = { 600,550,goodsScale[arreyNum],goodsScale[arreyNum] };
 		take[arreyNum] = false;
 	}
 }

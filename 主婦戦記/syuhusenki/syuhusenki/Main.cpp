@@ -42,12 +42,10 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	soundLoad();
 	
 
-	
-
-
 	FlameRoop(gameRoop);
 
 }
+
 unsigned int gameRoop() {
 	static bool isFirst = true;
 	sound();
@@ -60,7 +58,9 @@ unsigned int gameRoop() {
 		ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
 		ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
 		ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
+		
 		SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
+
 		isFirst = false;
 		}
 		soundsManager.SetVolume("FOOD", 25);
@@ -84,7 +84,8 @@ unsigned int gameRoop() {
 		break;
 	}
 	CheckKeyState(DIK_ESCAPE);
-	if (KeyState[DIK_ESCAPE] == KeyRelease) {
+	if (KeyState[DIK_ESCAPE] == KeyRelease) 
+	{
 		return WM_QUIT;
 	}
 	return WM_NULL;
@@ -189,9 +190,12 @@ void gamePad() {
 
 void soundLoad() {
 	soundsManager.AddFile("Sound/foodbgm.mp3", "FOOD");
-	soundsManager.AddFile("Sound/bottun.mp3", "BOTTUN");
+	soundsManager.AddFile("Sound/bottun.mp3", "BOTTUN1");
+	soundsManager.AddFile("Sound/bottun.mp3", "BOTTUN2");
 	soundsManager.AddFile("Sound/thankyou.mp3", "BOW");
 	soundsManager.AddFile("Sound/correct answer.mp3", "SUCCESS");
 	soundsManager.AddFile("Sound/mistake.mp3", "MISS");
 	soundsManager.AddFile("Sound/explosion.mp3", "ATTACK");
+	soundsManager.AddFile("Sound/shopping.mp3", "PICK1");
+	soundsManager.AddFile("Sound/shopping.mp3", "PICK2");
 }
