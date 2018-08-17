@@ -25,6 +25,7 @@ enum SOUND {
 	SE2,
 	SOUND_MAX
 };
+
 enum SCENE {
 	SCENE_TEAMLOGO,
 	SCENE_TITLE,
@@ -32,6 +33,7 @@ enum SCENE {
 	SCENE_MAIN,
 	SCENE_RESULT,
 };
+
 extern SoundLib::SoundsManager soundsManager;
 extern bool SoundSuccess;
 extern const char* soundNum[SOUND_MAX];

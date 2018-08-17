@@ -216,7 +216,7 @@ int InitWindowFullscreenEx(LPCSTR WndName, HWND* hWnd, int WIDTH, int HEIGHT, HI
 * @param gameroop(void) 自分の作成したゲーム処理関数を入れること
 * @return プログラム終了時に(int)msg.wParam
 */
-int FlameRoop(void gameroop(void));
+int FlameRoop(unsigned int gameroop(void));
 
 //描画
 

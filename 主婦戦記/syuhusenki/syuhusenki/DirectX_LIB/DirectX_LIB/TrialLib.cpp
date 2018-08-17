@@ -29,11 +29,11 @@ void FreeDx()
 	SAFE_RELEASE(g_pDirect3D);
 	SAFE_RELEASE(g_pDinput);
 
-	for (int i = 0; i <= TEXMAX; i++)
+	for (int i = 0; i < 128; i++)
 	{
 		SAFE_RELEASE(g_pTexture[i]);
 	}
-	for (int i = 0; i < FONTMAX; i++)
+	for (int i = 0; i < 128; i++)
 	{
 		SAFE_RELEASE(g_pFont[i]);
 	}
@@ -433,7 +433,7 @@ int InitWindowFullscreenEx(LPCSTR WndName, HWND* hWnd, int WIDTH, int HEIGHT, HI
 	}
 }
 
-int FlameRoop(void gameroop(void)) {
+int FlameRoop(unsigned int gameroop(void)) {
 	MSG msg;
 
 	DWORD SyncOld = timeGetTime();	//	ƒVƒXƒeƒ€ŽžŠÔ‚ðŽæ“¾
@@ -453,7 +453,7 @@ int FlameRoop(void gameroop(void)) {
 			SyncNow = timeGetTime();
 			if (SyncNow - SyncOld >= 1000 / 60)
 			{
-				gameroop();
+				msg.message = gameroop();
 				SyncOld = SyncNow;
 			}
 		}

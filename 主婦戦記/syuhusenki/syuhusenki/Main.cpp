@@ -8,10 +8,10 @@ bool SoundSuccess;
 const char* soundNum[SOUND_MAX];
 
 RECT testWord = { 50,200,1200,500 };
-void gameRoop();
+unsigned int gameRoop();
 void soundLoad();
-int g_scene = SCENE_TEAMLOGO;
-//int g_scene = SCENE_MAIN;
+//int g_scene = SCENE_TEAMLOGO;
+int g_scene = SCENE_MAIN;
 void render(void);//‰¼
 void control(void);//‰¼
 void sound(void);//‰¼
@@ -48,7 +48,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	FlameRoop(gameRoop);
 
 }
-void gameRoop() {
+unsigned int gameRoop() {
 	static bool isFirst = true;
 	sound();
 	switch (g_scene) {
@@ -83,7 +83,11 @@ void gameRoop() {
 		render();
 		break;
 	}
-
+	CheckKeyState(DIK_ESCAPE);
+	if (KeyState[DIK_ESCAPE] == KeyRelease) {
+		return WM_QUIT;
+	}
+	return WM_NULL;
 }
 
 void control(void) {
