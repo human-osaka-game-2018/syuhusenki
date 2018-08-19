@@ -190,8 +190,9 @@ void gamePad() {
 
 void soundLoad() {
 	soundsManager.AddFile("Sound/foodbgm.mp3", "FOOD");
-	soundsManager.AddFile("Sound/bottun.mp3", "BOTTUN1");
-	soundsManager.AddFile("Sound/bottun.mp3", "BOTTUN2");
+	soundsManager.AddFile("Sound/bottun.mp3", "BUTTON1");
+	soundsManager.AddFile("Sound/bottun.mp3", "BUTTON2");
+	soundsManager.AddFile("Sound/bottun.mp3", "BUTTON3");
 	soundsManager.AddFile("Sound/thankyou.mp3", "BOW");
 	soundsManager.AddFile("Sound/correct answer.mp3", "SUCCESS");
 	soundsManager.AddFile("Sound/mistake.mp3", "MISS");

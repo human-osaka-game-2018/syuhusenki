@@ -23,9 +23,15 @@ enum FLOA {
 	CLOTH
 };
 
+struct SoundEffect {
+	const char SE1[20];
+	const char SE2[20];
+	const char SE3[20];
+};
+
 //int gameScene = FLOAMOVE;
-//int gameScene = PUSHENEMY;
-int gameScene = PICKGOODS;
+int gameScene = PUSHENEMY;
+//int gameScene = PICKGOODS;
 int selectFloa = FOOD;
 static bool isBlowOff = false;
 static bool isFirst = true;
@@ -33,7 +39,8 @@ static int effectCount = 0;
 //static int fallCount = 0;
 static bool isTakeA[8] = { false,false,false,false,false,false,false,false };
 static bool isTakeB[8] = { false,false,false,false,false,false,false,false };
-
+SoundEffect Button{ "BUTTON1","BUTTON2","BUTTON3" };
+SoundEffect Pick{ "PICK1", "PICK2" };
 static float goodsScaleA[8] = { 60,60,60,60,60,60,60,60 };
 static float goodsScaleB[8] = { 60,60,60,60,60,60,60,60 };
 RECT testText = { 100,200,900,500 };
@@ -124,6 +131,7 @@ void madamBlowOff();
 int comandCheck(int comand[], int inputComand[], int count);
 void comandMake();
 char comandButton(int comand);
+void buttonSE(SoundEffect Button, int SoundNumber);
 
 void pickGoods();
 void pickGoodsControl();
@@ -563,6 +571,8 @@ char comandButton(int comand)
 
 void blowOffDeviseControl(int* i,int comand[])
 {
+	static int buttonKeyID = 0;
+	static int prevbuttonKeyID = 1;
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
@@ -583,43 +593,38 @@ void blowOffDeviseControl(int* i,int comand[])
 	{
 		comand[*i] = ButtonA;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
 
+		buttonSE(Button, 3);
 	}
 	if (KeyState[DIK_B] == KeyRelease)
 	{
 		comand[*i] = ButtonB;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 	if (KeyState[DIK_X] == KeyRelease)
 	{
 		comand[*i] = ButtonX;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 	if (KeyState[DIK_Y] == KeyRelease)
 	{
 		comand[*i] = ButtonY;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 	if (KeyState[DIK_R] == KeyRelease)
 	{
 		comand[*i] = ButtonRB;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 	if (KeyState[DIK_L] == KeyRelease)
 	{
 		comand[*i] = ButtonLB;
 		*i += 1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 	//XInputデバイス操作
 	GetControl(0);
@@ -633,46 +638,71 @@ void blowOffDeviseControl(int* i,int comand[])
 	{
 		comand[*i] = ButtonA;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
+		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonB] == KeyRelease)
 	{
 		comand[*i] = ButtonB;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonX] == KeyRelease)
 	{
 		comand[*i] = ButtonX;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonY] == KeyRelease)
 	{
 		comand[*i] = ButtonY;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonRB] == KeyRelease)
 	{
 		comand[*i] = ButtonRB;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonLB] == KeyRelease)
 	{
 		comand[*i] = ButtonLB;
 		*i+=1;
-		SoundSuccess = soundsManager.Start("BOTTUN1", false) && SoundSuccess;
-
+		buttonSE(Button, 3);
 	}
 
 }
 
+void buttonSE(SoundEffect Button,int SoundNumber) {
+	static int buttonKeyID = 0;
+	static int prevbuttonKeyID = 1;
+	if (buttonKeyID >= SoundNumber) {
+		buttonKeyID = 0;
+	}
+	switch (buttonKeyID) {
+	case 2:
+		if (buttonKeyID == 2 && buttonKeyID != prevbuttonKeyID) {
+			SoundSuccess = soundsManager.Start(Button.SE3, false) && SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 0;
+			break;
+		}
+	case 1:
+		if (buttonKeyID == 1 && buttonKeyID != prevbuttonKeyID) {
+			SoundSuccess = soundsManager.Start(Button.SE2, false) && SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 2;
+			break;
+		}
+	case 0:
+		if (buttonKeyID == 0 && buttonKeyID != prevbuttonKeyID) {
+			SoundSuccess = soundsManager.Start(Button.SE1, false) && SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 1;
+			break;
+		}
+	}
+}
 void madamBlowOff() {
 	
 
