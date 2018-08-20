@@ -733,8 +733,14 @@ void madamBlowOff() {
 //è§ïiéÊìæèÍñ 
 
 void pickGoods() {
-	pickGoodsControl();
-	pickGoodsRender();
+	switch (g_selectFloa) {
+	case FOOD:
+		pickGoodsControl();
+		pickGoodsRender();
+		break;
+	case CLOTH:
+		break;
+	}
 }
 
 void pickGoodsControl() {
@@ -963,4 +969,9 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum,int texNum) {
 	{
 		SetUpTexture(vertex, texNum);
 	}
+}
+
+void clothRush() {
+
+
 }

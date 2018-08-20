@@ -198,4 +198,6 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/explosion.mp3", "ATTACK");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK1");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK2");
+	soundsManager.AddFile("Sound/selectBGM.mp3", "SELECT");
+	soundsManager.AddFile("Sound/cursor.mp3", "CURSOR");
 }
