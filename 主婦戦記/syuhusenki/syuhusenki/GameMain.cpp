@@ -29,23 +29,23 @@ struct SoundEffect {
 	const char SE3[20];
 };
 
-//int gameScene = FLOAMOVE;
-int gameScene = PUSHENEMY;
-//int gameScene = PICKGOODS;
-int selectFloa = FOOD;
-static bool isBlowOff = false;
-static bool isFirst = true;
-static int effectCount = 0;
+//int g_gameScene = FLOAMOVE;
+int g_gameScene = PUSHENEMY;
+//int g_gameScene = PICKGOODS;
+int g_selectFloa = FOOD;
+static bool g_isBlowOff = false;
+static bool g_isFirst = true;
+static int g_effectCount = 0;
 //static int fallCount = 0;
-static bool isTakeA[8] = { false,false,false,false,false,false,false,false };
-static bool isTakeB[8] = { false,false,false,false,false,false,false,false };
+static bool g_isTakeA[8] = { false,false,false,false,false,false,false,false };
+static bool g_isTakeB[8] = { false,false,false,false,false,false,false,false };
 SoundEffect Button{ "BUTTON1","BUTTON2","BUTTON3" };
 SoundEffect Pick{ "PICK1", "PICK2" };
-static float goodsScaleA[8] = { 60,60,60,60,60,60,60,60 };
-static float goodsScaleB[8] = { 60,60,60,60,60,60,60,60 };
+static float g_goodsScaleA[8] = { 60,60,60,60,60,60,60,60 };
+static float g_goodsScaleB[8] = { 60,60,60,60,60,60,60,60 };
 RECT testText = { 100,200,900,500 };
-static int goodsTakenNumA = 0;
-static int goodsTakenNumB = 0;
+static int g_goodsTakenNumA = 0;
+static int g_goodsTakenNumB = 0;
 
 //プレイヤーの画像頂点
 CUSTOMVERTEX playerFloa[4];
@@ -90,25 +90,25 @@ CUSTOMVERTEX goodsA8[4];
 CUSTOMVERTEX goodsB8[4];
 
 CENTRAL_STATE goodsCentralA[8]{
-	{ 600,550,goodsScaleA[0],goodsScaleA[0]},
-	{ 600,550,goodsScaleA[1],goodsScaleA[1]},
-	{ 600,550,goodsScaleA[2],goodsScaleA[2] },
-	{ 600,550,goodsScaleA[3],goodsScaleA[3] },
-	{ 600,550,goodsScaleA[4],goodsScaleA[4] },
-	{ 600,550,goodsScaleA[5],goodsScaleA[5] },
-	{ 600,550,goodsScaleA[6],goodsScaleA[6] },
-	{ 600,550,goodsScaleA[7],goodsScaleA[7] }
+	{ 600,550,g_goodsScaleA[0],g_goodsScaleA[0]},
+	{ 600,550,g_goodsScaleA[1],g_goodsScaleA[1]},
+	{ 600,550,g_goodsScaleA[2],g_goodsScaleA[2] },
+	{ 600,550,g_goodsScaleA[3],g_goodsScaleA[3] },
+	{ 600,550,g_goodsScaleA[4],g_goodsScaleA[4] },
+	{ 600,550,g_goodsScaleA[5],g_goodsScaleA[5] },
+	{ 600,550,g_goodsScaleA[6],g_goodsScaleA[6] },
+	{ 600,550,g_goodsScaleA[7],g_goodsScaleA[7] }
 };
 
 CENTRAL_STATE goodsCentralB[8]{
-	{ 500,500,goodsScaleB[0],goodsScaleB[0] },
-	{ 500,500,goodsScaleB[1],goodsScaleB[1] },
-	{ 500,500,goodsScaleB[2],goodsScaleB[2] },
-	{ 500,500,goodsScaleB[3],goodsScaleB[3] },
-	{ 600,550,goodsScaleB[4],goodsScaleB[4] },
-	{ 600,550,goodsScaleB[5],goodsScaleB[5] },
-	{ 600,550,goodsScaleB[6],goodsScaleB[6] },
-	{ 600,550,goodsScaleB[7],goodsScaleB[7] }
+	{ 500,500,g_goodsScaleB[0],g_goodsScaleB[0] },
+	{ 500,500,g_goodsScaleB[1],g_goodsScaleB[1] },
+	{ 500,500,g_goodsScaleB[2],g_goodsScaleB[2] },
+	{ 500,500,g_goodsScaleB[3],g_goodsScaleB[3] },
+	{ 600,550,g_goodsScaleB[4],g_goodsScaleB[4] },
+	{ 600,550,g_goodsScaleB[5],g_goodsScaleB[5] },
+	{ 600,550,g_goodsScaleB[6],g_goodsScaleB[6] },
+	{ 600,550,g_goodsScaleB[7],g_goodsScaleB[7] }
 
 };
 
@@ -144,7 +144,7 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum, int texNum);
 
 void gameMain() {
 	srand((unsigned int)time(NULL));
-	if (isFirst) {
+	if (g_isFirst) {
 		static bool canRead = true;
 		if (canRead) {
 			ReadInTexture("Texture/testFrame.png", FRAME_TEX);
@@ -167,10 +167,10 @@ void gameMain() {
 
 		effectExplosionCentral = { 900,750,300,300 };
 
-		isBlowOff = false;
-		isFirst = false;
+		g_isBlowOff = false;
+		g_isFirst = false;
 	}
-	switch (gameScene) {
+	switch (g_gameScene) {
 	case FLOAMOVE:
 		floaMove();
 		break;
@@ -179,7 +179,7 @@ void gameMain() {
 		break;
 	case PICKGOODS:
 		pickGoods();
-		effectCount = 0;
+		g_effectCount = 0;
 		break;
 	
 	}
@@ -192,32 +192,32 @@ void gameControl() {
 	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
 
-		switch (gameScene) {
+		switch (g_gameScene) {
 		//case FLOAMOVE:
 		//	gameScene = PUSHENEMY;
 		//	break;
 		case PUSHENEMY:
-			gameScene = PICKGOODS;
+			g_gameScene = PICKGOODS;
 			break;
 		case PICKGOODS:
 			g_scene = SCENE_RESULT;
-			gameScene = FLOAMOVE;
+			g_gameScene = FLOAMOVE;
 			break;
 		}
 	}
 	if (PadState[ButtonA] == KeyRelease)
 	{
 
-		switch (gameScene) {
+		switch (g_gameScene) {
 		case FLOAMOVE:
-			gameScene = PUSHENEMY;
+			g_gameScene = PUSHENEMY;
 			break;
 		case PUSHENEMY:
-			gameScene = PICKGOODS;
+			g_gameScene = PICKGOODS;
 			break;
 		case PICKGOODS:
 			g_scene = SCENE_RESULT;
-			gameScene = FLOAMOVE;
+			g_gameScene = FLOAMOVE;
 			break;
 		}
 	}
@@ -231,7 +231,7 @@ void gameRender()
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
 
 		WriteWord("メインゲーム", testWord, DT_CENTER, RED, HOGE_FONT);
-	switch (gameScene) {
+	switch (g_gameScene) {
 	//case FLOAMOVE:
 	//	WriteWord("フロア移動", testText, DT_CENTER, RED, FONT);
 	//	break;
@@ -267,14 +267,14 @@ void floaMoveControl() {
 	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
 		comandMake();
-			gameScene = PUSHENEMY;
+			g_gameScene = PUSHENEMY;
 	}
 
 	GetControl(0);
 	if (PadState[ButtonA] == KeyRelease)
 	{
 		comandMake();
-			gameScene = PUSHENEMY;
+			g_gameScene = PUSHENEMY;
 	}
 	mobMoving(&mobCentralFloa);
 	MoveInToErea(&playerCentralFloa, 10, 60, 1000, 680);
@@ -285,7 +285,7 @@ void floaMoveRender() {
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FRAME_TEX);
-	switch (selectFloa) {
+	switch (g_selectFloa) {
 	case FOOD:
 		EasyCreateSquareVertex(10, 15, 1000, 680, FOOD_STAGE_TEX);
 		break;
@@ -421,13 +421,13 @@ void blowOffControl()
 		checkedComand = comandCheck(comandPresentment, comandInput, comandCount);
 		if (1 == checkedComand)
 		{
-			SoundSuccess = soundsManager.Start("SUCCESS", false) && SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("SUCCESS", false) && g_SoundSuccess;
 			checkedComand = 2;
 		}
 		if (!checkedComand)
 		{
 			checkedComand = 2;
-			SoundSuccess = soundsManager.Start("MISS", false) && SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
 			if (comandButton) {
 				comandCount -= 1;
 			}
@@ -438,25 +438,25 @@ void blowOffControl()
 		checkedComand = comandCheck(comandPresentment, comandInput, comandCount);
 		if (1 == checkedComand)
 		{
-			SoundSuccess = soundsManager.Start("ATTACK", false) && SoundSuccess;
-			isBlowOff = true;
+			g_SoundSuccess = soundsManager.Start("ATTACK", false) && g_SoundSuccess;
+			g_isBlowOff = true;
 			checkedComand = 2;
 			comandCount = 0;
 		}
 		if (!checkedComand)
 		{
-			SoundSuccess = soundsManager.Start("MISS", false) && SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
 			checkedComand = 2;
 			comandCount = 0;
 		}
 	}
-	if (isBlowOff) {
+	if (g_isBlowOff) {
 		madamBlowOff();
 		effectExplosionCentral.scaleX++;
 		effectExplosionCentral.scaleY++;
-		if (effectCount >= 600) {
-			gameScene = PICKGOODS;
-			isBlowOff = false;
+		if (g_effectCount >= 600) {
+			g_gameScene = PICKGOODS;
+			g_isBlowOff = false;
 		}
 	}
 }
@@ -473,8 +473,8 @@ void blowOffRender()
 
 	for (int i = 0; i < 5; i++) {
 		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
-		if(isBlowOff){
-		effectCount++;
+		if(g_isBlowOff){
+		g_effectCount++;
 
 			static float Rad = 0;//5:4 400:360
 			Rad += 0.9;
@@ -491,7 +491,7 @@ void blowOffRender()
 		}
 		SetUpTexture(mobFloa, MOB_TEX);
 	}
-	if ((effectCount > 20) && isBlowOff) {
+	if ((g_effectCount > 20) && g_isBlowOff) {
 		SetUpTexture(effectExplosion, EXPLOSION_TEX);
 	}
 	SetUpTexture(playerHit, YASUKO_TEX);
@@ -585,7 +585,7 @@ void blowOffDeviseControl(int* i,int comand[])
 
 	if (KeyState[DIK_RETURN]||KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
-		gameScene = PICKGOODS;
+		g_gameScene = PICKGOODS;
 
 	}
 
@@ -631,7 +631,7 @@ void blowOffDeviseControl(int* i,int comand[])
 	BottonCheck();
 	if (PadState[ButtonStart] == KeyRelease)
 	{
-		gameScene = PICKGOODS;
+		g_gameScene = PICKGOODS;
 	}
 
 	if (PadState[ButtonA] == KeyRelease)
@@ -682,21 +682,21 @@ void buttonSE(SoundEffect Button,int SoundNumber) {
 	switch (buttonKeyID) {
 	case 2:
 		if (buttonKeyID == 2 && buttonKeyID != prevbuttonKeyID) {
-			SoundSuccess = soundsManager.Start(Button.SE3, false) && SoundSuccess;
+			g_SoundSuccess = soundsManager.Start(Button.SE3, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 0;
 			break;
 		}
 	case 1:
 		if (buttonKeyID == 1 && buttonKeyID != prevbuttonKeyID) {
-			SoundSuccess = soundsManager.Start(Button.SE2, false) && SoundSuccess;
+			g_SoundSuccess = soundsManager.Start(Button.SE2, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 2;
 			break;
 		}
 	case 0:
 		if (buttonKeyID == 0 && buttonKeyID != prevbuttonKeyID) {
-			SoundSuccess = soundsManager.Start(Button.SE1, false) && SoundSuccess;
+			g_SoundSuccess = soundsManager.Start(Button.SE1, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 1;
 			break;
@@ -721,7 +721,7 @@ void madamBlowOff() {
 	mobCentralBlowOff[4].x += rand() % 25;
 	mobCentralBlowOff[4].y -= rand() % 30;
 
-	if (effectCount > 500) {
+	if (g_effectCount > 500) {
 		for (int i = 0; i < 5; i++) {
 			mobCentralBlowOff[i].y += 35;
 		}
@@ -757,23 +757,23 @@ void pickGoodsControl() {
 	CreateSquareVertex(goodsA8, goodsCentralA[7]);
 	CreateSquareVertex(goodsB8, goodsCentralB[7]);
 
-	goodsMoving(goodsA, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 0);
-	goodsMoving(goodsA2, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 1);
-	goodsMoving(goodsA3, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 2);
-	goodsMoving(goodsA4, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 3);
-	goodsMoving(goodsA5, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 4);
-	goodsMoving(goodsA6, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 5);
-	goodsMoving(goodsA7, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 6);
-	goodsMoving(goodsA8, goodsScaleA, isTakeA, goodsCentralA, deleatPosX, 7);
+	goodsMoving(goodsA, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 0);
+	goodsMoving(goodsA2, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 1);
+	goodsMoving(goodsA3, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 2);
+	goodsMoving(goodsA4, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 3);
+	goodsMoving(goodsA5, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 4);
+	goodsMoving(goodsA6, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 5);
+	goodsMoving(goodsA7, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 6);
+	goodsMoving(goodsA8, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 7);
 
-	goodsMoving(goodsB, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 0);
-	goodsMoving(goodsB2, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 1);
-	goodsMoving(goodsB3, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 2);
-	goodsMoving(goodsB4, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 3);
-	goodsMoving(goodsB5, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 4);
-	goodsMoving(goodsB6, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 5);
-	goodsMoving(goodsB7, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 6);
-	goodsMoving(goodsB8, goodsScaleB, isTakeB, goodsCentralB, deleatPosX, 7);
+	goodsMoving(goodsB, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 0);
+	goodsMoving(goodsB2, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 1);
+	goodsMoving(goodsB3, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 2);
+	goodsMoving(goodsB4, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 3);
+	goodsMoving(goodsB5, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 4);
+	goodsMoving(goodsB6, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 5);
+	goodsMoving(goodsB7, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 6);
+	goodsMoving(goodsB8, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 7);
 
 	pickGoodsDeviseControl();
 
@@ -790,23 +790,23 @@ void pickGoodsRender() {
 
 	SetUpTexture(playerHit, YASUKO_TEX);
 
-	goodsRender(goodsA, isTakeA, 0, BEEF_TEX);
-	goodsRender(goodsA2, isTakeA, 1, BEEF_TEX);
-	goodsRender(goodsA3, isTakeA, 2, BEEF_TEX);
-	goodsRender(goodsA4, isTakeA, 3, BEEF_TEX);
-	goodsRender(goodsA5, isTakeA, 4, BEEF_TEX);
-	goodsRender(goodsA6, isTakeA, 5, BEEF_TEX);
-	goodsRender(goodsA7, isTakeA, 6, BEEF_TEX);
-	goodsRender(goodsA8, isTakeA, 7, BEEF_TEX);
+	goodsRender(goodsA, g_isTakeA, 0, BEEF_TEX);
+	goodsRender(goodsA2, g_isTakeA, 1, BEEF_TEX);
+	goodsRender(goodsA3, g_isTakeA, 2, BEEF_TEX);
+	goodsRender(goodsA4, g_isTakeA, 3, BEEF_TEX);
+	goodsRender(goodsA5, g_isTakeA, 4, BEEF_TEX);
+	goodsRender(goodsA6, g_isTakeA, 5, BEEF_TEX);
+	goodsRender(goodsA7, g_isTakeA, 6, BEEF_TEX);
+	goodsRender(goodsA8, g_isTakeA, 7, BEEF_TEX);
 
-	goodsRender(goodsB, isTakeB, 0, PORK_TEX);
-	goodsRender(goodsB2, isTakeB, 1, PORK_TEX);
-	goodsRender(goodsB3, isTakeB, 2, PORK_TEX);
-	goodsRender(goodsB4, isTakeB, 3, PORK_TEX);
-	goodsRender(goodsB5, isTakeB, 4, PORK_TEX);
-	goodsRender(goodsB6, isTakeB, 5, PORK_TEX);
-	goodsRender(goodsB7, isTakeB, 6, PORK_TEX);
-	goodsRender(goodsB8, isTakeB, 7, PORK_TEX);
+	goodsRender(goodsB, g_isTakeB, 0, PORK_TEX);
+	goodsRender(goodsB2, g_isTakeB, 1, PORK_TEX);
+	goodsRender(goodsB3, g_isTakeB, 2, PORK_TEX);
+	goodsRender(goodsB4, g_isTakeB, 3, PORK_TEX);
+	goodsRender(goodsB5, g_isTakeB, 4, PORK_TEX);
+	goodsRender(goodsB6, g_isTakeB, 5, PORK_TEX);
+	goodsRender(goodsB7, g_isTakeB, 6, PORK_TEX);
+	goodsRender(goodsB8, g_isTakeB, 7, PORK_TEX);
 
 
 	WriteWord("セール品入手", testText, DT_CENTER, RED, HOGE_FONT);
@@ -816,18 +816,18 @@ void pickGoodsRender() {
 	char DebugTakeBoolA[10];
 	char DebugTakeBoolB[10];
 
-	sprintf_s(goodsNumA, 10, "%d ", goodsTakenNumA);
+	sprintf_s(goodsNumA, 10, "%d ", g_goodsTakenNumA);
 	RECT DEBUGGoodsA = { 100 ,200,900,600 };
 	WriteWord(goodsNumA, DEBUGGoodsA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
-	sprintf_s(goodsNumB, 10, "%d ", goodsTakenNumB);
+	sprintf_s(goodsNumB, 10, "%d ", g_goodsTakenNumB);
 	RECT DEBUGGoodsB = { 100 ,250,900,600 };
 	WriteWord(goodsNumB, DEBUGGoodsB, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 
 	for (int i = 0; i < 8; i++) {
-		sprintf_s(DebugTakeBoolA, 10, "%d ", isTakeA[i]);
+		sprintf_s(DebugTakeBoolA, 10, "%d ", g_isTakeA[i]);
 		RECT DEBUGTextA = { 100 + i * 50 ,500,900,600 };
 		WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
-		sprintf_s(DebugTakeBoolB, 10, "%d ", isTakeB[i]);
+		sprintf_s(DebugTakeBoolB, 10, "%d ", g_isTakeB[i]);
 		RECT DEBUGTextB = { 100 + i * 50 ,550,900,600 };
 		WriteWord(DebugTakeBoolB, DEBUGTextB, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 	}
@@ -847,22 +847,22 @@ void pickGoodsDeviseControl() {
 
 	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
-		isFirst = true;
+		g_isFirst = true;
 		g_scene = SCENE_RESULT;
-		gameScene = FLOAMOVE;
+		g_gameScene = FLOAMOVE;
 	}
 
 	if (KeyState[DIK_A] == KeyRelease)
 	{
-		goodsTakenNumA++;
-		takeingGoods(isTakeA, 8);
-		SoundSuccess = soundsManager.Start("PICK1", false) && SoundSuccess;
+		g_goodsTakenNumA++;
+		takeingGoods(g_isTakeA, 8);
+		g_SoundSuccess = soundsManager.Start("PICK1", false) && g_SoundSuccess;
 	}
 	if (KeyState[DIK_D] == KeyRelease)
 	{
-		goodsTakenNumB++;
-		takeingGoods(isTakeB, 8);
-		SoundSuccess = soundsManager.Start("PICK1", false) && SoundSuccess;
+		g_goodsTakenNumB++;
+		takeingGoods(g_isTakeB, 8);
+		g_SoundSuccess = soundsManager.Start("PICK1", false) && g_SoundSuccess;
 	}
 	if (KeyState[DIK_W])
 	{
@@ -878,21 +878,21 @@ void pickGoodsDeviseControl() {
 
 	if (PadState[ButtonA] == PadRelease)
 	{
-		isFirst = true;
+		g_isFirst = true;
 		g_scene = SCENE_RESULT;
-		gameScene = FLOAMOVE;
+		g_gameScene = FLOAMOVE;
 	}
 	if (PadState[ButtonB] == PadRelease)
 	{
-		goodsTakenNumB++;
-		takeingGoods(isTakeB, 8);
-		SoundSuccess = soundsManager.Start("PICK1", false) && SoundSuccess;
+		g_goodsTakenNumB++;
+		takeingGoods(g_isTakeB, 8);
+		g_SoundSuccess = soundsManager.Start("PICK1", false) && g_SoundSuccess;
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
-		goodsTakenNumA++;
-		takeingGoods(isTakeA, 8);
-		SoundSuccess = soundsManager.Start("PICK1", false) && SoundSuccess;
+		g_goodsTakenNumA++;
+		takeingGoods(g_isTakeA, 8);
+		g_SoundSuccess = soundsManager.Start("PICK1", false) && g_SoundSuccess;
 	}
 	if (PadState[ButtonY] == PadRelease)
 	{

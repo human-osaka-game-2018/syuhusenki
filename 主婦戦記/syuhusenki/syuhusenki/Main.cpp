@@ -3,9 +3,7 @@
 
 SoundLib::SoundsManager soundsManager;
 
-bool SoundSuccess;
-
-const char* soundNum[SOUND_MAX];
+bool g_SoundSuccess;
 
 RECT testWord = { 50,200,1200,500 };
 unsigned int gameRoop();
@@ -29,7 +27,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 #else
 	InitWindowFullscreenEx("ÅôéÂïwêÌãLÅô", &hWnd, WIDTH, HEIGHT, hInst, hInstance, NULL, "Texture/Yasuko.png");
 #endif
-	SoundSuccess = soundsManager.Initialize();
+	g_SoundSuccess = soundsManager.Initialize();
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
@@ -59,7 +57,7 @@ unsigned int gameRoop() {
 		ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
 		ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
 		
-		SoundSuccess = soundsManager.Start("FOOD", true) && SoundSuccess;
+		g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;
 
 		isFirst = false;
 		}

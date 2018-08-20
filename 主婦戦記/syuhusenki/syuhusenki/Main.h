@@ -35,7 +35,7 @@ enum SCENE {
 };
 
 extern SoundLib::SoundsManager soundsManager;
-extern bool SoundSuccess;
+extern bool g_SoundSuccess;
 extern const char* soundNum[SOUND_MAX];
 extern RECT testWord;
 extern int g_scene;
