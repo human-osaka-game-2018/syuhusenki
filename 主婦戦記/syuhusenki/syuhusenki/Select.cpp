@@ -1,7 +1,7 @@
 #include "Main.h"
 #include "Select.h"
 
-XINPUT_STATE g_Xinput;
+//XINPUT_STATE g_Xinput;
 
 CENTRAL_STATE g_yasukoSta = { 237.f, 270.f, 120.f, 120.f };
 CENTRAL_STATE g_mitukoSta = { 525.f, 264.f, 120.f, 120.f };
@@ -23,7 +23,132 @@ bool g_isLastCheck = false;
 //セレクト制御処理
 VOID selectControl(VOID)
 {
+	GetControl(0);
+	BottonCheck();
+
 	HRESULT hr;
+
+	if (PadState[ButtonA] == PadRelease && !(g_inCount))
+	{
+		if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 490.f)
+		{
+			soundsManager.Start("BUTTON1", false);
+			g_isNextSelect = false;
+			g_isLastCheck = false;
+			g_scene = SCENE_MAIN;
+		}
+		else if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 590.f)
+		{
+			soundsManager.Start("BUTTON1", false);
+			g_isNextSelect = false;
+			g_isLastCheck = false;
+			g_inCount++;
+		}
+
+		else if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
+		{
+			soundsManager.Start("BUTTON1", false);
+			soundsManager.Stop("SELECT");
+			g_isLastCheck = true;
+			g_inCount++;
+		}
+		else if (g_stageSelectFrameSta.x == 745.f && g_isNextSelect && !(g_isLastCheck))
+		{
+			soundsManager.Start("MISS", false);
+			g_inCount++;
+		}
+
+		else if (g_charSelectFrameSta.x == 235.f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("BUTTON1", false);
+			g_isNextSelect = true;
+			g_inCount++;
+		}
+		else if (g_charSelectFrameSta.x == 525.f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("MISS", false);
+			g_inCount++;
+		}
+		else if (g_charSelectFrameSta.x == 817.f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("MISS", false);
+			g_inCount++;
+		}
+	}
+	if (PadState[ButtonB] == PadRelease && !(g_inCount))
+	{
+		if (!(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Stop("SELECT");
+			soundsManager.Start("BUTTON1", false);
+			g_scene = SCENE_TITLE;
+			g_inCount++;
+		}
+		if (g_isNextSelect && !(g_isLastCheck))
+		{
+			soundsManager.Start("BUTTON1", false);
+			g_isNextSelect = false;
+			g_inCount++;
+		}
+	}
+	if (PadState[ButtonUP] == PadRelease && !(g_inCount))
+	{
+		if (g_lastCheckSta.y == 590.f && g_isNextSelect && g_isLastCheck)
+		{
+			g_lastCheckSta.y = 490.f;
+		}
+	}
+	if (PadState[ButtonY] == PadRelease && !(g_inCount))
+	{
+		if (g_lastCheckSta.y == 490.f && g_isNextSelect && g_isLastCheck)
+		{
+			g_lastCheckSta.y = 590.f;
+		}
+	}
+	if (PadState[ButtonRIGHT] == PadRelease && !(g_inCount))
+	{
+		if (g_charSelectFrameSta.x == 525.f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_charSelectFrameSta.x = 817.f;
+			g_inCount++;
+		}
+		else if (g_charSelectFrameSta.x == 235.f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_charSelectFrameSta.x = 525.f;
+			g_inCount++;
+		}
+
+		if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_stageSelectFrameSta.x = 745.f;
+			g_inCount++;
+		}
+	}
+	if (PadState[ButtonLEFT] == PadRelease && !(g_inCount))
+	{
+		if (g_charSelectFrameSta.x == 817.f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_charSelectFrameSta.x = 525.f;
+			g_inCount++;
+		}
+		else if (g_charSelectFrameSta.x == 525.f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_charSelectFrameSta.x = 235.f;
+			g_inCount++;
+		}
+
+		if (g_stageSelectFrameSta.x == 745.f && g_isNextSelect && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_stageSelectFrameSta.x = 299.f;
+			g_inCount++;
+		}
+	}
 
 	XInputGetState(0, &g_Xinput);
 
@@ -43,131 +168,127 @@ VOID selectControl(VOID)
 			g_inCount++;
 		}
 
-		if (g_Xinput.Gamepad.wButtons == A_BUTTON && !(g_inCount))
-		{
-			if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 490.f)
-			{
-				soundsManager.Start("BUTTON1", false);
-				g_isNextSelect = false;
-				g_isLastCheck = false;
-				g_scene = SCENE_MAIN;
-			}
-			else if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 590.f)
-			{
-				soundsManager.Start("BUTTON1", false);
-				g_isNextSelect = false;
-				g_isLastCheck = false;
-				g_inCount++;
-			}
+		//if (g_Xinput.Gamepad.wButtons == A_BUTTON && !(g_inCount))
+		//{
+		//	if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 490.f)
+		//	{
+		//		soundsManager.Start("BUTTON1", false);
+		//		g_isNextSelect = false;
+		//		g_isLastCheck = false;
+		//		g_scene = SCENE_MAIN;
+		//	}
+		//	else if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 590.f)
+		//	{
+		//		soundsManager.Start("BUTTON1", false);
+		//		g_isNextSelect = false;
+		//		g_isLastCheck = false;
+		//		g_inCount++;
+		//	}
 
-			else if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
-			{
-				soundsManager.Start("BUTTON1", false);
-				soundsManager.Stop("SELECT");
-				g_isLastCheck = true;
-				g_inCount++;
-			}
-			else if (g_stageSelectFrameSta.x == 745.f && g_isNextSelect && !(g_isLastCheck))
-			{
-				soundsManager.Start("MISS", false);
-				g_inCount++;
-			}
+		//	else if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("BUTTON1", false);
+		//		soundsManager.Stop("SELECT");
+		//		g_isLastCheck = true;
+		//		g_inCount++;
+		//	}
+		//	else if (g_stageSelectFrameSta.x == 745.f && g_isNextSelect && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("MISS", false);
+		//		g_inCount++;
+		//	}
 
-			else if (g_charSelectFrameSta.x == 235.f && !(g_isNextSelect) && !(g_isLastCheck))
-			{
-				soundsManager.Start("BUTTON1", false);
-				g_isNextSelect = true;
-				g_inCount++;
-			}
-			else if (g_charSelectFrameSta.x == 525.f && !(g_isNextSelect) && !(g_isLastCheck))
-			{
-				soundsManager.Start("MISS", false);
-				g_inCount++;
-			}
-			else if (g_charSelectFrameSta.x == 817.f && !(g_isNextSelect) && !(g_isLastCheck))
-			{
-				soundsManager.Start("MISS", false);
-				g_inCount++;
-			}
-		}
+		//	else if (g_charSelectFrameSta.x == 235.f && !(g_isNextSelect) && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("BUTTON1", false);
+		//		g_isNextSelect = true;
+		//		g_inCount++;
+		//	}
+		//	else if (g_charSelectFrameSta.x == 525.f && !(g_isNextSelect) && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("MISS", false);
+		//		g_inCount++;
+		//	}
+		//	else if (g_charSelectFrameSta.x == 817.f && !(g_isNextSelect) && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("MISS", false);
+		//		g_inCount++;
+		//	}
+		//}
+		//if (g_Xinput.Gamepad.wButtons == B_BUTTON && !(g_inCount))
+		//{
+		//	if (!(g_isNextSelect) && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Stop("SELECT");
+		//		soundsManager.Start("BUTTON1", false);
+		//		g_scene = SCENE_TITLE;
+		//		g_inCount++;
+		//	}
+		//	if (g_isNextSelect && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("BUTTON1", false);
+		//		g_isNextSelect = false;
+		//		g_inCount++;
+		//	}
+		//}
+		//if (g_Xinput.Gamepad.wButtons == UP_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLY >= 6000 && !(g_inCount))
+		//{
+		//	if (g_lastCheckSta.y == 590.f && g_isNextSelect && g_isLastCheck)
+		//	{
+		//		g_lastCheckSta.y = 490.f;
+		//	}
+		//}
+		//if (g_Xinput.Gamepad.wButtons == DOWN_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLY <= -6000 && !(g_inCount))
+		//{
+		//	if (g_lastCheckSta.y == 490.f && g_isNextSelect && g_isLastCheck)
+		//	{
+		//		g_lastCheckSta.y = 590.f;
+		//	}
+		//}
+		//if (g_Xinput.Gamepad.wButtons == RIGHT_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
+		//{
+		//	if (g_charSelectFrameSta.x == 525.f && !(g_isNextSelect) && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("CURSOR", false);
+		//		g_charSelectFrameSta.x = 817.f;
+		//		g_inCount++;
+		//	}
+		//	else if (g_charSelectFrameSta.x == 235.f && !(g_isNextSelect) && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("CURSOR", false);
+		//		g_charSelectFrameSta.x = 525.f;
+		//		g_inCount++;
+		//	}
 
-		if (g_Xinput.Gamepad.wButtons == B_BUTTON && !(g_inCount))
-		{
-			if (!(g_isNextSelect) && !(g_isLastCheck))
-			{
-				soundsManager.Stop("SELECT");
-				soundsManager.Start("BUTTON1", false);
-				g_scene = SCENE_TITLE;
-				g_inCount++;
-			}
-			if (g_isNextSelect && !(g_isLastCheck))
-			{
-				soundsManager.Start("BUTTON1", false);
-				g_isNextSelect = false;
-				g_inCount++;
-			}
-		}
+		//	if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("CURSOR", false);
+		//		g_stageSelectFrameSta.x = 745.f;
+		//		g_inCount++;
+		//	}
+		//}
+		//else if (g_Xinput.Gamepad.wButtons == LEFT_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
+		//{
+		//	if (g_charSelectFrameSta.x == 817.f && !(g_isNextSelect) && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("CURSOR", false);
+		//		g_charSelectFrameSta.x = 525.f;
+		//		g_inCount++;
+		//	}
+		//	else if (g_charSelectFrameSta.x == 525.f && !(g_isNextSelect) && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("CURSOR", false);
+		//		g_charSelectFrameSta.x = 235.f;
+		//		g_inCount++;
+		//	}
 
-		if (g_Xinput.Gamepad.wButtons == UP_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLY >= 6000 && !(g_inCount))
-		{
-			if (g_lastCheckSta.y == 590.f && g_isNextSelect && g_isLastCheck)
-			{
-				g_lastCheckSta.y = 490.f;
-			}
-		}
-
-		if (g_Xinput.Gamepad.wButtons == DOWN_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLY <= -6000 && !(g_inCount))
-		{
-			if (g_lastCheckSta.y == 490.f && g_isNextSelect && g_isLastCheck)
-			{
-				g_lastCheckSta.y = 590.f;
-			}
-		}
-
-		if (g_Xinput.Gamepad.wButtons == RIGHT_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
-		{
-			if (g_charSelectFrameSta.x == 525.f && !(g_isNextSelect) && !(g_isLastCheck))
-			{
-				soundsManager.Start("CURSOR", false);
-				g_charSelectFrameSta.x = 817.f;
-				g_inCount++;
-			}
-			else if (g_charSelectFrameSta.x == 235.f && !(g_isNextSelect) && !(g_isLastCheck))
-			{
-				soundsManager.Start("CURSOR", false);
-				g_charSelectFrameSta.x = 525.f;
-				g_inCount++;
-			}
-
-			if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
-			{
-				soundsManager.Start("CURSOR", false);
-				g_stageSelectFrameSta.x = 745.f;
-				g_inCount++;
-			}
-		}
-		else if (g_Xinput.Gamepad.wButtons == LEFT_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
-		{
-			if (g_charSelectFrameSta.x == 817.f && !(g_isNextSelect) && !(g_isLastCheck))
-			{
-				soundsManager.Start("CURSOR", false);
-				g_charSelectFrameSta.x = 525.f;
-				g_inCount++;
-			}
-			else if (g_charSelectFrameSta.x == 525.f && !(g_isNextSelect) && !(g_isLastCheck))
-			{
-				soundsManager.Start("CURSOR", false);
-				g_charSelectFrameSta.x = 235.f;
-				g_inCount++;
-			}
-
-			if (g_stageSelectFrameSta.x == 745.f && g_isNextSelect && !(g_isLastCheck))
-			{
-				soundsManager.Start("CURSOR", false);
-				g_stageSelectFrameSta.x = 299.f;
-				g_inCount++;
-			}
-		}
+		//	if (g_stageSelectFrameSta.x == 745.f && g_isNextSelect && !(g_isLastCheck))
+		//	{
+		//		soundsManager.Start("CURSOR", false);
+		//		g_stageSelectFrameSta.x = 299.f;
+		//		g_inCount++;
+		//	}
+		//}
 	}
 }
 
@@ -185,7 +306,7 @@ VOID selectRender(VOID)
 //セレクト画面のテクスチャ
 VOID selectRenderSta(VOID)
 {
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, SELECT_BG_TEX);
 	CUSTOMVERTEX yasuko[4];
 	CreateSquareVertex(yasuko, g_yasukoSta);
 	CUSTOMVERTEX mituko[4];
@@ -203,46 +324,34 @@ VOID selectRenderSta(VOID)
 
 
 	//ヤス子のテクスチャの描画
-	g_pD3Device->SetTexture(0, g_pTexture[SELECT_YASUKO_TEX]);
-	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, yasuko, sizeof(CUSTOMVERTEX));
-
+	SetUpTexture(yasuko, SELECT_YASUKO_TEX);
 	//ミツ子のテクスチャの描画
-	g_pD3Device->SetTexture(0, g_pTexture[SELECT_MITUKO_TEX]);
-	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, mituko, sizeof(CUSTOMVERTEX));
-
+	SetUpTexture(mituko, SELECT_MITUKO_TEX);
 	//イソ子のテクスチャの描画
-	g_pD3Device->SetTexture(0, g_pTexture[SELECT_ISOKO_TEX]);
-	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, isoko, sizeof(CUSTOMVERTEX));
+	SetUpTexture(isoko, SELECT_ISOKO_TEX);
 
 	//選択の枠のテクスチャの描画
-	g_pD3Device->SetTexture(0, g_pTexture[SELECTFRAME_TEX]);
-	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, frame, sizeof(CUSTOMVERTEX));
+	SetUpTexture(frame, SELECTFRAME_TEX);
 
 	if (g_charSelectFrameSta.x == 235.f)
 	{
-		g_pD3Device->SetTexture(0, g_pTexture[SELECT_YASUKO_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, selectChar, sizeof(CUSTOMVERTEX));
+		SetUpTexture(selectChar, SELECT_YASUKO_TEX);
 	}
 	else if (g_charSelectFrameSta.x == 525.f)
 	{
-		g_pD3Device->SetTexture(0, g_pTexture[SELECT_MITUKO_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, selectChar, sizeof(CUSTOMVERTEX));
+		SetUpTexture(selectChar, SELECT_MITUKO_TEX);
 	}
 	else if (g_charSelectFrameSta.x == 817.f)
 	{
-		g_pD3Device->SetTexture(0, g_pTexture[SELECT_ISOKO_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, selectChar, sizeof(CUSTOMVERTEX));
+		SetUpTexture(selectChar, SELECT_ISOKO_TEX);
 	}
 
 	//選択の枠のテクスチャの描画
-	g_pD3Device->SetTexture(0, g_pTexture[SELECTFRAME_TEX]);
-	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, selectStage, sizeof(CUSTOMVERTEX));
-
+	SetUpTexture(selectStage, SELECTFRAME_TEX);
 	if (g_isLastCheck)
 	{
-		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, SELECT_BG_TEX);
 		//最終確認画面の矢印テクスチャの描画
-		g_pD3Device->SetTexture(0, g_pTexture[TITLEICON_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, lastCheck, sizeof(CUSTOMVERTEX));
+		SetUpTexture(lastCheck, TITLEICON_TEX);
 	}
 }

@@ -1,4 +1,5 @@
 #include "Main.h"
+#include "FloaMove.h"
 
 #define PLAYER_FLOA_SCALE 100
 #define PLAYER_BLOWOFF_SCALE 150
@@ -116,8 +117,8 @@ CENTRAL_STATE goodsCentralB[8]{
 void gameControl();
 void gameRender();
 void floaMove();
-void floaMoveControl();
-void floaMoveRender();
+//void floaMoveControl();
+//void floaMoveRender();
 void keyControl(CENTRAL_STATE* central);
 void mobMoving(CENTRAL_STATE* mob);
 
@@ -254,52 +255,52 @@ void floaMove() {
 	floaMoveRender();
 }
 
-void floaMoveControl() {
-	CreateSquareVertex(playerFloa, playerCentralFloa);
-	CreateSquareVertex(mobFloa,mobCentralFloa);
-
-	BottonCheck();
-	CheckKeyState(DIK_RETURN);
-	CheckKeyState(DIK_NUMPADENTER);
-
-	keyControl(&playerCentralFloa);
-
-	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
-	{
-		comandMake();
-			g_gameScene = PUSHENEMY;
-	}
-
-	GetControl(0);
-	if (PadState[ButtonA] == KeyRelease)
-	{
-		comandMake();
-			g_gameScene = PUSHENEMY;
-	}
-	mobMoving(&mobCentralFloa);
-	MoveInToErea(&playerCentralFloa, 10, 60, 1000, 680);
-	MoveInToErea(&mobCentralFloa, 10, 60, 1000, 680);
-}
-
-void floaMoveRender() {
-	BeginSetTexture();
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FRAME_TEX);
-	switch (g_selectFloa) {
-	case FOOD:
-		EasyCreateSquareVertex(10, 15, 1000, 680, FOOD_STAGE_TEX);
-		break;
-	case CLOTH:
-		EasyCreateSquareVertex(10, 15, 1000, 680, CLOTH_STAGE_TEX);
-		break;
-	}
-	SetUpTexture(mobFloa, MOB_TEX);
-	SetUpTexture(playerFloa, YASUKO_TEX);
-
-	WriteWord("フロア移動", testText, DT_CENTER, RED, HOGE_FONT);
-
-	EndSetTexture();
-}
+//void floaMoveControl() {
+//	CreateSquareVertex(playerFloa, playerCentralFloa);
+//	CreateSquareVertex(mobFloa,mobCentralFloa);
+//
+//	BottonCheck();
+//	CheckKeyState(DIK_RETURN);
+//	CheckKeyState(DIK_NUMPADENTER);
+//
+//	keyControl(&playerCentralFloa);
+//
+//	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
+//	{
+//		comandMake();
+//			g_gameScene = PUSHENEMY;
+//	}
+//
+//	GetControl(0);
+//	if (PadState[ButtonA] == KeyRelease)
+//	{
+//		comandMake();
+//			g_gameScene = PUSHENEMY;
+//	}
+//	mobMoving(&mobCentralFloa);
+//	MoveInToErea(&playerCentralFloa, 10, 60, 1000, 680);
+//	MoveInToErea(&mobCentralFloa, 10, 60, 1000, 680);
+//}
+//
+//void floaMoveRender() {
+//	BeginSetTexture();
+//	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
+//	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FRAME_TEX);
+//	switch (g_selectFloa) {
+//	case FOOD:
+//		EasyCreateSquareVertex(10, 15, 1000, 680, FOOD_STAGE_TEX);
+//		break;
+//	case CLOTH:
+//		EasyCreateSquareVertex(10, 15, 1000, 680, CLOTH_STAGE_TEX);
+//		break;
+//	}
+//	SetUpTexture(mobFloa, MOB_TEX);
+//	SetUpTexture(playerFloa, YASUKO_TEX);
+//
+//	WriteWord("フロア移動", testText, DT_CENTER, RED, HOGE_FONT);
+//
+//	EndSetTexture();
+//}
 
 void keyControl(CENTRAL_STATE* central) {
 	CheckKeyState(DIK_LEFT);

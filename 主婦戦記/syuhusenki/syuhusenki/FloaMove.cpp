@@ -212,29 +212,18 @@ VOID collision(VOID)
 }
 
 //ゲーム描画処理
-VOID gameRender(VOID)
+VOID floaMoveRender(VOID)
 {
-	//画面の消去
-	g_pD3Device->Clear(0, NULL,
-		D3DCLEAR_TARGET,
-		D3DCOLOR_XRGB(0x00, 0x00, 0x00),
-		1.0f, 0);
-
-	//描画の開始
-	g_pD3Device->BeginScene();
+	BeginSetTexture();
 
 	//ゲーム画面のテクスチャの設定
 	floaMoveRenderSta();
 
-	//描画の終了
-	g_pD3Device->EndScene();
-
-	//表示
-	g_pD3Device->Present(NULL, NULL, NULL, NULL);
+	EndSetTexture();
 }
 
 //ゲーム画面のテクスチャ
-VOID gameRenderSta(VOID)
+VOID floaMoveRenderSta(VOID)
 {
 	static float timerRotation = 0.f;
 
