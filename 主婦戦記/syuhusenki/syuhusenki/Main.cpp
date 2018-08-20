@@ -1,5 +1,6 @@
 #include "Main.h"
 #include "GameMain.h"
+#include "Select.h"
 
 SoundLib::SoundsManager soundsManager;
 
