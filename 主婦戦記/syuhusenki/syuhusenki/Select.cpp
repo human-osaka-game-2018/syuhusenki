@@ -1,7 +1,7 @@
 #include "Main.h"
 #include "Select.h"
+#include "GameMain.h"
 
-//XINPUT_STATE g_Xinput;
 
 CENTRAL_STATE g_yasukoSta = { 237.f, 270.f, 120.f, 120.f };
 CENTRAL_STATE g_mitukoSta = { 525.f, 264.f, 120.f, 120.f };
@@ -26,7 +26,11 @@ VOID selectControl(VOID)
 	GetControl(0);
 	BottonCheck();
 
-	HRESULT hr;
+	CheckKeyState(DIK_RETURN);
+	if (KeyState[DIK_RETURN] == KeyRelease)
+	{
+		g_scene = SCENE_MAIN;
+	}
 
 	if (PadState[ButtonA] == PadRelease && !(g_inCount))
 	{
@@ -152,23 +156,17 @@ VOID selectControl(VOID)
 
 	XInputGetState(0, &g_Xinput);
 
-	hr = g_pKeyDevice->Acquire();
-
-	if ((hr == DI_OK) || (hr == S_FALSE))
+	if (g_Xinput.Gamepad.wButtons == 0 && g_Xinput.Gamepad.sThumbLX <= 6000 && g_Xinput.Gamepad.sThumbLX >= -6000)
 	{
-		BYTE diks[256];
-		g_pKeyDevice->GetDeviceState(sizeof(diks), &diks);
+		g_inCount = 0;
+	}
+	else if (g_inCount)
+	{
+		g_inCount++;
+	}
 
-		if (g_Xinput.Gamepad.wButtons == 0 && g_Xinput.Gamepad.sThumbLX <= 6000 && g_Xinput.Gamepad.sThumbLX >= -6000)
-		{
-			g_inCount = 0;
-		}
-		else if (g_inCount)
-		{
-			g_inCount++;
-		}
 
-		//if (g_Xinput.Gamepad.wButtons == A_BUTTON && !(g_inCount))
+	//if (g_Xinput.Gamepad.wButtons == A_BUTTON && !(g_inCount))
 		//{
 		//	if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 490.f)
 		//	{
@@ -185,7 +183,7 @@ VOID selectControl(VOID)
 		//		g_inCount++;
 		//	}
 
-		//	else if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
+	//	else if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
 		//	{
 		//		soundsManager.Start("BUTTON1", false);
 		//		soundsManager.Stop("SELECT");
@@ -198,7 +196,7 @@ VOID selectControl(VOID)
 		//		g_inCount++;
 		//	}
 
-		//	else if (g_charSelectFrameSta.x == 235.f && !(g_isNextSelect) && !(g_isLastCheck))
+	//	else if (g_charSelectFrameSta.x == 235.f && !(g_isNextSelect) && !(g_isLastCheck))
 		//	{
 		//		soundsManager.Start("BUTTON1", false);
 		//		g_isNextSelect = true;
@@ -260,7 +258,7 @@ VOID selectControl(VOID)
 		//		g_inCount++;
 		//	}
 
-		//	if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
+	//	if (g_stageSelectFrameSta.x == 299.f && g_isNextSelect && !(g_isLastCheck))
 		//	{
 		//		soundsManager.Start("CURSOR", false);
 		//		g_stageSelectFrameSta.x = 745.f;
@@ -282,14 +280,13 @@ VOID selectControl(VOID)
 		//		g_inCount++;
 		//	}
 
-		//	if (g_stageSelectFrameSta.x == 745.f && g_isNextSelect && !(g_isLastCheck))
+	//	if (g_stageSelectFrameSta.x == 745.f && g_isNextSelect && !(g_isLastCheck))
 		//	{
 		//		soundsManager.Start("CURSOR", false);
 		//		g_stageSelectFrameSta.x = 299.f;
 		//		g_inCount++;
 		//	}
 		//}
-	}
 }
 
 //ÉZÉåÉNÉgï`âÊèàóù

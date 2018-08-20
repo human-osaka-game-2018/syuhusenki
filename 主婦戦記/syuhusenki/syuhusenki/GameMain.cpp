@@ -1,5 +1,6 @@
 #include "Main.h"
 #include "FloaMove.h"
+#include "GameMain.h"
 
 #define PLAYER_FLOA_SCALE 100
 #define PLAYER_BLOWOFF_SCALE 150
@@ -13,22 +14,17 @@ enum MOBDIRECTION {
 	WEST
 };
 
-enum GAMESCENE {
-	FLOAMOVE,
-	PUSHENEMY,
-	PICKGOODS
-};
+//enum GAMESCENE {
+//	FLOAMOVE,
+//	PUSHENEMY,
+//	PICKGOODS
+//};
 
 enum FLOA {
 	FOOD,
 	CLOTH
 };
 
-struct SoundEffect {
-	const char SE1[20];
-	const char SE2[20];
-	const char SE3[20];
-};
 
 //int g_gameScene = FLOAMOVE;
 int g_gameScene = PUSHENEMY;
@@ -41,7 +37,7 @@ static int g_effectCount = 0;
 static bool g_isTakeA[8] = { false,false,false,false,false,false,false,false };
 static bool g_isTakeB[8] = { false,false,false,false,false,false,false,false };
 SoundEffect Button{ "BUTTON1","BUTTON2","BUTTON3" };
-SoundEffect Pick{ "PICK1", "PICK2" };
+SoundEffect Pick{ "PICK1", "PICK2","PICK3", "PICK4","PICK5", "PICK6" };
 static float g_goodsScaleA[8] = { 60,60,60,60,60,60,60,60 };
 static float g_goodsScaleB[8] = { 60,60,60,60,60,60,60,60 };
 RECT testText = { 100,200,900,500 };
@@ -132,7 +128,7 @@ void madamBlowOff();
 int comandCheck(int comand[], int inputComand[], int count);
 void comandMake();
 char comandButton(int comand);
-void buttonSE(SoundEffect Button, int SoundNumber);
+
 
 void pickGoods();
 void pickGoodsControl();
@@ -681,15 +677,50 @@ void buttonSE(SoundEffect Button,int SoundNumber) {
 		buttonKeyID = 0;
 	}
 	switch (buttonKeyID) {
-	case 2:
-		if (buttonKeyID == 2 && buttonKeyID != prevbuttonKeyID) {
-			g_SoundSuccess = soundsManager.Start(Button.SE3, false) && g_SoundSuccess;
+	case 6:
+		if (buttonKeyID == 6 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE7);
+			g_SoundSuccess = soundsManager.Start(Button.SE7, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 0;
 			break;
 		}
+	case 5:
+		if (buttonKeyID == 5 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE6);
+			g_SoundSuccess = soundsManager.Start(Button.SE6, false) && g_SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 0;
+			break;
+		}
+
+	case 4:
+		if (buttonKeyID == 4 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE5);
+			g_SoundSuccess = soundsManager.Start(Button.SE5, false) && g_SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 0;
+			break;
+		}
+	case 3:
+		if (buttonKeyID == 3 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE4);
+			g_SoundSuccess = soundsManager.Start(Button.SE4, false) && g_SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 4;
+			break;
+		}
+	case 2:
+		if (buttonKeyID == 2 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE3);
+			g_SoundSuccess = soundsManager.Start(Button.SE3, false) && g_SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 3;
+			break;
+		}
 	case 1:
 		if (buttonKeyID == 1 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE2);
 			g_SoundSuccess = soundsManager.Start(Button.SE2, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 2;
@@ -697,6 +728,7 @@ void buttonSE(SoundEffect Button,int SoundNumber) {
 		}
 	case 0:
 		if (buttonKeyID == 0 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE1);
 			g_SoundSuccess = soundsManager.Start(Button.SE1, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 1;
@@ -863,13 +895,13 @@ void pickGoodsDeviseControl() {
 	{
 		g_goodsTakenNumA++;
 		takeingGoods(g_isTakeA, 8);
-		g_SoundSuccess = soundsManager.Start("PICK1", false) && g_SoundSuccess;
+		buttonSE(Pick,6);
 	}
 	if (KeyState[DIK_D] == KeyRelease)
 	{
 		g_goodsTakenNumB++;
 		takeingGoods(g_isTakeB, 8);
-		g_SoundSuccess = soundsManager.Start("PICK1", false) && g_SoundSuccess;
+		buttonSE(Pick, 6);
 	}
 	if (KeyState[DIK_W])
 	{

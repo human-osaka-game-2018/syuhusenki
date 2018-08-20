@@ -10,8 +10,8 @@ RECT testWord = { 50,200,1200,500 };
 unsigned int gameRoop();
 void soundLoad();
 //int g_scene = SCENE_TEAMLOGO;
-//int g_scene = SCENE_MAIN;
-int g_scene = SCENE_SERECTCHARANDSTAGE;
+int g_scene = SCENE_MAIN;
+//int g_scene = SCENE_SERECTCHARANDSTAGE;
 void render(void);//‰¼
 void control(void);//‰¼
 void sound(void);//‰¼
@@ -206,6 +206,15 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/explosion.mp3", "ATTACK");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK1");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK2");
+	soundsManager.AddFile("Sound/shopping.mp3", "PICK3");
+	soundsManager.AddFile("Sound/shopping.mp3", "PICK4");
+	soundsManager.AddFile("Sound/shopping.mp3", "PICK5");
+	soundsManager.AddFile("Sound/shopping.mp3", "PICK6");
 	soundsManager.AddFile("Sound/selectBGM.mp3", "SELECT");
 	soundsManager.AddFile("Sound/cursor.mp3", "CURSOR");
+	soundsManager.AddFile("Sound/gong.mp3", "GONG");
+	soundsManager.AddFile("Sound/whistle1.mp3", "WHISYLE");
+	soundsManager.AddFile("Sound/op.mp3", "OP_BGM");
+	soundsManager.AddFile("Sound/select.mp3", "SELECT_BGM");
+
 }
