@@ -1,6 +1,5 @@
 #include "Main.h"
 #include "Title.h"
-#include "Select.h"
 
 CENTRAL_STATE g_selectArrowSta = { 500.f, 900.f, 20.f, 20.f };
 

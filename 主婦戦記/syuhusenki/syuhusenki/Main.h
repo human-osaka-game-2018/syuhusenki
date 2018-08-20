@@ -36,6 +36,8 @@
 #define X_BUTTON 0x4000
 #define Y_BUTTON 0x8000
 
+extern XINPUT_STATE g_Xinput;
+
 //主婦のステータス
 struct CHARACTER_STATE
 {
