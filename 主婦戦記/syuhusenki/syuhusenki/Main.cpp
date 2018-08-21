@@ -39,8 +39,8 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	ReadInTexture("Texture/kariSelect.png",SELECT_BG_TEX);
 	ReadInTexture("Texture/Yasuko.png",SELECT_YASUKO_TEX);
-	ReadInTexture("Texture/comingSoon.png",SELECT_MITUKO_TEX);
-	ReadInTexture("Texture/comingSoon.png",SELECT_ISOKO_TEX);
+	ReadInTexture("Texture/Mituko.png",SELECT_MITUKO_TEX);
+	ReadInTexture("Texture/Isoko.png",SELECT_ISOKO_TEX);
 	ReadInTexture("Texture/selectFrame.png",SELECTFRAME_TEX);
 	ReadInTexture("Texture/lastCheck.png",SELECTLASTCHECK_TEX);
 

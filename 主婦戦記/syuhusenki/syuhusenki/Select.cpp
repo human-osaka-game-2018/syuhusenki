@@ -1,9 +1,9 @@
 #include "Main.h"
 #include "Select.h"
 
-CENTRAL_STATE g_yasukoSta = { 225.f, 177.f, 52.f, 73.f };
-CENTRAL_STATE g_mitukoSta = { 419.5f, 176.3f, 80.f, 80.f };
-CENTRAL_STATE g_isokoSta = { 614.7f, 176.3f, 80.f, 80.f };
+CENTRAL_STATE g_yasukoTexSta = { 225.f, 177.f, 52.f, 73.f };
+CENTRAL_STATE g_mitukoTexSta = { 419.5f, 180.f, 52.f, 73.f };
+CENTRAL_STATE g_isokoTexSta = { 614.7f, 183.f, 52.f, 73.f };
 CENTRAL_STATE g_charSelectFrameSta = { 226.4f, 177.f, 90.f, 90.f };
 CENTRAL_STATE g_stageSelectFrameSta = { 269.f,480.f,140.f,120.f };
 CENTRAL_STATE g_selectCharSta = { 1050.f, 270.f, 230.f, 230.f };
@@ -23,8 +23,6 @@ VOID selectControl(VOID)
 	GetControl(0);
 	BottonCheck();
 
-	HRESULT hr;
-
 	if (g_Xinput.Gamepad.wButtons == 0 && g_Xinput.Gamepad.sThumbLX <= 6000 && g_Xinput.Gamepad.sThumbLX >= -6000)
 	{
 		g_inCount = 0;
@@ -36,6 +34,7 @@ VOID selectControl(VOID)
 
 	if (PadState[ButtonA] == PadOn && !(g_inCount))
 	{
+		//出撃確認の処理
 		if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 320.f)
 		{
 			soundsManager.Start("BUTTON1", false);
@@ -51,6 +50,7 @@ VOID selectControl(VOID)
 			g_inCount++;
 		}
 
+		//ステージ選択の処理
 		else if (g_stageSelectFrameSta.x == 269.f && g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("BUTTON1", false);
@@ -64,20 +64,26 @@ VOID selectControl(VOID)
 			g_inCount++;
 		}
 
+		//キャラ選択の処理
 		else if (g_charSelectFrameSta.x == 226.4f && !(g_isNextSelect) && !(g_isLastCheck))
 		{
+			g_PCSpeed = g_yasukoSta.speed;
 			soundsManager.Start("BUTTON1", false);
 			g_isNextSelect = true;
 			g_inCount++;
 		}
 		else if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
 		{
-			soundsManager.Start("MISS", false);
+			g_PCSpeed = g_mitukoSta.speed;
+			soundsManager.Start("BUTTON1", false);
+			g_isNextSelect = true;
 			g_inCount++;
 		}
 		else if (g_charSelectFrameSta.x == 614.7f && !(g_isNextSelect) && !(g_isLastCheck))
 		{
-			soundsManager.Start("MISS", false);
+			g_PCSpeed = g_isokoSta.speed;
+			soundsManager.Start("BUTTON1", false);
+			g_isNextSelect = true;
 			g_inCount++;
 		}
 	}
@@ -250,11 +256,11 @@ VOID selectRenderSta(VOID)
 {
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
 	CUSTOMVERTEX yasuko[4];
-	CreateSquareVertex(yasuko, g_yasukoSta);
+	CreateSquareVertex(yasuko, g_yasukoTexSta);
 	CUSTOMVERTEX mituko[4];
-	CreateSquareVertex(mituko, g_mitukoSta);
+	CreateSquareVertex(mituko, g_mitukoTexSta);
 	CUSTOMVERTEX isoko[4];
-	CreateSquareVertex(isoko, g_isokoSta);
+	CreateSquareVertex(isoko, g_isokoTexSta);
 	CUSTOMVERTEX frame[4];
 	CreateSquareVertex(frame, g_charSelectFrameSta);
 	CUSTOMVERTEX selectChar[4];

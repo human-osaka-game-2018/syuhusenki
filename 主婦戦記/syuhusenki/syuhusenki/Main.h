@@ -66,7 +66,16 @@ extern const char* soundNum[SOUND_MAX];
 extern RECT testWord;
 extern int g_scene;
 
-extern int g_gameCount;
+extern FLOAT g_PCSpeed;
+
+//ヤス子のステータス
+extern CHARACTER_STATE g_yasukoSta;
+
+//ミツ子のステータス
+extern CHARACTER_STATE g_mitukoSta;
+
+//イソ子のステータス
+extern CHARACTER_STATE g_isokoSta;
 
 extern int g_inCount;
 extern int g_gameCount;
