@@ -24,7 +24,7 @@ bool g_isLastCheck = false;
 VOID selectControl(VOID)
 {
 	GetControl(0);
-	BottonCheck();
+	BottonCheck(); 
 
 	CheckKeyState(DIK_RETURN);
 	if (KeyState[DIK_RETURN] == KeyRelease)

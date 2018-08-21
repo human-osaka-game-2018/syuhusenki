@@ -14,22 +14,13 @@ enum MOBDIRECTION {
 	WEST
 };
 
-//enum GAMESCENE {
-//	FLOAMOVE,
-//	PUSHENEMY,
-//	PICKGOODS
-//};
 
-enum FLOA {
-	FOOD,
-	CLOTH
-};
-
-
-int g_gameScene = FLOAMOVE;
+//int g_gameScene = FLOAMOVE;
 //int g_gameScene = PUSHENEMY;
-//int g_gameScene = PICKGOODS;
-int g_selectFloa = FOOD;
+int g_gameScene = PICKGOODS;
+//int g_selectFloa = FOOD;
+int g_selectFloa = CLOTH;
+
 static bool g_isBlowOff = false;
 static bool g_isFirst = true;
 static int g_effectCount = 0;
@@ -109,7 +100,7 @@ CENTRAL_STATE goodsCentralB[8]{
 
 };
 
-
+CENTRAL_STATE durabilityPointCentral = { 900,75 ,15,40};
 void gameControl();
 void gameRender();
 void floaMove();
@@ -138,7 +129,11 @@ void takeingGoods(bool take[], int size);
 void goodsMoving(CUSTOMVERTEX vertex[], float goodsScale[], bool take[], CENTRAL_STATE goodsCentral[], float deleatPosX, int arreyNum);
 void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum, int texNum);
 
-
+void clothRush();
+void clothRushControl();
+void clothRushRender();
+void clothRushInit();
+/////////////////////////////////////
 void gameMain() {
 	srand((unsigned int)time(NULL));
 	if (g_isFirst) {
@@ -154,13 +149,15 @@ void gameMain() {
 			ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
 			ReadInTexture("Texture/pork.png", PORK_TEX);
 			ReadInTexture("Texture/cardboard.png", BOX_TEX);
+			ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
+			ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
 
 			ReadInTexture("Texture/cardboard.png", TIMER_FRAME_TEX);
 			ReadInTexture("Texture/cardboard.png", TIMER_HAND_TEX);
 			ReadInTexture("Texture/cardboard.png", STARTCOUNT_3_TEX);
 			ReadInTexture("Texture/cardboard.png", STARTCOUNT_2_TEX);
 			ReadInTexture("Texture/cardboard.png", STARTCOUNT_1_TEX);
-			ReadInTexture("Texture/cardboard.png", START_TEX);
+			ReadInTexture("Texture/kariStart.png", START_TEX);
 			ReadInTexture("Texture/cardboard.png", PAUSE_TEX);
 			ReadInTexture("Texture/cardboard.png", TIMEUP_TEX);
 			ReadInTexture("Texture/cardboard.png", PC_TEX);
@@ -178,6 +175,17 @@ void gameMain() {
 		g_isBlowOff = false;
 		g_isFirst = false;
 	}
+	CheckKeyState(DIK_F1);
+	if (KeyState[DIK_F1] == KeyRelease)
+	{
+		g_selectFloa = FOOD;
+	}
+	CheckKeyState(DIK_F2);
+	if (KeyState[DIK_F2] == KeyRelease)
+	{
+		g_selectFloa = CLOTH;
+	}
+
 	switch (g_gameScene) {
 	case FLOAMOVE:
 		floaMove();
@@ -415,8 +423,16 @@ int comandPresentment[5];
 int comandCount = 0;
 int checkedComand = 2;
 void blowOff() {
+	switch (g_selectFloa) {
+	case FOOD:
 	blowOffControl();
 	blowOffRender();
+	break;
+	case CLOTH:
+		g_gameScene = PICKGOODS;
+		break;
+	}
+
 }
 void blowOffControl() 
 {
@@ -784,6 +800,7 @@ void pickGoods() {
 		pickGoodsRender();
 		break;
 	case CLOTH:
+		clothRush();
 		break;
 	}
 }
@@ -1046,7 +1063,123 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum,int texNum) {
 	}
 }
 
-void clothRush() {
+static int clothHP = 1000;
+static int mobHP = 50;
+static bool clothBreak = false;
+static bool clothStolen = false;
+static bool getCloth = false;
+static int openCount = 0;
+void clothRush() 
+{
+	clothRushControl();
+	clothRushRender();
+}
+
+void clothRushControl() 
+{
+	openCount++;
+	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_NUMPADENTER);
+	CheckKeyState(DIK_A);
+	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
+	{
+		g_scene = SCENE_RESULT;
+		g_gameScene = FLOAMOVE;
+	}
+	if (openCount > 20)
+	{
+		if (durabilityPointCentral.x <= 600 || !clothHP)
+		{
+			clothBreak = true;
+		}
+		if (durabilityPointCentral.x >= 1200)
+		{
+			clothStolen = true;
+		}
+		if (durabilityPointCentral.x >= 600 && durabilityPointCentral.x <= 1200)
+		{
+			if (KeyState[DIK_A] == KeyRelease) {
+				durabilityPointCentral.x -= 10;
+				mobHP--;
+			}
+		}
+		if (durabilityPointCentral.x <= 805 && clothHP)
+		{
+			clothHP--;
+		}
+		if (!mobHP)
+		{
+			getCloth = true;
+		}
+		else if (durabilityPointCentral.x <= 1200 && !clothStolen)
+		{
+			durabilityPointCentral.x += 1;
+		}
 
 
+		if (clothBreak)
+		{
+			soundsManager.Start("BREAK", false);
+			clothBreak = false;
+			clothRushInit();
+		}
+		if (clothStolen)
+		{
+			soundsManager.Start("LOSE", false);
+			clothStolen = false;
+			clothRushInit();
+		}
+		if (getCloth && durabilityPointCentral.x <= 1000)
+		{
+			soundsManager.Start("WIN", false);
+			getCloth = false;
+			clothRushInit();
+		}
+		else if (getCloth && durabilityPointCentral.x >= 1000)
+		{
+			soundsManager.Start("LOSE", false);
+			getCloth = false;
+			clothRushInit();
+
+		}
+	}
+}
+void clothRushRender() 
+{
+	CUSTOMVERTEX durabilityPoint[4];
+	CreateSquareVertexColor(durabilityPoint, durabilityPointCentral,0xff000000);
+	BeginSetTexture();
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, CLOTH_BG_TEX);
+	EasyCreateSquareVertex(600,50,1200,100,DURABILITY_TEX);
+	SetUpTexture(durabilityPoint, BLANK);
+	if (openCount < 20)
+	{
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, START_TEX);
+	}
+
+#ifdef _DEBUG
+	char debugcloth[10];
+	sprintf_s(debugcloth, 10, "%.2f ", durabilityPointCentral.x);
+	RECT DEBUGText = { 100 ,150,900,600 };
+	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
+
+	sprintf_s(debugcloth, 10, "%d ", clothHP);
+	DEBUGText = { 100 ,200,900,600 };
+	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
+
+	sprintf_s(debugcloth, 10, "%d ", mobHP);
+	DEBUGText = { 100 ,250,900,600 };
+	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
+
+#endif
+	EndSetTexture();
+}
+
+void clothRushInit() 
+{
+	durabilityPointCentral.x = 900;
+	clothHP = 1000;
+	mobHP = 100;
+	openCount = 0;
+	g_gameScene = PUSHENEMY;
 }

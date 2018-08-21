@@ -9,8 +9,8 @@ bool g_SoundSuccess;
 RECT testWord = { 50,200,1200,500 };
 unsigned int gameRoop();
 void soundLoad();
-int g_scene = SCENE_TEAMLOGO;
-//int g_scene = SCENE_MAIN;
+//int g_scene = SCENE_TEAMLOGO;
+int g_scene = SCENE_MAIN;
 //int g_scene = SCENE_SERECTCHARANDSTAGE;
 void render(void);//‰¼
 void control(void);//‰¼
@@ -87,6 +87,7 @@ unsigned int gameRoop() {
 		gameMain();
 		break;
 	case SCENE_RESULT:
+		g_selectFloa = FOOD;
 		control();
 		render();
 		break;
@@ -219,5 +220,7 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/whistle1.mp3", "WHISYLE");
 	soundsManager.AddFile("Sound/op.mp3", "OP_BGM");
 	soundsManager.AddFile("Sound/select.mp3", "SELECT_BGM");
-
+	soundsManager.AddFile("Sound/clothBreak.mp3", "BREAK"); 
+	soundsManager.AddFile("Sound/stupid3.mp3", "LOSE"); 
+	soundsManager.AddFile("Sound/trumpet1.mp3", "WIN");
 }

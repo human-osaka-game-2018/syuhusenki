@@ -180,8 +180,8 @@ VOID floaMoveControl(VOID)
 	}
 		collision();
 	}
-	CheckKeyState(DIK_RETURN);
-	if (KeyState[DIK_RETURN] == KeyRelease)
+	CheckKeyState(DIK_SPACE);
+	if (KeyState[DIK_SPACE] == KeyRelease)
 	{
 		g_gameScene = PUSHENEMY;
 	}

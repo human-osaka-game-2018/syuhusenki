@@ -10,11 +10,19 @@ struct SoundEffect {
 	const char SE6[20];
 	const char SE7[20];
 };
+
 enum GAMESCENE {
 	FLOAMOVE,
 	PUSHENEMY,
 	PICKGOODS
 };
+
+enum FLOA {
+	FOOD,
+	CLOTH
+};
+
+extern int g_selectFloa;
 extern int g_gameScene;
 extern SoundEffect Button;
 
