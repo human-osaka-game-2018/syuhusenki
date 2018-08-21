@@ -1,5 +1,6 @@
 #include "Main.h"
 #include "FloaMove.h"
+#include "GameMain.h"
 
 //ヤス子のステータス
 CHARACTER_STATE g_yasukoSta = { 1.f, 3.f, 1.f };
@@ -32,8 +33,8 @@ VOID floaMoveControl(VOID)
 	}
 
 	if (g_gameCount == 10980)
-	{
-		soundsManager.Stop("Sound/gameBGM.wav");
+	{soundsManager.SetVolume("FOOD", 25);
+		soundsManager.Stop("FOOD");
 		g_isTimeUp = true;
 	}
 
@@ -41,57 +42,53 @@ VOID floaMoveControl(VOID)
 	{
 		for (onceSound; onceSound < 2; onceSound++)
 		{
-			soundsManager.Start("Sound/gong.wav", false);
+			soundsManager.Start("GONG", false);
 		}
 	}
 
 	if (g_isGameStart)
 	{
+		GetControl(0);
+		BottonCheck();
+		
 
-		HRESULT hr;
 
-		XInputGetState(0, &g_Xinput);
+		//XInputGetState(0, &g_Xinput);
 
 		for (onceSound; onceSound < 1; onceSound++)
 		{
-			soundsManager.Start("Sound/gameBGM.wav", true);
-			soundsManager.Start("Sound/gameStartSE.wav", false);
+			soundsManager.SetVolume("FOOD", 25);
+			soundsManager.Start("FOOD", true);
+			soundsManager.Start("WHISYLE", false);
 		}
 
-		hr = g_pKeyDevice->Acquire();
+	if (g_Xinput.Gamepad.wButtons == 0)
+	{
+		g_inCount = 0;
+	}
+	else if (g_inCount)
+	{
+		g_inCount++;
+	}
 
-		if ((hr == DI_OK) || (hr == S_FALSE))
+	if (InputKEY(DIK_RETURN) || (PadState[ButtonA] == PadRelease )&& !(g_inCount))
+	{
+		if (g_pause && !g_isTimeUp)
 		{
-			BYTE diks[256];
-			g_pKeyDevice->GetDeviceState(sizeof(diks), &diks);
+			onceSound = 0;
+			PostQuitMessage(0);
+			g_inCount++;
+		}
 
-			if (g_Xinput.Gamepad.wButtons == 0)
-			{
-				g_inCount = 0;
-			}
-			else if (g_inCount)
-			{
-				g_inCount++;
-			}
+		if (g_isTimeUp)
+		{
+			onceSound = 0;
+			PostQuitMessage(0);
+			g_inCount++;
+		}
+	}
 
-			if (diks[DIK_RETURN] & 0x80 || g_Xinput.Gamepad.wButtons == A_BUTTON && !(g_inCount))
-			{
-				if (g_pause && !g_isTimeUp)
-				{
-					onceSound = 0;
-					PostQuitMessage(0);
-					g_inCount++;
-				}
-
-				if (g_isTimeUp)
-				{
-					onceSound = 0;
-					PostQuitMessage(0);
-					g_inCount++;
-				}
-			}
-
-			if (diks[DIK_W] & 0x80 || g_Xinput.Gamepad.sThumbLY)
+	if (InputKEY(DIK_W)|| g_Xinput.Gamepad.sThumbLY)
 			{
 				if (!g_pause && !g_isTimeUp)
 				{
@@ -110,7 +107,7 @@ VOID floaMoveControl(VOID)
 				}
 			}
 
-			if (diks[DIK_S] & 0x80 || g_Xinput.Gamepad.sThumbLY)
+	if (InputKEY(DIK_S)|| g_Xinput.Gamepad.sThumbLY)
 			{
 				if (!g_pause && !g_isTimeUp)
 				{
@@ -129,7 +126,7 @@ VOID floaMoveControl(VOID)
 				}
 			}
 
-			if (diks[DIK_D] & 0x80 || g_Xinput.Gamepad.sThumbLX)
+	if (InputKEY(DIK_D)|| g_Xinput.Gamepad.sThumbLX)
 			{
 				if (!g_pause && !g_isTimeUp)
 				{
@@ -148,7 +145,7 @@ VOID floaMoveControl(VOID)
 				}
 			}
 
-			if (diks[DIK_A] & 0x80 || g_Xinput.Gamepad.sThumbLX)
+	if (InputKEY(DIK_A)|| g_Xinput.Gamepad.sThumbLX)
 			{
 				if (!g_pause && !g_isTimeUp)
 				{
@@ -166,25 +163,29 @@ VOID floaMoveControl(VOID)
 					}
 				}
 			}
-
-			if (diks[DIK_ESCAPE] & 0x80 || g_Xinput.Gamepad.wButtons == START_BUTTOM && !(g_inCount))
-			{
-				if (g_pause && !g_isTimeUp)
-				{
-					soundsManager.Start("Sound/button.wav", false);
-					g_pause = false;
-					g_inCount++;
-				}
-				else if (!g_pause && !g_isTimeUp)
-				{
-					soundsManager.Start("Sound/button.wav", false);
-					g_pause = true;
-					g_inCount++;
-				}
-			}
+	if (PadState[ButtonStart] == PadRelease && !(g_inCount))
+	{
+		if (g_pause && !g_isTimeUp)
+		{
+			buttonSE(Button, 3);
+			g_pause = false;
+			g_inCount++;
 		}
+		else if (!g_pause && !g_isTimeUp)
+		{
+			buttonSE(Button, 3);
+			g_pause = true;
+			g_inCount++;
+		}
+	}
 		collision();
 	}
+	CheckKeyState(DIK_SPACE);
+	if (KeyState[DIK_SPACE] == KeyRelease)
+	{
+		g_gameScene = PUSHENEMY;
+	}
+
 }
 
 //当たり判定処理
@@ -218,6 +219,16 @@ VOID floaMoveRender(VOID)
 
 	//ゲーム画面のテクスチャの設定
 	floaMoveRenderSta();
+#ifdef _DEBUG
+	char debugPC[10];
+	sprintf_s(debugPC, 10, "%.2f", g_PCSta.x);
+	RECT DEBUGTextA = { 100 ,500,900,600 };
+	WriteWord(debugPC, DEBUGTextA, DT_LEFT, 0xffffff00, DEBUG_FONT);
+	sprintf_s(debugPC, 10, "%.2f", g_PCSta.y);
+	DEBUGTextA = { 100 ,550,900,600 };
+	WriteWord(debugPC, DEBUGTextA, DT_LEFT, 0xffffff00, DEBUG_FONT);
+
+#endif
 
 	EndSetTexture();
 }
@@ -226,114 +237,54 @@ VOID floaMoveRender(VOID)
 VOID floaMoveRenderSta(VOID)
 {
 	static float timerRotation = 0.f;
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, GAME_BG_TEX);
 
-	//頂点情報の設定
-	CUSTOMVERTEX gameBG[4]
-	{
-		{ 0.f,    0.f, 1.f, 1.f, 0xFFFFFFF, 0.f, 0.f },
-	{ 1920.f,    0.f, 1.f, 1.f, 0xFFFFFFF, 1.f, 0.f },
-	{ 1920.f, 1080.f, 1.f, 1.f, 0xFFFFFFF, 1.f, 1.f },
-	{ 0.f, 1080.f, 1.f, 1.f, 0xFFFFFFF, 0.f, 1.f }
-	};
+	CUSTOMVERTEX timer[4];
+	CUSTOMVERTEX timerHand[4];
+	CUSTOMVERTEX PC[4];
+	CUSTOMVERTEX startCount[4];
+	CUSTOMVERTEX start[4];
+	CUSTOMVERTEX timeUp[4];
 
-	CUSTOMVERTEX timer[4]
-	{
-		{ g_timerSta.x - g_timerSta.scaleX, g_timerSta.y - g_timerSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 0.f },
-		{ g_timerSta.x + g_timerSta.scaleX, g_timerSta.y - g_timerSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 0.f },
-		{ g_timerSta.x + g_timerSta.scaleX, g_timerSta.y + g_timerSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 1.f },
-		{ g_timerSta.x - g_timerSta.scaleX, g_timerSta.y + g_timerSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 1.f }
-	};
-
-	CUSTOMVERTEX timerHand[4]
-	{
-		{ g_timerSta.x - g_timerSta.scaleX, g_timerSta.y - g_timerSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 0.f },
-		{ g_timerSta.x + g_timerSta.scaleX, g_timerSta.y - g_timerSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 0.f },
-		{ g_timerSta.x + g_timerSta.scaleX, g_timerSta.y + g_timerSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 1.f },
-		{ g_timerSta.x - g_timerSta.scaleX, g_timerSta.y + g_timerSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 1.f }
-	};
-
-	CUSTOMVERTEX PC[4]
-	{
-		{ g_PCSta.x - g_PCSta.scaleX, g_PCSta.y - g_PCSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 0.f },
-		{ g_PCSta.x + g_PCSta.scaleX, g_PCSta.y - g_PCSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 0.f },
-		{ g_PCSta.x + g_PCSta.scaleX, g_PCSta.y + g_PCSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 1.f },
-		{ g_PCSta.x - g_PCSta.scaleX, g_PCSta.y + g_PCSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 1.f }
-	};
-
-	CUSTOMVERTEX startCount[4]
-	{
-		{ g_startCountSta.x - g_startCountSta.scaleX, g_startCountSta.y - g_startCountSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 0.f },
-		{ g_startCountSta.x + g_startCountSta.scaleX, g_startCountSta.y - g_startCountSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 0.f },
-		{ g_startCountSta.x + g_startCountSta.scaleX, g_startCountSta.y + g_startCountSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 1.f },
-		{ g_startCountSta.x - g_startCountSta.scaleX, g_startCountSta.y + g_startCountSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 1.f }
-	};
-
-	CUSTOMVERTEX start[4]
-	{
-		{ g_startSta.x - g_startSta.scaleX, g_startSta.y - g_startSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 0.f },
-		{ g_startSta.x + g_startSta.scaleX, g_startSta.y - g_startSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 0.f },
-		{ g_startSta.x + g_startSta.scaleX, g_startSta.y + g_startSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 1.f },
-		{ g_startSta.x - g_startSta.scaleX, g_startSta.y + g_startSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 1.f }
-	};
-
-	CUSTOMVERTEX pauseMenu[4]
-	{
-		{ 0.f,    0.f, 1.f, 1.f, 0xFFFFFFF, 0.f, 0.f },
-	{ 1920.f,    0.f, 1.f, 1.f, 0xFFFFFFF, 1.f, 0.f },
-	{ 1920.f, 1080.f, 1.f, 1.f, 0xFFFFFFF, 1.f, 1.f },
-	{ 0.f, 1080.f, 1.f, 1.f, 0xFFFFFFF, 0.f, 1.f }
-	};
-
-	CUSTOMVERTEX timeUp[4]
-	{
-		{ g_timeUpSta.x - g_timeUpSta.scaleX, g_timeUpSta.y - g_timeUpSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 0.f },
-		{ g_timeUpSta.x + g_timeUpSta.scaleX, g_timeUpSta.y - g_timeUpSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 0.f },
-		{ g_timeUpSta.x + g_timeUpSta.scaleX, g_timeUpSta.y + g_timeUpSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 1.f, 1.f },
-		{ g_timeUpSta.x - g_timeUpSta.scaleX, g_timeUpSta.y + g_timeUpSta.scaleY, 1.f, 1.f, 0xFFFFFFFF, 0.f, 1.f }
-	};
+	CreateSquareVertex(timer,g_timerSta);
+	CreateSquareVertex(timerHand,g_timerSta);
+	CreateSquareVertex(PC,g_PCSta);
+	CreateSquareVertex(startCount,g_startCountSta);
+	CreateSquareVertex(start, g_startSta);
+	CreateSquareVertex(timeUp, g_timeUpSta);
 
 	//回転
 	RevolveZ(timerHand, timerRotation, g_timerSta);
 
-	//ゲーム背景のテクスチャの描画
-	g_pD3Device->SetTexture(0, g_pTexture[GAME_BG_TEX]);
-	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, gameBG, sizeof(CUSTOMVERTEX));
 
 	//タイマーのテクスチャの描画
-	g_pD3Device->SetTexture(0, g_pTexture[TIMER_FRAME_TEX]);
-	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, timer, sizeof(CUSTOMVERTEX));
+	SetUpTexture(timer, TIMER_FRAME_TEX);
 
 	//タイマーのテクスチャの描画
-	g_pD3Device->SetTexture(0, g_pTexture[TIMER_HAND_TEX]);
-	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, timerHand, sizeof(CUSTOMVERTEX));
+	SetUpTexture(timerHand, TIMER_HAND_TEX);
 
 	//プレイヤーキャラクターのテクスチャの描画
-	g_pD3Device->SetTexture(0, g_pTexture[PC_TEX]);
-	g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, PC, sizeof(CUSTOMVERTEX));
+	SetUpTexture(PC, PC_TEX);
 
 	if ((g_gameCount > 0) && (g_gameCount <= 60))
 	{
 		//スタートカウントのテクスチャの描画
-		g_pD3Device->SetTexture(0, g_pTexture[STARTCOUNT_3_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, startCount, sizeof(CUSTOMVERTEX));
+		SetUpTexture(startCount, STARTCOUNT_3_TEX);
 	}
 	else if ((g_gameCount > 60) && (g_gameCount <= 120))
 	{
 		//スタートカウントのテクスチャの描画
-		g_pD3Device->SetTexture(0, g_pTexture[STARTCOUNT_2_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, startCount, sizeof(CUSTOMVERTEX));
+		SetUpTexture(startCount, STARTCOUNT_2_TEX);
 	}
 	else if ((g_gameCount > 120) && (g_gameCount <= 180))
 	{
 		//スタートカウントのテクスチャの描画
-		g_pD3Device->SetTexture(0, g_pTexture[STARTCOUNT_1_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, startCount, sizeof(CUSTOMVERTEX));
+		SetUpTexture(startCount, STARTCOUNT_1_TEX);
 	}
 	else if ((g_gameCount > 180) && (g_gameCount <= 240))
 	{
 		//スタートカウントのテクスチャの描画
-		g_pD3Device->SetTexture(0, g_pTexture[START_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, start, sizeof(CUSTOMVERTEX));
+		SetUpTexture(start, START_TEX);
 	}
 
 	if (g_gameCount >= 180 && !g_isTimeUp)
@@ -343,15 +294,13 @@ VOID floaMoveRenderSta(VOID)
 
 	if (g_pause && !(g_isTimeUp))
 	{
-		//ポーズ画面のテクスチャの描画
-		g_pD3Device->SetTexture(0, g_pTexture[PAUSE_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, pauseMenu, sizeof(CUSTOMVERTEX));
+		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, PAUSE_TEX);
 	}
 
 	if (g_isTimeUp)
 	{
 		//タイムアップのテクスチャの描画
-		g_pD3Device->SetTexture(0, g_pTexture[TIMEUP_TEX]);
-		g_pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, timeUp, sizeof(CUSTOMVERTEX));
+		SetUpTexture(timeUp, TIMEUP_TEX);
 	}
+
 }
