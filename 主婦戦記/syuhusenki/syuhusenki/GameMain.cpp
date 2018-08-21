@@ -151,6 +151,8 @@ void gameMain() {
 			ReadInTexture("Texture/cardboard.png", BOX_TEX);
 			ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
 			ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
+			ReadInTexture("Texture/mob.png", MOB_TEX);
+			ReadInTexture("Texture/smoke.png", SMOKE_TEX);
 
 			ReadInTexture("Texture/cardboard.png", TIMER_FRAME_TEX);
 			ReadInTexture("Texture/cardboard.png", TIMER_HAND_TEX);
@@ -262,6 +264,7 @@ void gameRender()
 
 	EndSetTexture();
 }
+////////////////////////////////////////////////
 //フロア移動場面
 void floaMove() {
 	
@@ -416,7 +419,7 @@ void mobMoving(CENTRAL_STATE* mob) {
 	}
 }
 
-
+////////////////////////////////////////////
 //コマンド入力場面
 int comandInput[5] = { 10,10,10,10,10 };
 int comandPresentment[5];
@@ -790,7 +793,7 @@ void madamBlowOff() {
 
 }
 
-
+////////////////////////////////////////////////////
 //商品取得場面
 
 void pickGoods() {
@@ -1063,12 +1066,30 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum,int texNum) {
 	}
 }
 
+/////////////////////////////////////
+int texturePC = YASUKO_TEX;
 static int clothHP = 1000;
 static int mobHP = 50;
 static bool clothBreak = false;
 static bool clothStolen = false;
 static bool getCloth = false;
 static int openCount = 0;
+static float Rad;
+CENTRAL_STATE clothMobCentral = {900,500,200,300};
+CENTRAL_STATE clothPCCentral = { 300,500,200,300};
+CUSTOMVERTEX clothSmoke[4];
+CENTRAL_STATE clothSmokeCentral[6] = 
+{
+	{800,550,200,200},
+	{700,450,200,200},
+	{600,500,250,250},
+	{650,600,200,200},
+	{400,500,250,250},
+	{500,400,200,200}
+};
+
+
+
 void clothRush() 
 {
 	clothRushControl();
@@ -1129,7 +1150,7 @@ void clothRushControl()
 			clothStolen = false;
 			clothRushInit();
 		}
-		if (getCloth && durabilityPointCentral.x <= 1000)
+		if (getCloth && durabilityPointCentral.x <= 1000 && durabilityPointCentral.x >= 805)
 		{
 			soundsManager.Start("WIN", false);
 			getCloth = false;
@@ -1140,18 +1161,71 @@ void clothRushControl()
 			soundsManager.Start("LOSE", false);
 			getCloth = false;
 			clothRushInit();
+		}
+		else if (getCloth && durabilityPointCentral.x <= 805)
+		{
+			soundsManager.Start("BREAK", false);
+			getCloth = false;
+			clothRushInit();
+		}
+		if (Rad < 0.2) {
+			Rad -= 0.05;
+		}
+		if (Rad > 0) {
+			Rad += 0.05;
+		}
+		static int smokeCount = 0;
+		smokeCount++;
+		static bool smokeVary = false;
+		if (smokeCount <= 50) {
+			for (int i = 0; i < 6; i++)
+			{
+				clothSmokeCentral[i].scaleX += rand() % 5;
+				clothSmokeCentral[i].scaleY += rand() % 5;
 
+			}
+		}
+		if (smokeCount > 50) {
+			smokeVary = true;
+			for (int i = 0; i < 6; i++)
+			{
+				clothSmokeCentral[i].scaleX -= rand() % 5;
+				clothSmokeCentral[i].scaleY -= rand() % 5;
+
+			}
+			smokeVary = false;
+		}
+		if (smokeCount > 100) {
+			smokeCount = 0;
 		}
 	}
 }
+
 void clothRushRender() 
 {
 	CUSTOMVERTEX durabilityPoint[4];
+	CUSTOMVERTEX clothMob[4];
+	CUSTOMVERTEX clothPC[4];
+
+	CreateSquareVertex(clothMob, clothMobCentral);
+	CreateSquareVertex(clothPC, clothPCCentral);
 	CreateSquareVertexColor(durabilityPoint, durabilityPointCentral,0xff000000);
+
+
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, CLOTH_BG_TEX);
 	EasyCreateSquareVertex(600,50,1200,100,DURABILITY_TEX);
+
+	
 	SetUpTexture(durabilityPoint, BLANK);
+
+	SetUpTexture(clothMob, MOB_TEX);
+	SetUpTexture(clothPC, texturePC);
+	for (int i = 0; i < 6; i++) 
+	{
+		RevolveZ(clothSmoke, Rad, clothSmokeCentral[i]);
+		SetUpTexture(clothSmoke, SMOKE_TEX);
+	}
 	if (openCount < 20)
 	{
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, START_TEX);
@@ -1172,7 +1246,9 @@ void clothRushRender()
 	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
 
 #endif
+
 	EndSetTexture();
+
 }
 
 void clothRushInit() 
@@ -1181,5 +1257,13 @@ void clothRushInit()
 	clothHP = 1000;
 	mobHP = 100;
 	openCount = 0;
+
+	clothSmokeCentral[0]={ 800,550,200,200 };
+	clothSmokeCentral[1]={ 700,450,200,200 };
+	clothSmokeCentral[2]={ 600,500,250,250 };
+	clothSmokeCentral[3]={ 650,600,200,200 };
+	clothSmokeCentral[4]={ 400,500,250,250 };
+	clothSmokeCentral[5]={ 500,400,200,200 };
+
 	g_gameScene = PUSHENEMY;
 }
