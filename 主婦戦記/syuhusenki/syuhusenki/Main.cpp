@@ -34,14 +34,15 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
 	ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
+	ReadInTexture("Texture/arrow.png", TITLEICON_TEX);
 	ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
 
-	ReadInTexture("Texture/cardboard.png",SELECT_BG_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECT_YASUKO_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECT_MITUKO_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECT_ISOKO_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECTFRAME_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECTLASTCHECK_TEX);
+	ReadInTexture("Texture/kariSelect.png",SELECT_BG_TEX);
+	ReadInTexture("Texture/Yasuko.png",SELECT_YASUKO_TEX);
+	ReadInTexture("Texture/comingSoon.png",SELECT_MITUKO_TEX);
+	ReadInTexture("Texture/comingSoon.png",SELECT_ISOKO_TEX);
+	ReadInTexture("Texture/selectFrame.png",SELECTFRAME_TEX);
+	ReadInTexture("Texture/lastCheck.png",SELECTLASTCHECK_TEX);
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);
 	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
