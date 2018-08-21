@@ -15,6 +15,7 @@ VOID titleControl(VOID)
 
 	for (BGM; BGM < 1; BGM++)
 	{
+		soundsManager.SetVolume("OP_BGM", 25);
 		soundsManager.Start("OP_BGM", true);
 	}
 
@@ -53,6 +54,7 @@ VOID titleControl(VOID)
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("OP_BGM");
+			soundsManager.SetVolume("SELECT_BGM", 25);
 			soundsManager.Start("SELECT_BGM", true);
 			BGM = 0;
 			g_scene = SCENE_SERECTCHARANDSTAGE;

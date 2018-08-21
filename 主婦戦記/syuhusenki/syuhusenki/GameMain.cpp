@@ -26,8 +26,8 @@ enum FLOA {
 };
 
 
-//int g_gameScene = FLOAMOVE;
-int g_gameScene = PUSHENEMY;
+int g_gameScene = FLOAMOVE;
+//int g_gameScene = PUSHENEMY;
 //int g_gameScene = PICKGOODS;
 int g_selectFloa = FOOD;
 static bool g_isBlowOff = false;
@@ -37,7 +37,7 @@ static int g_effectCount = 0;
 static bool g_isTakeA[8] = { false,false,false,false,false,false,false,false };
 static bool g_isTakeB[8] = { false,false,false,false,false,false,false,false };
 SoundEffect Button{ "BUTTON1","BUTTON2","BUTTON3" };
-SoundEffect Pick{ "PICK1", "PICK2","PICK3", "PICK4","PICK5", "PICK6" };
+SoundEffect Pick{ "PICK1", "PICK2","PICK3", "PICK4","PICK5", "PICK6" , "PICK7" };
 static float g_goodsScaleA[8] = { 60,60,60,60,60,60,60,60 };
 static float g_goodsScaleB[8] = { 60,60,60,60,60,60,60,60 };
 RECT testText = { 100,200,900,500 };
@@ -154,6 +154,17 @@ void gameMain() {
 			ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
 			ReadInTexture("Texture/pork.png", PORK_TEX);
 			ReadInTexture("Texture/cardboard.png", BOX_TEX);
+
+			ReadInTexture("Texture/cardboard.png", TIMER_FRAME_TEX);
+			ReadInTexture("Texture/cardboard.png", TIMER_HAND_TEX);
+			ReadInTexture("Texture/cardboard.png", STARTCOUNT_3_TEX);
+			ReadInTexture("Texture/cardboard.png", STARTCOUNT_2_TEX);
+			ReadInTexture("Texture/cardboard.png", STARTCOUNT_1_TEX);
+			ReadInTexture("Texture/cardboard.png", START_TEX);
+			ReadInTexture("Texture/cardboard.png", PAUSE_TEX);
+			ReadInTexture("Texture/cardboard.png", TIMEUP_TEX);
+			ReadInTexture("Texture/cardboard.png", PC_TEX);
+			ReadInTexture("Texture/cardboard.png", GAME_BG_TEX);
 			canRead = false;
 		}
 		mobCentralBlowOff[0] = { 850,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
@@ -580,7 +591,7 @@ void blowOffDeviseControl(int* i,int comand[])
 	CheckKeyState(DIK_R);
 	CheckKeyState(DIK_L);
 
-	if (KeyState[DIK_RETURN]||KeyState[DIK_NUMPADENTER] == KeyRelease)
+	if (KeyState[DIK_RETURN] == KeyRelease ||KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
 		g_gameScene = PICKGOODS;
 
@@ -676,10 +687,11 @@ void buttonSE(SoundEffect Button,int SoundNumber) {
 	if (buttonKeyID >= SoundNumber) {
 		buttonKeyID = 0;
 	}
+
 	switch (buttonKeyID) {
 	case 6:
 		if (buttonKeyID == 6 && buttonKeyID != prevbuttonKeyID) {
-			g_SoundSuccess = soundsManager.Stop(Button.SE7);
+			g_SoundSuccess = soundsManager.Stop(Button.SE7) && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.Start(Button.SE7, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 0;
@@ -687,24 +699,24 @@ void buttonSE(SoundEffect Button,int SoundNumber) {
 		}
 	case 5:
 		if (buttonKeyID == 5 && buttonKeyID != prevbuttonKeyID) {
-			g_SoundSuccess = soundsManager.Stop(Button.SE6);
+			g_SoundSuccess = soundsManager.Stop(Button.SE6) && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.Start(Button.SE6, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
-			buttonKeyID = 0;
+			buttonKeyID = 6;
 			break;
 		}
 
 	case 4:
 		if (buttonKeyID == 4 && buttonKeyID != prevbuttonKeyID) {
-			g_SoundSuccess = soundsManager.Stop(Button.SE5);
+			g_SoundSuccess = soundsManager.Stop(Button.SE5) && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.Start(Button.SE5, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
-			buttonKeyID = 0;
+			buttonKeyID = 5;
 			break;
 		}
 	case 3:
 		if (buttonKeyID == 3 && buttonKeyID != prevbuttonKeyID) {
-			g_SoundSuccess = soundsManager.Stop(Button.SE4);
+			g_SoundSuccess = soundsManager.Stop(Button.SE4) && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.Start(Button.SE4, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 4;
@@ -712,7 +724,7 @@ void buttonSE(SoundEffect Button,int SoundNumber) {
 		}
 	case 2:
 		if (buttonKeyID == 2 && buttonKeyID != prevbuttonKeyID) {
-			g_SoundSuccess = soundsManager.Stop(Button.SE3);
+			g_SoundSuccess = soundsManager.Stop(Button.SE3) && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.Start(Button.SE3, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 3;
@@ -720,7 +732,7 @@ void buttonSE(SoundEffect Button,int SoundNumber) {
 		}
 	case 1:
 		if (buttonKeyID == 1 && buttonKeyID != prevbuttonKeyID) {
-			g_SoundSuccess = soundsManager.Stop(Button.SE2);
+			g_SoundSuccess = soundsManager.Stop(Button.SE2) && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.Start(Button.SE2, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 2;
@@ -728,7 +740,7 @@ void buttonSE(SoundEffect Button,int SoundNumber) {
 		}
 	case 0:
 		if (buttonKeyID == 0 && buttonKeyID != prevbuttonKeyID) {
-			g_SoundSuccess = soundsManager.Stop(Button.SE1);
+			g_SoundSuccess = soundsManager.Stop(Button.SE1) && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.Start(Button.SE1, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
 			buttonKeyID = 1;
@@ -870,6 +882,36 @@ void pickGoodsRender() {
 		RECT DEBUGTextB = { 100 + i * 50 ,550,900,600 };
 		WriteWord(DebugTakeBoolB, DEBUGTextB, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 	}
+
+	SoundLib::PlayingStatus status = soundsManager.GetStatus("PICK1");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	RECT DEBUGTextA = { 100 ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+	status = soundsManager.GetStatus("PICK2");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	DEBUGTextA = { 150  ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+	status = soundsManager.GetStatus("PICK3");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	DEBUGTextA = { 200  ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+	status = soundsManager.GetStatus("PICK4");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	DEBUGTextA = { 250  ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+	status = soundsManager.GetStatus("PICK5");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	DEBUGTextA = { 300  ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+	status = soundsManager.GetStatus("PICK6");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	DEBUGTextA = { 350  ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+	status = soundsManager.GetStatus("PICK7");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	DEBUGTextA = { 400  ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+
 #endif
 	EndSetTexture();
 }
@@ -895,13 +937,13 @@ void pickGoodsDeviseControl() {
 	{
 		g_goodsTakenNumA++;
 		takeingGoods(g_isTakeA, 8);
-		buttonSE(Pick,6);
+		buttonSE(Pick,7);
 	}
 	if (KeyState[DIK_D] == KeyRelease)
 	{
 		g_goodsTakenNumB++;
 		takeingGoods(g_isTakeB, 8);
-		buttonSE(Pick, 6);
+		buttonSE(Pick, 7);
 	}
 	if (KeyState[DIK_W])
 	{

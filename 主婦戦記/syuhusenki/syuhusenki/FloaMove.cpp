@@ -33,7 +33,7 @@ VOID floaMoveControl(VOID)
 	}
 
 	if (g_gameCount == 10980)
-	{
+	{soundsManager.SetVolume("FOOD", 25);
 		soundsManager.Stop("FOOD");
 		g_isTimeUp = true;
 	}
@@ -57,6 +57,7 @@ VOID floaMoveControl(VOID)
 
 		for (onceSound; onceSound < 1; onceSound++)
 		{
+			soundsManager.SetVolume("FOOD", 25);
 			soundsManager.Start("FOOD", true);
 			soundsManager.Start("WHISYLE", false);
 		}
@@ -179,6 +180,12 @@ VOID floaMoveControl(VOID)
 	}
 		collision();
 	}
+	CheckKeyState(DIK_RETURN);
+	if (KeyState[DIK_RETURN] == KeyRelease)
+	{
+		g_gameScene = PUSHENEMY;
+	}
+
 }
 
 //当たり判定処理
@@ -212,6 +219,16 @@ VOID floaMoveRender(VOID)
 
 	//ゲーム画面のテクスチャの設定
 	floaMoveRenderSta();
+#ifdef _DEBUG
+	char debugPC[10];
+	sprintf_s(debugPC, 10, "%.2f", g_PCSta.x);
+	RECT DEBUGTextA = { 100 ,500,900,600 };
+	WriteWord(debugPC, DEBUGTextA, DT_LEFT, 0xffffff00, DEBUG_FONT);
+	sprintf_s(debugPC, 10, "%.2f", g_PCSta.y);
+	DEBUGTextA = { 100 ,550,900,600 };
+	WriteWord(debugPC, DEBUGTextA, DT_LEFT, 0xffffff00, DEBUG_FONT);
+
+#endif
 
 	EndSetTexture();
 }
@@ -285,4 +302,5 @@ VOID floaMoveRenderSta(VOID)
 		//タイムアップのテクスチャの描画
 		SetUpTexture(timeUp, TIMEUP_TEX);
 	}
+
 }
