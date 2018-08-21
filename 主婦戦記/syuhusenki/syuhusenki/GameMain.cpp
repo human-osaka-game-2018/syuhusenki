@@ -1082,9 +1082,9 @@ CENTRAL_STATE clothSmokeCentral[6] =
 {
 	{800,550,200,200},
 	{700,450,200,200},
-	{600,500,250,250},
+	{600,500,230,230},
 	{650,600,200,200},
-	{400,500,250,250},
+	{450,500,230,230},
 	{500,400,200,200}
 };
 
@@ -1174,29 +1174,44 @@ void clothRushControl()
 		if (Rad > 0) {
 			Rad += 0.05;
 		}
-		static int smokeCount = 0;
-		smokeCount++;
+		static int clothCount = 0;
+		clothCount++;
 		static bool smokeVary = false;
-		if (smokeCount <= 50) {
+		static bool charMove = false;
+		if (clothPCCentral.x >= 350) {
+			charMove = true;
+		}
+		if (clothPCCentral.x <= 250) {
+			charMove = false;
+		}
+		if (!charMove) {
+		clothPCCentral.x += 1;
+		clothMobCentral.x += 1;
+		}
+		if (charMove) {
+			clothPCCentral.x -= 1;
+			clothMobCentral.x -= 1;
+		}
+		if (clothCount <= 50) {
 			for (int i = 0; i < 6; i++)
 			{
-				clothSmokeCentral[i].scaleX += rand() % 5;
-				clothSmokeCentral[i].scaleY += rand() % 5;
+				clothSmokeCentral[i].scaleX += rand() % 4;
+				clothSmokeCentral[i].scaleY += rand() % 4;
 
 			}
 		}
-		if (smokeCount > 50) {
+		if (clothCount > 50) {
 			smokeVary = true;
 			for (int i = 0; i < 6; i++)
 			{
-				clothSmokeCentral[i].scaleX -= rand() % 5;
-				clothSmokeCentral[i].scaleY -= rand() % 5;
+				clothSmokeCentral[i].scaleX -= rand() % 4;
+				clothSmokeCentral[i].scaleY -= rand() % 4;
 
 			}
 			smokeVary = false;
 		}
-		if (smokeCount > 100) {
-			smokeCount = 0;
+		if (clothCount > 100) {
+			clothCount = 0;
 		}
 	}
 }
