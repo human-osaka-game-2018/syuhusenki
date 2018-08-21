@@ -17,6 +17,8 @@ CENTRAL_STATE g_startCountSta = { 750.f, 500.f, 300.f, 300.f };
 CENTRAL_STATE g_startSta = { 750.f, 500.f, 400.f, 192.5 };
 CENTRAL_STATE g_timeUpSta = { 750.f, 500.f, 520.f, 200.f };
 
+int g_gameCount = 0;
+
 //ÉQÅ[ÉÄêßå‰èàóù
 VOID floaMoveControl(VOID)
 {

@@ -1,8 +1,6 @@
 #include "Main.h"
 #include "Select.h"
 
-//XINPUT_STATE g_Xinput;
-
 CENTRAL_STATE g_yasukoSta = { 225.f, 177.f, 52.f, 73.f };
 CENTRAL_STATE g_mitukoSta = { 419.5f, 176.3f, 80.f, 80.f };
 CENTRAL_STATE g_isokoSta = { 614.7f, 176.3f, 80.f, 80.f };
@@ -12,7 +10,6 @@ CENTRAL_STATE g_selectCharSta = { 1050.f, 270.f, 230.f, 230.f };
 CENTRAL_STATE g_lastCheckSta = { 500.f, 390.f,20.f,20.f };
 
 int g_inCount = 0;
-int g_gameCount = 0;
 
 bool g_pause = false;
 bool g_isGameStart = false;
@@ -27,6 +24,15 @@ VOID selectControl(VOID)
 	BottonCheck();
 
 	HRESULT hr;
+
+	if (g_Xinput.Gamepad.wButtons == 0 && g_Xinput.Gamepad.sThumbLX <= 6000 && g_Xinput.Gamepad.sThumbLX >= -6000)
+	{
+		g_inCount = 0;
+	}
+	else if (g_inCount)
+	{
+		g_inCount++;
+	}
 
 	if (PadState[ButtonA] == PadOn && !(g_inCount))
 	{
@@ -77,6 +83,7 @@ VOID selectControl(VOID)
 	}
 	if (PadState[ButtonB] == PadOn && !(g_inCount))
 	{
+		//Bボタンを押すとタイトルに戻る処理
 		if (!(g_isNextSelect) && !(g_isLastCheck))
 		{
 			soundsManager.Stop("SELECT");
@@ -84,6 +91,8 @@ VOID selectControl(VOID)
 			g_scene = SCENE_TITLE;
 			g_inCount++;
 		}
+
+		//出撃の最終確認の時のBボタンの処理
 		if (g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("BUTTON1", false);
@@ -107,13 +116,6 @@ VOID selectControl(VOID)
 			g_lastCheckSta.y = 390.f;
 		}
 	}
-	/*if (PadState[ButtonY] == PadOn && !(g_inCount))
-	{
-		if (g_lastCheckSta.y == 490.f && g_isNextSelect && g_isLastCheck)
-		{
-			g_lastCheckSta.y = 590.f;
-		}
-	}*/
 	if (PadState[ButtonRIGHT] == PadOn && !(g_inCount))
 	{
 		if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
@@ -158,147 +160,78 @@ VOID selectControl(VOID)
 			g_inCount++;
 		}
 	}
-
-	XInputGetState(0, &g_Xinput);
-
-	hr = g_pKeyDevice->Acquire();
-
-	if ((hr == DI_OK) || (hr == S_FALSE))
+	
+	//左スティックを上に倒したときの処理
+	if (g_Xinput.Gamepad.sThumbLY >= 6000 && !(g_inCount))
 	{
-		BYTE diks[256];
-		g_pKeyDevice->GetDeviceState(sizeof(diks), &diks);
-
-		if (g_Xinput.Gamepad.wButtons == 0 && g_Xinput.Gamepad.sThumbLX <= 6000 && g_Xinput.Gamepad.sThumbLX >= -6000)
+		if (g_lastCheckSta.y == 390.f && g_isNextSelect && g_isLastCheck)
 		{
-			g_inCount = 0;
+			soundsManager.Start("CURSOR", false);
+			g_lastCheckSta.y = 320.f;
 		}
-		else if (g_inCount)
+	}
+
+	//左スティックを下に倒したときの処理
+	if (g_Xinput.Gamepad.sThumbLY <= -6000 && !(g_inCount))
+	{
+		if (g_lastCheckSta.y == 320.f && g_isNextSelect && g_isLastCheck)
 		{
+			soundsManager.Start("CURSOR", false);
+			g_lastCheckSta.y = 390.f;
+		}
+	}
+
+	//左スティックを右に倒した時の処理
+	if (g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
+	{
+		//キャラ選択のカーソル移動
+		if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_charSelectFrameSta.x = 614.7f;
+			g_inCount++;
+		}
+		else if (g_charSelectFrameSta.x == 226.4f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_charSelectFrameSta.x = 419.5f;
 			g_inCount++;
 		}
 
-		//if (g_Xinput.Gamepad.wButtons == A_BUTTON && !(g_inCount))
-		//{
-		//	if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 490.f)
-		//	{
-		//		soundsManager.Start("BUTTON1", false);
-		//		g_isNextSelect = false;
-		//		g_isLastCheck = false;
-		//		g_scene = SCENE_MAIN;
-		//	}
-		//	else if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 590.f)
-		//	{
-		//		soundsManager.Start("BUTTON1", false);
-		//		g_isNextSelect = false;
-		//		g_isLastCheck = false;
-		//		g_inCount++;
-		//	}
-
-		//	else if (g_stageSelectFrameSta.x == 269.f && g_isNextSelect && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("BUTTON1", false);
-		//		soundsManager.Stop("SELECT");
-		//		g_isLastCheck = true;
-		//		g_inCount++;
-		//	}
-		//	else if (g_stageSelectFrameSta.x == 565.f && g_isNextSelect && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("MISS", false);
-		//		g_inCount++;
-		//	}
-
-		//	else if (g_charSelectFrameSta.x == 226.4f && !(g_isNextSelect) && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("BUTTON1", false);
-		//		g_isNextSelect = true;
-		//		g_inCount++;
-		//	}
-		//	else if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("MISS", false);
-		//		g_inCount++;
-		//	}
-		//	else if (g_charSelectFrameSta.x == 614.7f && !(g_isNextSelect) && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("MISS", false);
-		//		g_inCount++;
-		//	}
-		//}
-		//if (g_Xinput.Gamepad.wButtons == B_BUTTON && !(g_inCount))
-		//{
-		//	if (!(g_isNextSelect) && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Stop("SELECT");
-		//		soundsManager.Start("BUTTON1", false);
-		//		g_scene = SCENE_TITLE;
-		//		g_inCount++;
-		//	}
-		//	if (g_isNextSelect && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("BUTTON1", false);
-		//		g_isNextSelect = false;
-		//		g_inCount++;
-		//	}
-		//}
-		//if (g_Xinput.Gamepad.wButtons == UP_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLY >= 6000 && !(g_inCount))
-		//{
-		//	if (g_lastCheckSta.y == 590.f && g_isNextSelect && g_isLastCheck)
-		//	{
-		//		g_lastCheckSta.y = 490.f;
-		//	}
-		//}
-		//if (g_Xinput.Gamepad.wButtons == DOWN_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLY <= -6000 && !(g_inCount))
-		//{
-		//	if (g_lastCheckSta.y == 490.f && g_isNextSelect && g_isLastCheck)
-		//	{
-		//		g_lastCheckSta.y = 590.f;
-		//	}
-		//}
-		//if (g_Xinput.Gamepad.wButtons == RIGHT_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
-		//{
-		//	if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("CURSOR", false);
-		//		g_charSelectFrameSta.x = 614.7f;
-		//		g_inCount++;
-		//	}
-		//	else if (g_charSelectFrameSta.x == 226.4f && !(g_isNextSelect) && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("CURSOR", false);
-		//		g_charSelectFrameSta.x = 419.5f;
-		//		g_inCount++;
-		//	}
-
-		//	if (g_stageSelectFrameSta.x == 269.f && g_isNextSelect && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("CURSOR", false);
-		//		g_stageSelectFrameSta.x = 565.f;
-		//		g_inCount++;
-		//	}
-		//}
-		//else if (g_Xinput.Gamepad.wButtons == LEFT_BUTTON && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
-		//{
-		//	if (g_charSelectFrameSta.x == 614.7f && !(g_isNextSelect) && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("CURSOR", false);
-		//		g_charSelectFrameSta.x = 419.5f;
-		//		g_inCount++;
-		//	}
-		//	else if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("CURSOR", false);
-		//		g_charSelectFrameSta.x = 226.4f;
-		//		g_inCount++;
-		//	}
-
-		//	if (g_stageSelectFrameSta.x == 565.f && g_isNextSelect && !(g_isLastCheck))
-		//	{
-		//		soundsManager.Start("CURSOR", false);
-		//		g_stageSelectFrameSta.x = 269.f;
-		//		g_inCount++;
-		//	}
-		//}
+		//ステージ選択のカーソル移動
+		if (g_stageSelectFrameSta.x == 269.f && g_isNextSelect && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_stageSelectFrameSta.x = 565.f;
+			g_inCount++;
+		}
 	}
+	//左スティックを左に倒したときの処理
+	else if (g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
+	{
+		//キャラ選択のカーソル移動
+		if (g_charSelectFrameSta.x == 614.7f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_charSelectFrameSta.x = 419.5f;
+			g_inCount++;
+		}
+		else if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_charSelectFrameSta.x = 226.4f;
+			g_inCount++;
+		}
+
+		//ステージ選択のカーソル移動
+		if (g_stageSelectFrameSta.x == 565.f && g_isNextSelect && !(g_isLastCheck))
+		{
+			soundsManager.Start("CURSOR", false);
+			g_stageSelectFrameSta.x = 269.f;
+			g_inCount++;
+		}
+	}
+	
 }
 
 //セレクト描画処理
