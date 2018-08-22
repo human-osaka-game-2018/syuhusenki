@@ -3,19 +3,19 @@
 #include "GameMain.h"
 
 //ヤス子のステータス
-CHARACTER_STATE g_yasukoSta = { 1.f, 3.f, 1.f };
+CHARACTER_STATE g_yasukoSta = { 1.f, 1.5f, 1.f };
 
 //ミツ子のステータス
-CHARACTER_STATE g_mitukoSta = { 2.f, 3.f, 1.25 };
+CHARACTER_STATE g_mitukoSta = { 2.f, 1.5f, 1.25 };
 
 //イソ子のステータス
-CHARACTER_STATE g_isokoSta = { 2.f, 4.f, 1.f };
+CHARACTER_STATE g_isokoSta = { 2.f, 2.f, 1.f };
 
-CENTRAL_STATE g_PCSta = { 1400.f, 900.f, 80.f, 80.f };
-CENTRAL_STATE g_timerSta = { 1710.f, 815.f, 200.f, 200.f };
-CENTRAL_STATE g_startCountSta = { 750.f, 500.f, 300.f, 300.f };
-CENTRAL_STATE g_startSta = { 750.f, 500.f, 400.f, 192.5 };
-CENTRAL_STATE g_timeUpSta = { 750.f, 500.f, 520.f, 200.f };
+CENTRAL_STATE g_PCSta = { 900.f, 580.f, 32.f, 53.f };
+CENTRAL_STATE g_timerSta = { 1142.f, 543.f, 150.f, 150.f };
+CENTRAL_STATE g_startCountSta = { 520.f, 350.f, 150.f, 150.f };
+CENTRAL_STATE g_startSta = { 520.f, 350.f, 200.f, 96.25f };
+CENTRAL_STATE g_timeUpSta = { 520.f, 350.f, 260.f, 100.f };
 
 FLOAT g_PCSpeed = 0.f;
 
@@ -191,24 +191,24 @@ VOID floaMoveControl(VOID)
 //当たり判定処理
 VOID collision(VOID)
 {
-	if (g_PCSta.x <= 80)
+	if (g_PCSta.x <= 50.f)
 	{
-		g_PCSta.x = 80;
+		g_PCSta.x = 50.f;
 	}
 
-	if (g_PCSta.x >= 1455)
+	if (g_PCSta.x >= 965.f)
 	{
-		g_PCSta.x = 1455;
+		g_PCSta.x = 965.f;
 	}
 
-	if (g_PCSta.y <= 130)
+	if (g_PCSta.y <= 90.f)
 	{
-		g_PCSta.y = 130;
+		g_PCSta.y = 90.f;
 	}
 
-	if (g_PCSta.y >= 900)
+	if (g_PCSta.y >= 600.f)
 	{
-		g_PCSta.y = 900;
+		g_PCSta.y = 600.f;
 	}
 }
 
@@ -237,7 +237,7 @@ VOID floaMoveRender(VOID)
 VOID floaMoveRenderSta(VOID)
 {
 	static float timerRotation = 0.f;
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, GAME_BG_TEX);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);
 
 	CUSTOMVERTEX timer[4];
 	CUSTOMVERTEX timerHand[4];

@@ -32,21 +32,21 @@ VOID titleControl(VOID)
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_A) || PadState[ButtonLEFT] == PadRelease && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
+		if (InputKEY(DIK_A) || PadState[ButtonLEFT] == PadOn && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
 		{
 			soundsManager.Start("CURSOR", false);
 			g_selectArrowSta.x = ARROWRIGHT;
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_D) || PadState[ButtonRIGHT] == PadRelease && !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
+		if (InputKEY(DIK_D) || PadState[ButtonRIGHT] == PadOn && !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
 		{
 			soundsManager.Start("CURSOR", false);
 			g_selectArrowSta.x = ARROWLEFT;
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadRelease && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT)
+		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT)
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("OP_BGM");
@@ -57,7 +57,7 @@ VOID titleControl(VOID)
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadRelease && g_selectArrowSta.x == ARROWLEFT)
+		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadOn && g_selectArrowSta.x == ARROWLEFT)
 		{
 			PostQuitMessage(0);
 		}

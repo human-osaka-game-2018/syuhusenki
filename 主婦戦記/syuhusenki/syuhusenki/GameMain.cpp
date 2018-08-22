@@ -159,16 +159,16 @@ void gameMain() {
 			ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
 			ReadInTexture("Texture/smoke.png", SMOKE_TEX);
 
-			ReadInTexture("Texture/cardboard.png", TIMER_FRAME_TEX);
-			ReadInTexture("Texture/cardboard.png", TIMER_HAND_TEX);
+			ReadInTexture("Texture/timerFrame.png", TIMER_FRAME_TEX);
+			ReadInTexture("Texture/timerHand.png", TIMER_HAND_TEX);
 			ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
 			ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
 			ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
 			ReadInTexture("Texture/kariStart.png", START_TEX);
 			ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
-			ReadInTexture("Texture/cardboard.png", TIMEUP_TEX);
+			ReadInTexture("Texture/end.png", TIMEUP_TEX);
 			//ReadInTexture("Texture/cardboard.png", PC_TEX);
-			ReadInTexture("Texture/cardboard.png", GAME_BG_TEX);
+			ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
 			canRead = false;
 		}
 		mobCentralBlowOff[0] = { 850,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
