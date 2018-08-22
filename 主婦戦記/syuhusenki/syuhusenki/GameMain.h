@@ -22,6 +22,7 @@ enum FLOA {
 	CLOTH
 };
 
+extern int texturePC;
 extern int g_selectFloa;
 extern int g_gameScene;
 extern SoundEffect Button;

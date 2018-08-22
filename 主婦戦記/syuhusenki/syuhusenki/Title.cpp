@@ -36,21 +36,21 @@ VOID titleControl(VOID)
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_A)||PadState[ButtonLEFT] && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
+		if (InputKEY(DIK_A)||PadState[ButtonLEFT] == PadRelease && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
 		{
 			soundsManager.Start("CURSOR", false);
 			g_selectArrowSta.x = 500;
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_D)||PadState[ButtonRIGHT]&& !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
+		if (InputKEY(DIK_D)||PadState[ButtonRIGHT] == PadRelease && !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
 		{
 			soundsManager.Start("CURSOR", false);
 			g_selectArrowSta.x = 1150;
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == 500 ||PadState[ButtonA] && !(g_inCount) && g_selectArrowSta.x == 500)
+		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == 500 ||PadState[ButtonA] == PadRelease && !(g_inCount) && g_selectArrowSta.x == 500)
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("OP_BGM");
@@ -61,7 +61,7 @@ VOID titleControl(VOID)
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == 1150 ||PadState[ButtonA]&& g_selectArrowSta.x == 1150)
+		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == 1150 ||PadState[ButtonA] == PadRelease && g_selectArrowSta.x == 1150)
 		{
 			PostQuitMessage(0);
 		}
@@ -81,7 +81,7 @@ VOID titleRender(VOID)
 //タイトル画面のテクスチャ
 VOID titleRenderSta(VOID)
 {
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, TITLE_BG_TEX);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TITLE_TEX);
 
 	CUSTOMVERTEX selectArrow[4];
 	CreateSquareVertex(selectArrow, g_selectArrowSta);

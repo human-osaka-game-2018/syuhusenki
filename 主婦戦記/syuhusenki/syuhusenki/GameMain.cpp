@@ -15,15 +15,21 @@ enum MOBDIRECTION {
 };
 
 
-//int g_gameScene = FLOAMOVE;
+int g_gameScene = FLOAMOVE;
 //int g_gameScene = PUSHENEMY;
-int g_gameScene = PICKGOODS;
-//int g_selectFloa = FOOD;
-int g_selectFloa = CLOTH;
+//int g_gameScene = PICKGOODS;
+int g_selectFloa = FOOD;
+//int g_selectFloa = CLOTH;
 
 static bool g_isBlowOff = false;
 static bool g_isFirst = true;
 static int g_effectCount = 0;
+
+static int comandInput[5] = { 10,10,10,10,10 };
+static int comandPresentment[5];
+static int comandCount = 0;
+static int checkedComand = 2;
+
 //static int fallCount = 0;
 static bool g_isTakeA[8] = { false,false,false,false,false,false,false,false };
 static bool g_isTakeB[8] = { false,false,false,false,false,false,false,false };
@@ -151,18 +157,17 @@ void gameMain() {
 			ReadInTexture("Texture/cardboard.png", BOX_TEX);
 			ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
 			ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
-			ReadInTexture("Texture/mob.png", MOB_TEX);
 			ReadInTexture("Texture/smoke.png", SMOKE_TEX);
 
 			ReadInTexture("Texture/cardboard.png", TIMER_FRAME_TEX);
 			ReadInTexture("Texture/cardboard.png", TIMER_HAND_TEX);
-			ReadInTexture("Texture/cardboard.png", STARTCOUNT_3_TEX);
-			ReadInTexture("Texture/cardboard.png", STARTCOUNT_2_TEX);
-			ReadInTexture("Texture/cardboard.png", STARTCOUNT_1_TEX);
+			ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
+			ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
+			ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
 			ReadInTexture("Texture/kariStart.png", START_TEX);
-			ReadInTexture("Texture/cardboard.png", PAUSE_TEX);
+			ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
 			ReadInTexture("Texture/cardboard.png", TIMEUP_TEX);
-			ReadInTexture("Texture/cardboard.png", PC_TEX);
+			//ReadInTexture("Texture/cardboard.png", PC_TEX);
 			ReadInTexture("Texture/cardboard.png", GAME_BG_TEX);
 			canRead = false;
 		}
@@ -197,6 +202,10 @@ void gameMain() {
 		break;
 	case PICKGOODS:
 		pickGoods();
+		for (int i = 0; i < 5; i++)
+		{
+			comandInput[i] = 10;
+		}
 		g_effectCount = 0;
 		break;
 	
@@ -421,10 +430,6 @@ void mobMoving(CENTRAL_STATE* mob) {
 
 ////////////////////////////////////////////
 //ÉRÉ}ÉìÉhì¸óÕèÍñ 
-int comandInput[5] = { 10,10,10,10,10 };
-int comandPresentment[5];
-int comandCount = 0;
-int checkedComand = 2;
 void blowOff() {
 	switch (g_selectFloa) {
 	case FOOD:
@@ -521,7 +526,7 @@ void blowOffRender()
 	if ((g_effectCount > 20) && g_isBlowOff) {
 		SetUpTexture(effectExplosion, EXPLOSION_TEX);
 	}
-	SetUpTexture(playerHit, YASUKO_TEX);
+	SetUpTexture(playerHit, texturePC);
 
 	WriteWord("ÉÇÉuéÂïwîrèú", testText, DT_CENTER, RED, HOGE_FONT);
 	char debugComandInput[10];
@@ -859,7 +864,7 @@ void pickGoodsRender() {
 	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
 	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
 
-	SetUpTexture(playerHit, YASUKO_TEX);
+	SetUpTexture(playerHit, texturePC);
 
 	goodsRender(goodsA, g_isTakeA, 0, BEEF_TEX);
 	goodsRender(goodsA2, g_isTakeA, 1, BEEF_TEX);
@@ -1068,8 +1073,11 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum,int texNum) {
 
 /////////////////////////////////////
 int texturePC = YASUKO_TEX;
-static int clothHP = 1000;
-static int mobHP = 50;
+static int clothMAXHP = 1000;
+static int mobMAXHP = 50;
+static int clothHP = clothMAXHP;
+static int mobHP = mobMAXHP;
+
 static bool clothBreak = false;
 static bool clothStolen = false;
 static bool getCloth = false;
@@ -1230,8 +1238,7 @@ void clothRushRender()
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, CLOTH_BG_TEX);
 	EasyCreateSquareVertex(600,50,1200,100,DURABILITY_TEX);
-
-	
+															  
 	SetUpTexture(durabilityPoint, BLANK);
 
 	SetUpTexture(clothMob, MOB_TEX);
@@ -1241,6 +1248,9 @@ void clothRushRender()
 		RevolveZ(clothSmoke, Rad, clothSmokeCentral[i]);
 		SetUpTexture(clothSmoke, SMOKE_TEX);
 	}
+	EasyCreateSquareVertexColor(800, 600, 1200, 650, 0xff00ff00, BLANK);
+	EasyCreateSquareVertexColor(800, 600, 1200 - (((800-1200)/ mobMAXHP)*(-mobHP)), 650, 0xff000000, BLANK);
+
 	if (openCount < 20)
 	{
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, START_TEX);
@@ -1269,10 +1279,9 @@ void clothRushRender()
 void clothRushInit() 
 {
 	durabilityPointCentral.x = 900;
-	clothHP = 1000;
-	mobHP = 100;
+	clothHP = clothMAXHP;
+	mobHP = mobMAXHP;
 	openCount = 0;
-
 	clothSmokeCentral[0]={ 800,550,200,200 };
 	clothSmokeCentral[1]={ 700,450,200,200 };
 	clothSmokeCentral[2]={ 600,500,250,250 };

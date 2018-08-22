@@ -1,5 +1,7 @@
 #include "Main.h"
 #include "Select.h"
+#include "GameMain.h"
+
 
 CENTRAL_STATE g_yasukoTexSta = { 226.4f, 177.f, 52.f, 73.f };
 CENTRAL_STATE g_mitukoTexSta = { 419.5f, 180.f, 52.f, 73.f };
@@ -55,12 +57,15 @@ VOID selectControl(VOID)
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("SELECT");
+			g_selectFloa = FOOD;
 			g_isLastCheck = true;
 			g_inCount++;
 		}
 		else if (g_stageSelectFrameSta.x == STAGESELECTRIGHT && g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("MISS", false);
+			g_selectFloa = CLOTH;
+			//g_isLastCheck = true;
 			g_inCount++;
 		}
 
@@ -68,6 +73,7 @@ VOID selectControl(VOID)
 		else if (g_charSelectFrameSta.x == CHARSELECTLEFT && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			g_PCSpeed = g_yasukoSta.speed;
+			texturePC = YASUKO_TEX;
 			soundsManager.Start("BUTTON1", false);
 			g_isNextSelect = true;
 			g_inCount++;
@@ -75,6 +81,7 @@ VOID selectControl(VOID)
 		else if (g_charSelectFrameSta.x == CHARSELECTCENTER && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			g_PCSpeed = g_mitukoSta.speed;
+			texturePC = MITUKO_TEX;
 			soundsManager.Start("BUTTON1", false);
 			g_isNextSelect = true;
 			g_inCount++;
@@ -82,6 +89,7 @@ VOID selectControl(VOID)
 		else if (g_charSelectFrameSta.x == CHARSELECTRIGHT && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			g_PCSpeed = g_isokoSta.speed;
+			texturePC = ISOKO_TEX;
 			soundsManager.Start("BUTTON1", false);
 			g_isNextSelect = true;
 			g_inCount++;
@@ -272,26 +280,26 @@ VOID selectRenderSta(VOID)
 
 
 	//ヤス子のテクスチャの描画
-	SetUpTexture(yasuko, SELECT_YASUKO_TEX);
+	SetUpTexture(yasuko, YASUKO_TEX);
 	//ミツ子のテクスチャの描画
-	SetUpTexture(mituko, SELECT_MITUKO_TEX);
+	SetUpTexture(mituko, MITUKO_TEX);
 	//イソ子のテクスチャの描画
-	SetUpTexture(isoko, SELECT_ISOKO_TEX);
+	SetUpTexture(isoko, ISOKO_TEX);
 
 	//選択の枠のテクスチャの描画
 	SetUpTexture(frame, SELECTFRAME_TEX);
 
 	if (g_charSelectFrameSta.x == CHARSELECTLEFT)
 	{
-		SetUpTexture(selectChar, SELECT_YASUKO_TEX);
+		SetUpTexture(selectChar, YASUKO_TEX);
 	}
 	else if (g_charSelectFrameSta.x == CHARSELECTCENTER)
 	{
-		SetUpTexture(selectChar, SELECT_MITUKO_TEX);
+		SetUpTexture(selectChar, MITUKO_TEX);
 	}
 	else if (g_charSelectFrameSta.x == CHARSELECTRIGHT)
 	{
-		SetUpTexture(selectChar, SELECT_ISOKO_TEX);
+		SetUpTexture(selectChar, ISOKO_TEX);
 	}
 
 	//選択の枠のテクスチャの描画
