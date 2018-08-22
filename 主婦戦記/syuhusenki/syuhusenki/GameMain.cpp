@@ -15,11 +15,11 @@ enum MOBDIRECTION {
 };
 
 
-//int g_gameScene = FLOAMOVE;
+int g_gameScene = FLOAMOVE;
 //int g_gameScene = PUSHENEMY;
-int g_gameScene = PICKGOODS;
-//int g_selectFloa = FOOD;
-int g_selectFloa = CLOTH;
+//int g_gameScene = PICKGOODS;
+int g_selectFloa = FOOD;
+//int g_selectFloa = CLOTH;
 
 static bool g_isBlowOff = false;
 static bool g_isFirst = true;
@@ -151,7 +151,6 @@ void gameMain() {
 			ReadInTexture("Texture/cardboard.png", BOX_TEX);
 			ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
 			ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
-			ReadInTexture("Texture/mob.png", MOB_TEX);
 			ReadInTexture("Texture/smoke.png", SMOKE_TEX);
 
 			ReadInTexture("Texture/cardboard.png", TIMER_FRAME_TEX);

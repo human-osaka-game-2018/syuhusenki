@@ -1,6 +1,7 @@
 #include "Main.h"
 #include "GameMain.h"
 #include "Select.h"
+#include "Title.h"
 
 SoundLib::SoundsManager soundsManager;
 
@@ -9,8 +10,8 @@ bool g_SoundSuccess;
 RECT testWord = { 50,200,1200,500 };
 unsigned int gameRoop();
 void soundLoad();
-//int g_scene = SCENE_TEAMLOGO;
-int g_scene = SCENE_MAIN;
+int g_scene = SCENE_TEAMLOGO;
+//int g_scene = SCENE_MAIN;
 //int g_scene = SCENE_SERECTCHARANDSTAGE;
 void render(void);//‰¼
 void control(void);//‰¼
@@ -34,16 +35,17 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
 	ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
-	ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
+	ReadInTexture("Texture/mob.png", MOB_TEX);
 	ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
 
 	ReadInTexture("Texture/cardboard.png",SELECT_BG_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECT_YASUKO_TEX);
+	ReadInTexture("Texture/Yasuko.png",SELECT_YASUKO_TEX);
 	ReadInTexture("Texture/cardboard.png",SELECT_MITUKO_TEX);
 	ReadInTexture("Texture/cardboard.png",SELECT_ISOKO_TEX);
 	ReadInTexture("Texture/cardboard.png",SELECTFRAME_TEX);
 	ReadInTexture("Texture/cardboard.png",SELECTLASTCHECK_TEX);
-	
+	ReadInTexture("Texture/cardboard.png", TITLEICON_TEX);
+
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);
 	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
 
@@ -76,8 +78,8 @@ unsigned int gameRoop() {
 		render();
 		break;
 	case SCENE_TITLE:
-		control();
-		render();
+		titleControl();
+		titleRender();
 		break;
 	case SCENE_SERECTCHARANDSTAGE:
 		selectControl();
