@@ -1,7 +1,7 @@
 #include "Main.h"
 #include "Select.h"
 
-CENTRAL_STATE g_yasukoTexSta = { 225.f, 177.f, 52.f, 73.f };
+CENTRAL_STATE g_yasukoTexSta = { 226.4f, 177.f, 52.f, 73.f };
 CENTRAL_STATE g_mitukoTexSta = { 419.5f, 180.f, 52.f, 73.f };
 CENTRAL_STATE g_isokoTexSta = { 614.7f, 183.f, 52.f, 73.f };
 CENTRAL_STATE g_charSelectFrameSta = { 226.4f, 177.f, 90.f, 90.f };
@@ -35,14 +35,14 @@ VOID selectControl(VOID)
 	if (PadState[ButtonA] == PadOn && !(g_inCount))
 	{
 		//出撃確認の処理
-		if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 320.f)
+		if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == LASTCHECKTOP)
 		{
 			soundsManager.Start("BUTTON1", false);
 			g_isNextSelect = false;
 			g_isLastCheck = false;
 			g_scene = SCENE_MAIN;
 		}
-		else if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == 390.f)
+		else if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == LASTCHECKBOTTOM)
 		{
 			soundsManager.Start("BUTTON1", false);
 			g_isNextSelect = false;
@@ -51,35 +51,35 @@ VOID selectControl(VOID)
 		}
 
 		//ステージ選択の処理
-		else if (g_stageSelectFrameSta.x == 269.f && g_isNextSelect && !(g_isLastCheck))
+		else if (g_stageSelectFrameSta.x == STAGESELECTLEFT && g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("SELECT");
 			g_isLastCheck = true;
 			g_inCount++;
 		}
-		else if (g_stageSelectFrameSta.x == 565.f && g_isNextSelect && !(g_isLastCheck))
+		else if (g_stageSelectFrameSta.x == STAGESELECTRIGHT && g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("MISS", false);
 			g_inCount++;
 		}
 
 		//キャラ選択の処理
-		else if (g_charSelectFrameSta.x == 226.4f && !(g_isNextSelect) && !(g_isLastCheck))
+		else if (g_charSelectFrameSta.x == CHARSELECTLEFT && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			g_PCSpeed = g_yasukoSta.speed;
 			soundsManager.Start("BUTTON1", false);
 			g_isNextSelect = true;
 			g_inCount++;
 		}
-		else if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
+		else if (g_charSelectFrameSta.x == CHARSELECTCENTER && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			g_PCSpeed = g_mitukoSta.speed;
 			soundsManager.Start("BUTTON1", false);
 			g_isNextSelect = true;
 			g_inCount++;
 		}
-		else if (g_charSelectFrameSta.x == 614.7f && !(g_isNextSelect) && !(g_isLastCheck))
+		else if (g_charSelectFrameSta.x == CHARSELECTRIGHT && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			g_PCSpeed = g_isokoSta.speed;
 			soundsManager.Start("BUTTON1", false);
@@ -108,61 +108,61 @@ VOID selectControl(VOID)
 	}
 	if (PadState[ButtonUP] == PadOn && !(g_inCount))
 	{
-		if (g_lastCheckSta.y == 390.f && g_isNextSelect && g_isLastCheck)
+		if (g_lastCheckSta.y == LASTCHECKBOTTOM && g_isNextSelect && g_isLastCheck)
 		{
 			soundsManager.Start("CURSOR", false);
-			g_lastCheckSta.y = 320.f;
+			g_lastCheckSta.y = LASTCHECKTOP;
 		}
 	}
 	if (PadState[ButtonDOWN] == PadOn && !(g_inCount))
 	{
-		if (g_lastCheckSta.y == 320.f && g_isNextSelect && g_isLastCheck)
+		if (g_lastCheckSta.y == LASTCHECKTOP && g_isNextSelect && g_isLastCheck)
 		{
 			soundsManager.Start("CURSOR", false);
-			g_lastCheckSta.y = 390.f;
+			g_lastCheckSta.y = LASTCHECKBOTTOM;
 		}
 	}
 	if (PadState[ButtonRIGHT] == PadOn && !(g_inCount))
 	{
-		if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
+		if (g_charSelectFrameSta.x == CHARSELECTCENTER && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_charSelectFrameSta.x = 614.7f;
+			g_charSelectFrameSta.x = CHARSELECTRIGHT;
 			g_inCount++;
 		}
-		else if (g_charSelectFrameSta.x == 226.4f && !(g_isNextSelect) && !(g_isLastCheck))
+		else if (g_charSelectFrameSta.x == CHARSELECTLEFT && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_charSelectFrameSta.x = 419.5f;
+			g_charSelectFrameSta.x = CHARSELECTCENTER;
 			g_inCount++;
 		}
 
-		if (g_stageSelectFrameSta.x == 269.f && g_isNextSelect && !(g_isLastCheck))
+		if (g_stageSelectFrameSta.x == STAGESELECTLEFT && g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_stageSelectFrameSta.x = 565.f;
+			g_stageSelectFrameSta.x = STAGESELECTRIGHT;
 			g_inCount++;
 		}
 	}
 	if (PadState[ButtonLEFT] == PadOn && !(g_inCount))
 	{
-		if (g_charSelectFrameSta.x == 614.7f && !(g_isNextSelect) && !(g_isLastCheck))
+		if (g_charSelectFrameSta.x == CHARSELECTRIGHT && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_charSelectFrameSta.x = 419.5f;
+			g_charSelectFrameSta.x = CHARSELECTCENTER;
 			g_inCount++;
 		}
-		else if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
+		else if (g_charSelectFrameSta.x == CHARSELECTCENTER && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_charSelectFrameSta.x = 226.4f;
+			g_charSelectFrameSta.x = CHARSELECTLEFT;
 			g_inCount++;
 		}
 
-		if (g_stageSelectFrameSta.x == 565.f && g_isNextSelect && !(g_isLastCheck))
+		if (g_stageSelectFrameSta.x == STAGESELECTRIGHT && g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_stageSelectFrameSta.x = 269.f;
+			g_stageSelectFrameSta.x = STAGESELECTLEFT;
 			g_inCount++;
 		}
 	}
@@ -170,20 +170,20 @@ VOID selectControl(VOID)
 	//左スティックを上に倒したときの処理
 	if (g_Xinput.Gamepad.sThumbLY >= 6000 && !(g_inCount))
 	{
-		if (g_lastCheckSta.y == 390.f && g_isNextSelect && g_isLastCheck)
+		if (g_lastCheckSta.y == LASTCHECKBOTTOM && g_isNextSelect && g_isLastCheck)
 		{
 			soundsManager.Start("CURSOR", false);
-			g_lastCheckSta.y = 320.f;
+			g_lastCheckSta.y = LASTCHECKTOP;
 		}
 	}
 
 	//左スティックを下に倒したときの処理
 	if (g_Xinput.Gamepad.sThumbLY <= -6000 && !(g_inCount))
 	{
-		if (g_lastCheckSta.y == 320.f && g_isNextSelect && g_isLastCheck)
+		if (g_lastCheckSta.y == LASTCHECKTOP && g_isNextSelect && g_isLastCheck)
 		{
 			soundsManager.Start("CURSOR", false);
-			g_lastCheckSta.y = 390.f;
+			g_lastCheckSta.y = LASTCHECKBOTTOM;
 		}
 	}
 
@@ -191,24 +191,24 @@ VOID selectControl(VOID)
 	if (g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
 	{
 		//キャラ選択のカーソル移動
-		if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
+		if (g_charSelectFrameSta.x == CHARSELECTCENTER && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_charSelectFrameSta.x = 614.7f;
+			g_charSelectFrameSta.x = CHARSELECTRIGHT;
 			g_inCount++;
 		}
-		else if (g_charSelectFrameSta.x == 226.4f && !(g_isNextSelect) && !(g_isLastCheck))
+		else if (g_charSelectFrameSta.x == CHARSELECTLEFT && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_charSelectFrameSta.x = 419.5f;
+			g_charSelectFrameSta.x = CHARSELECTCENTER;
 			g_inCount++;
 		}
 
 		//ステージ選択のカーソル移動
-		if (g_stageSelectFrameSta.x == 269.f && g_isNextSelect && !(g_isLastCheck))
+		if (g_stageSelectFrameSta.x == STAGESELECTLEFT && g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_stageSelectFrameSta.x = 565.f;
+			g_stageSelectFrameSta.x = STAGESELECTRIGHT;
 			g_inCount++;
 		}
 	}
@@ -216,24 +216,24 @@ VOID selectControl(VOID)
 	else if (g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
 	{
 		//キャラ選択のカーソル移動
-		if (g_charSelectFrameSta.x == 614.7f && !(g_isNextSelect) && !(g_isLastCheck))
+		if (g_charSelectFrameSta.x == CHARSELECTRIGHT && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_charSelectFrameSta.x = 419.5f;
+			g_charSelectFrameSta.x = CHARSELECTCENTER;
 			g_inCount++;
 		}
-		else if (g_charSelectFrameSta.x == 419.5f && !(g_isNextSelect) && !(g_isLastCheck))
+		else if (g_charSelectFrameSta.x == CHARSELECTCENTER && !(g_isNextSelect) && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_charSelectFrameSta.x = 226.4f;
+			g_charSelectFrameSta.x = CHARSELECTLEFT;
 			g_inCount++;
 		}
 
 		//ステージ選択のカーソル移動
-		if (g_stageSelectFrameSta.x == 565.f && g_isNextSelect && !(g_isLastCheck))
+		if (g_stageSelectFrameSta.x == STAGESELECTRIGHT && g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_stageSelectFrameSta.x = 269.f;
+			g_stageSelectFrameSta.x = STAGESELECTLEFT;
 			g_inCount++;
 		}
 	}
@@ -281,15 +281,15 @@ VOID selectRenderSta(VOID)
 	//選択の枠のテクスチャの描画
 	SetUpTexture(frame, SELECTFRAME_TEX);
 
-	if (g_charSelectFrameSta.x == 226.4f)
+	if (g_charSelectFrameSta.x == CHARSELECTLEFT)
 	{
 		SetUpTexture(selectChar, SELECT_YASUKO_TEX);
 	}
-	else if (g_charSelectFrameSta.x == 419.5f)
+	else if (g_charSelectFrameSta.x == CHARSELECTCENTER)
 	{
 		SetUpTexture(selectChar, SELECT_MITUKO_TEX);
 	}
-	else if (g_charSelectFrameSta.x == 614.7f)
+	else if (g_charSelectFrameSta.x == CHARSELECTRIGHT)
 	{
 		SetUpTexture(selectChar, SELECT_ISOKO_TEX);
 	}
