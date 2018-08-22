@@ -47,7 +47,7 @@ enum TEXTURE
 	SMOKE_TEX,
 	TEXMAX
 };
-/**
+/*
 * @enum FONT
 * フォント配列の配列番号
 */

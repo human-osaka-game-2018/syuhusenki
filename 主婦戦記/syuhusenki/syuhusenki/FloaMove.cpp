@@ -54,10 +54,6 @@ VOID floaMoveControl(VOID)
 	{
 		GetControl(0);
 		BottonCheck();
-		
-
-
-		//XInputGetState(0, &g_Xinput);
 
 		for (onceSound; onceSound < 1; onceSound++)
 		{

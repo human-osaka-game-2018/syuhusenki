@@ -1,7 +1,7 @@
 #include "Main.h"
 #include "Title.h"
 
-CENTRAL_STATE g_selectArrowSta = { 500.f, 900.f, 20.f, 20.f };
+CENTRAL_STATE g_selectArrowSta = { 330.f, 600.f, 20.f, 20.f };
 
 //É^ÉCÉgÉãêßå‰èàóù
 VOID titleControl(VOID)
@@ -11,15 +11,11 @@ VOID titleControl(VOID)
 	GetControl(0);
 	BottonCheck();
 
-	
-
 	for (BGM; BGM < 1; BGM++)
 	{
 		soundsManager.SetVolume("OP_BGM", 25);
 		soundsManager.Start("OP_BGM", true);
 	}
-
-
 
 		if (g_Xinput.Gamepad.wButtons == 0 && g_Xinput.Gamepad.sThumbLX <= 6000 && g_Xinput.Gamepad.sThumbLX >= -6000)
 		{
@@ -36,21 +32,21 @@ VOID titleControl(VOID)
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_A)||PadState[ButtonLEFT] == PadRelease && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
+		if (InputKEY(DIK_A) || PadState[ButtonLEFT] == PadRelease && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_selectArrowSta.x = 500;
+			g_selectArrowSta.x = ARROWRIGHT;
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_D)||PadState[ButtonRIGHT] == PadRelease && !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
+		if (InputKEY(DIK_D) || PadState[ButtonRIGHT] == PadRelease && !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
 		{
 			soundsManager.Start("CURSOR", false);
-			g_selectArrowSta.x = 1150;
+			g_selectArrowSta.x = ARROWLEFT;
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == 500 ||PadState[ButtonA] == PadRelease && !(g_inCount) && g_selectArrowSta.x == 500)
+		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadRelease && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT)
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("OP_BGM");
@@ -61,7 +57,7 @@ VOID titleControl(VOID)
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == 1150 ||PadState[ButtonA] == PadRelease && g_selectArrowSta.x == 1150)
+		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadRelease && g_selectArrowSta.x == ARROWLEFT)
 		{
 			PostQuitMessage(0);
 		}
