@@ -38,13 +38,13 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/mob.png", MOB_TEX);
 	ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
 
-	ReadInTexture("Texture/cardboard.png",SELECT_BG_TEX);
+ReadInTexture("Texture/kariSelect.png",SELECT_BG_TEX);
 	ReadInTexture("Texture/Yasuko.png",SELECT_YASUKO_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECT_MITUKO_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECT_ISOKO_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECTFRAME_TEX);
-	ReadInTexture("Texture/cardboard.png",SELECTLASTCHECK_TEX);
-	ReadInTexture("Texture/cardboard.png", TITLEICON_TEX);
+	ReadInTexture("Texture/Mituko.png",SELECT_MITUKO_TEX);
+	ReadInTexture("Texture/Isoko.png",SELECT_ISOKO_TEX);
+	ReadInTexture("Texture/selectFrame.png",SELECTFRAME_TEX);
+	ReadInTexture("Texture/lastCheck.png",SELECTLASTCHECK_TEX);
+	ReadInTexture("Texture/arrow.png", TITLEICON_TEX);
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);
 	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
@@ -67,9 +67,9 @@ unsigned int gameRoop() {
 		ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
 		ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
 		ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
+	
 		
-		
-		//g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;
 
 		isFirst = false;
 		}
@@ -89,7 +89,6 @@ unsigned int gameRoop() {
 		gameMain();
 		break;
 	case SCENE_RESULT:
-		g_selectFloa = FOOD;
 		control();
 		render();
 		break;
@@ -215,7 +214,6 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK5");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK6");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK7");
-
 	soundsManager.AddFile("Sound/selectBGM.mp3", "SELECT");
 	soundsManager.AddFile("Sound/cursor.mp3", "CURSOR");
 	soundsManager.AddFile("Sound/gong.mp3", "GONG");

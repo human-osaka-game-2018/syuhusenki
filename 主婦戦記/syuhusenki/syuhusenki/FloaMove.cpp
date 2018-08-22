@@ -17,6 +17,10 @@ CENTRAL_STATE g_startCountSta = { 750.f, 500.f, 300.f, 300.f };
 CENTRAL_STATE g_startSta = { 750.f, 500.f, 400.f, 192.5 };
 CENTRAL_STATE g_timeUpSta = { 750.f, 500.f, 520.f, 200.f };
 
+FLOAT g_PCSpeed = 0.f;
+
+int g_gameCount = 0;
+
 //ƒQ[ƒ€§Œäˆ—
 VOID floaMoveControl(VOID)
 {
@@ -94,15 +98,15 @@ VOID floaMoveControl(VOID)
 				{
 					if (g_Xinput.Gamepad.sThumbLY >= 6000 && g_Xinput.Gamepad.sThumbLY <= 10000)
 					{
-						g_PCSta.y -= g_yasukoSta.speed / 4;
+						g_PCSta.y -= g_PCSpeed / 4;
 					}
 					else if (g_Xinput.Gamepad.sThumbLY >= 10000 && g_Xinput.Gamepad.sThumbLY <= 18000)
 					{
-						g_PCSta.y -= g_yasukoSta.speed / 2;
+						g_PCSta.y -= g_PCSpeed / 2;
 					}
 					else if (g_Xinput.Gamepad.sThumbLY >= 18000)
 					{
-						g_PCSta.y -= g_yasukoSta.speed;
+						g_PCSta.y -= g_PCSpeed;
 					}
 				}
 			}
@@ -113,15 +117,15 @@ VOID floaMoveControl(VOID)
 				{
 					if (g_Xinput.Gamepad.sThumbLY <= -6000 && g_Xinput.Gamepad.sThumbLY >= -10000)
 					{
-						g_PCSta.y += g_yasukoSta.speed / 4;
+						g_PCSta.y += g_PCSpeed / 4;
 					}
 					else if (g_Xinput.Gamepad.sThumbLY <= -10000 && g_Xinput.Gamepad.sThumbLY >= -18000)
 					{
-						g_PCSta.y += g_yasukoSta.speed / 2;
+						g_PCSta.y += g_PCSpeed / 2;
 					}
 					else if (g_Xinput.Gamepad.sThumbLY <= -18000)
 					{
-						g_PCSta.y += g_yasukoSta.speed;
+						g_PCSta.y += g_PCSpeed;
 					}
 				}
 			}
@@ -132,15 +136,15 @@ VOID floaMoveControl(VOID)
 				{
 					if (g_Xinput.Gamepad.sThumbLX >= 6000 && g_Xinput.Gamepad.sThumbLX <= 10000)
 					{
-						g_PCSta.x += g_yasukoSta.speed / 4;
+						g_PCSta.x += g_PCSpeed / 4;
 					}
 					else if (g_Xinput.Gamepad.sThumbLX >= 10000 && g_Xinput.Gamepad.sThumbLX <= 18000)
 					{
-						g_PCSta.x += g_yasukoSta.speed / 2;
+						g_PCSta.x += g_PCSpeed / 2;
 					}
 					else if (g_Xinput.Gamepad.sThumbLX >= 18000)
 					{
-						g_PCSta.x += g_yasukoSta.speed;
+						g_PCSta.x += g_PCSpeed;
 					}
 				}
 			}
@@ -151,15 +155,15 @@ VOID floaMoveControl(VOID)
 				{
 					if (g_Xinput.Gamepad.sThumbLX <= -6000 && g_Xinput.Gamepad.sThumbLX >= -10000)
 					{
-						g_PCSta.x -= g_yasukoSta.speed / 4;
+						g_PCSta.x -= g_PCSpeed / 4;
 					}
 					else if (g_Xinput.Gamepad.sThumbLX <= -10000 && g_Xinput.Gamepad.sThumbLX >= -18000)
 					{
-						g_PCSta.x -= g_yasukoSta.speed / 2;
+						g_PCSta.x -= g_PCSpeed / 2;
 					}
 					else if (g_Xinput.Gamepad.sThumbLX <= -18000)
 					{
-						g_PCSta.x -= g_yasukoSta.speed;
+						g_PCSta.x -= g_PCSpeed;
 					}
 				}
 			}
