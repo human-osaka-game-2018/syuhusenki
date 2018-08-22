@@ -34,14 +34,13 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
-	ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
+	ReadInTexture("Texture/title.png", BG_TITLE_TEX);
 	ReadInTexture("Texture/mob.png", MOB_TEX);
 	ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
 
-ReadInTexture("Texture/kariSelect.png",SELECT_BG_TEX);
-	ReadInTexture("Texture/Yasuko.png",SELECT_YASUKO_TEX);
-	ReadInTexture("Texture/Mituko.png",SELECT_MITUKO_TEX);
-	ReadInTexture("Texture/Isoko.png",SELECT_ISOKO_TEX);
+	ReadInTexture("Texture/kariSelect.png",SELECT_BG_TEX);
+	ReadInTexture("Texture/Mituko.png",MITUKO_TEX);
+	ReadInTexture("Texture/Isoko.png",ISOKO_TEX);
 	ReadInTexture("Texture/selectFrame.png",SELECTFRAME_TEX);
 	ReadInTexture("Texture/lastCheck.png",SELECTLASTCHECK_TEX);
 	ReadInTexture("Texture/arrow.png", TITLEICON_TEX);
@@ -65,7 +64,6 @@ unsigned int gameRoop() {
 
 		ReadInTexture("Texture/Blank.jpg", BLANK);
 		ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
-		ReadInTexture("Texture/karititle.png", BG_TITLE_TEX);
 		ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
 	
 		

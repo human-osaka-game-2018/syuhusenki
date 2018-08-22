@@ -268,7 +268,7 @@ VOID floaMoveRenderSta(VOID)
 	SetUpTexture(timerHand, TIMER_HAND_TEX);
 
 	//プレイヤーキャラクターのテクスチャの描画
-	SetUpTexture(PC, PC_TEX);
+	SetUpTexture(PC, texturePC);
 
 	if ((g_gameCount > 0) && (g_gameCount <= 60))
 	{

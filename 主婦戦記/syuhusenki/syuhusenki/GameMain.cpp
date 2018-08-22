@@ -155,13 +155,13 @@ void gameMain() {
 
 			ReadInTexture("Texture/cardboard.png", TIMER_FRAME_TEX);
 			ReadInTexture("Texture/cardboard.png", TIMER_HAND_TEX);
-			ReadInTexture("Texture/cardboard.png", STARTCOUNT_3_TEX);
-			ReadInTexture("Texture/cardboard.png", STARTCOUNT_2_TEX);
-			ReadInTexture("Texture/cardboard.png", STARTCOUNT_1_TEX);
+			ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
+			ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
+			ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
 			ReadInTexture("Texture/kariStart.png", START_TEX);
-			ReadInTexture("Texture/cardboard.png", PAUSE_TEX);
+			ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
 			ReadInTexture("Texture/cardboard.png", TIMEUP_TEX);
-			ReadInTexture("Texture/cardboard.png", PC_TEX);
+			//ReadInTexture("Texture/cardboard.png", PC_TEX);
 			ReadInTexture("Texture/cardboard.png", GAME_BG_TEX);
 			canRead = false;
 		}
@@ -520,7 +520,7 @@ void blowOffRender()
 	if ((g_effectCount > 20) && g_isBlowOff) {
 		SetUpTexture(effectExplosion, EXPLOSION_TEX);
 	}
-	SetUpTexture(playerHit, YASUKO_TEX);
+	SetUpTexture(playerHit, texturePC);
 
 	WriteWord("ÉÇÉuéÂïwîrèú", testText, DT_CENTER, RED, HOGE_FONT);
 	char debugComandInput[10];
@@ -858,7 +858,7 @@ void pickGoodsRender() {
 	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
 	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
 
-	SetUpTexture(playerHit, YASUKO_TEX);
+	SetUpTexture(playerHit, texturePC);
 
 	goodsRender(goodsA, g_isTakeA, 0, BEEF_TEX);
 	goodsRender(goodsA2, g_isTakeA, 1, BEEF_TEX);

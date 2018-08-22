@@ -1,4 +1,4 @@
-﻿主婦戦記/syuhusenki/syuhusenki/Debug/Main.obj
+主婦戦記/syuhusenki/syuhusenki/Debug/Main.obj
 主婦戦記/syuhusenki/syuhusenki/Debug/
 主婦戦記/syuhusenki/syuhusenki/Release/
 主婦戦記/syuhusenki/Debug/
@@ -8,3 +8,6 @@
 *.iobj
 *.ilk
 *.ipdb
+主婦戦記/syuhusenki/syuhusenki/Main.cpp.bak
+主婦戦記/syuhusenki/syuhusenki/Main.cpp.orig
+主婦戦記/syuhusenki/syuhusenki/Texture/ClothBattle1.png
