@@ -64,7 +64,6 @@ unsigned int gameRoop() {
 
 		ReadInTexture("Texture/Blank.jpg", BLANK);
 		ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
-		ReadInTexture("Texture/shopping_cart_woman.png", MOB_TEX);
 	
 		
 		g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;

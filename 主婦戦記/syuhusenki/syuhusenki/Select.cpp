@@ -65,6 +65,7 @@ VOID selectControl(VOID)
 		{
 			soundsManager.Start("MISS", false);
 			g_selectFloa = CLOTH;
+			//g_isLastCheck = true;
 			g_inCount++;
 		}
 
