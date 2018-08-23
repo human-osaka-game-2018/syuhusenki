@@ -91,9 +91,15 @@ enum Analog
 	ANALOGDOWN,
 	ANALOGLEFT,
 	ANALOGRIGHT,
+	ANALOG_X,
+	ANALOG_Y,
 	ANALOGMAX
 };
-
+enum AnalogTrigger
+{
+	LEFTTRIGGER,
+	RIGHTTRIGGER
+};
 
 
 typedef struct CUSTOMVERTEX
@@ -124,7 +130,6 @@ extern PADSTATE PadState[ButtomIndexMAX];
 extern PADSTATE PadOldState[ButtomIndexMAX];
 extern BYTE KeyState[256];
 extern BYTE KeyOldState[256];
-
 
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -214,6 +219,7 @@ int InitWindowFullscreenEx(LPCSTR WndName, HWND* hWnd, int WIDTH, int HEIGHT, HI
 /**
 * @brief 秒間60フレームループさせる
 * @param gameroop(void) 自分の作成したゲーム処理関数を入れること
+*		　但し、戻り値にウィンドウメッセージを返さなければならない
 * @return プログラム終了時に(int)msg.wParam
 */
 int FlameRoop(unsigned int gameroop(void));
@@ -492,6 +498,13 @@ void GetControl(int GamePadNumber);
 PADSTATE GetButton(ButtonIndex index);
 /**
 * @brief Xinputでゲームパッドの左アナログスティック入力取得
+* @param トリガーの左右認識番号　0or1
+* @return 0～255の値、押してなければ0
+* @sa enum AnalogTrigger
+*/
+int GetAnalogTrigger(int Trigger);
+/**
+* @brief Xinputでゲームパッドの左アナログスティック入力取得
 * @param Analogstate スティックの方向け先番号
 * @return 傾いていればTrue、そうでなければFalse
 * @sa enum Analog
@@ -516,6 +529,20 @@ bool GetAnalogL(Analog Analogstate);
 * }
 */
 bool GetAnalogR(Analog AnalogState);
+/**
+* @brief  Xinputでゲームパッドの左アナログスティック入力取得
+* @param Analogstate スティックの方向け先番号
+* @return 傾き具合の数値　MAX＝32767　MIN＝-32768
+* @sa enum Analog
+*/
+int GetAnalogLValue(Analog AnalogState);
+/**
+* @brief  Xinputでゲームパッドの右アナログスティック入力取得
+* @param Analogstate スティックの方向け先番号
+* @return 傾き具合の数値　MAX＝32767　MIN＝-32768
+* @sa enum Analog
+*/
+int GetAnalogRValue(Analog AnalogState);
 /**
 * @brief Dinputでキーボードの状態取得
 * @param ButtomID 取得したいXInputボタン番号

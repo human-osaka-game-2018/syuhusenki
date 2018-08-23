@@ -25,7 +25,7 @@ VOID selectControl(VOID)
 	GetControl(0);
 	BottonCheck();
 
-	if (g_Xinput.Gamepad.wButtons == 0 && g_Xinput.Gamepad.sThumbLX <= 6000 && g_Xinput.Gamepad.sThumbLX >= -6000)
+	if (g_Xinput.Gamepad.wButtons == 0 && GetAnalogLValue(ANALOG_X) <= 6000 && GetAnalogLValue(ANALOG_X) >= -6000)
 	{
 		g_inCount = 0;
 	}
@@ -184,7 +184,7 @@ VOID selectControl(VOID)
 	}
 	
 	//左スティックを上に倒したときの処理
-	if (g_Xinput.Gamepad.sThumbLY >= 6000 && !(g_inCount))
+	if (GetAnalogLValue(ANALOG_Y) >= 6000 && !(g_inCount))
 	{
 		if (g_lastCheckSta.y == LASTCHECKBOTTOM && g_isNextSelect && g_isLastCheck)
 		{
@@ -194,7 +194,7 @@ VOID selectControl(VOID)
 	}
 
 	//左スティックを下に倒したときの処理
-	if (g_Xinput.Gamepad.sThumbLY <= -6000 && !(g_inCount))
+	if (GetAnalogLValue(ANALOG_Y) <= -6000 && !(g_inCount))
 	{
 		if (g_lastCheckSta.y == LASTCHECKTOP && g_isNextSelect && g_isLastCheck)
 		{
@@ -204,7 +204,7 @@ VOID selectControl(VOID)
 	}
 
 	//左スティックを右に倒した時の処理
-	if (g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
+	if (GetAnalogLValue(ANALOG_X) >= 6000 && !(g_inCount))
 	{
 		//キャラ選択のカーソル移動
 		if (g_charSelectFrameSta.x == CHARSELECTCENTER && !(g_isNextSelect) && !(g_isLastCheck))
@@ -229,7 +229,7 @@ VOID selectControl(VOID)
 		}
 	}
 	//左スティックを左に倒したときの処理
-	else if (g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
+	else if (GetAnalogLValue(ANALOG_X) <= -6000 && !(g_inCount))
 	{
 		//キャラ選択のカーソル移動
 		if (g_charSelectFrameSta.x == CHARSELECTRIGHT && !(g_isNextSelect) && !(g_isLastCheck))

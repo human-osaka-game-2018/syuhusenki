@@ -29,7 +29,7 @@ static int comandInput[5] = { 10,10,10,10,10 };
 static int comandPresentment[5];
 static int comandCount = 0;
 static int checkedComand = 2;
-
+static int rushButtonShow;
 //static int fallCount = 0;
 static bool g_isTakeA[8] = { false,false,false,false,false,false,false,false };
 static bool g_isTakeB[8] = { false,false,false,false,false,false,false,false };
@@ -38,8 +38,8 @@ SoundEffect Pick{ "PICK1", "PICK2","PICK3", "PICK4","PICK5", "PICK6" , "PICK7" }
 static float g_goodsScaleA[8] = { 60,60,60,60,60,60,60,60 };
 static float g_goodsScaleB[8] = { 60,60,60,60,60,60,60,60 };
 RECT testText = { 100,200,900,500 };
-static int g_goodsTakenNumA = 0;
-static int g_goodsTakenNumB = 0;
+static int g_goodsTakenNum = 0;
+//static int g_goodsTakenNum = 0;
 
 //プレイヤーの画像頂点
 CUSTOMVERTEX playerFloa[4];
@@ -130,7 +130,9 @@ char comandButton(int comand);
 void pickGoods();
 void pickGoodsControl();
 void pickGoodsRender();
-void pickGoodsDeviseControl();
+void pickGoodsDeviseControl(int rushInput);
+void rushButtonCheck(int rushInput, int rushShow);
+
 void takeingGoods(bool take[], int size);
 void goodsMoving(CUSTOMVERTEX vertex[], float goodsScale[], bool take[], CENTRAL_STATE goodsCentral[], float deleatPosX, int arreyNum);
 void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum, int texNum);
@@ -148,7 +150,7 @@ void gameMain() {
 			ReadInTexture("Texture/testFrame.png", FRAME_TEX);
 			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
 			ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
-			//ReadInTexture("Texture/", BG_BLOWOFF_TEX);
+			ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
 			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
 			//ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
 			ReadInTexture("Texture/beef.png", BEEF_TEX);
@@ -435,6 +437,7 @@ void blowOff() {
 	case FOOD:
 	blowOffControl();
 	blowOffRender();
+	rushButtonShow = rand() % 6;
 	break;
 	case CLOTH:
 		g_gameScene = PICKGOODS;
@@ -815,43 +818,43 @@ void pickGoods() {
 
 void pickGoodsControl() {
 	float deleatPosX = 250;
+	int rushInput = 10;
+	//CreateSquareVertex(goodsA, goodsCentralA[0]);
+	//CreateSquareVertex(goodsB, goodsCentralB[0]);
+	//CreateSquareVertex(goodsA2, goodsCentralA[1]);
+	//CreateSquareVertex(goodsB2, goodsCentralB[1]);
+	//CreateSquareVertex(goodsA3, goodsCentralA[2]);
+	//CreateSquareVertex(goodsB3, goodsCentralB[2]); 
+	//CreateSquareVertex(goodsA4, goodsCentralA[3]);
+	//CreateSquareVertex(goodsB4, goodsCentralB[3]);
+	//CreateSquareVertex(goodsA5, goodsCentralA[4]);
+	//CreateSquareVertex(goodsB5, goodsCentralB[4]);
+	//CreateSquareVertex(goodsA6, goodsCentralA[5]);
+	//CreateSquareVertex(goodsB6, goodsCentralB[5]);
+	//CreateSquareVertex(goodsA7, goodsCentralA[6]);
+	//CreateSquareVertex(goodsB7, goodsCentralB[6]);
+	//CreateSquareVertex(goodsA8, goodsCentralA[7]);
+	//CreateSquareVertex(goodsB8, goodsCentralB[7]);
 
-	CreateSquareVertex(goodsA, goodsCentralA[0]);
-	CreateSquareVertex(goodsB, goodsCentralB[0]);
-	CreateSquareVertex(goodsA2, goodsCentralA[1]);
-	CreateSquareVertex(goodsB2, goodsCentralB[1]);
-	CreateSquareVertex(goodsA3, goodsCentralA[2]);
-	CreateSquareVertex(goodsB3, goodsCentralB[2]); 
-	CreateSquareVertex(goodsA4, goodsCentralA[3]);
-	CreateSquareVertex(goodsB4, goodsCentralB[3]);
-	CreateSquareVertex(goodsA5, goodsCentralA[4]);
-	CreateSquareVertex(goodsB5, goodsCentralB[4]);
-	CreateSquareVertex(goodsA6, goodsCentralA[5]);
-	CreateSquareVertex(goodsB6, goodsCentralB[5]);
-	CreateSquareVertex(goodsA7, goodsCentralA[6]);
-	CreateSquareVertex(goodsB7, goodsCentralB[6]);
-	CreateSquareVertex(goodsA8, goodsCentralA[7]);
-	CreateSquareVertex(goodsB8, goodsCentralB[7]);
+	//goodsMoving(goodsA, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 0);
+	//goodsMoving(goodsA2, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 1);
+	//goodsMoving(goodsA3, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 2);
+	//goodsMoving(goodsA4, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 3);
+	//goodsMoving(goodsA5, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 4);
+	//goodsMoving(goodsA6, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 5);
+	//goodsMoving(goodsA7, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 6);
+	//goodsMoving(goodsA8, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 7);
 
-	goodsMoving(goodsA, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 0);
-	goodsMoving(goodsA2, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 1);
-	goodsMoving(goodsA3, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 2);
-	goodsMoving(goodsA4, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 3);
-	goodsMoving(goodsA5, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 4);
-	goodsMoving(goodsA6, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 5);
-	goodsMoving(goodsA7, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 6);
-	goodsMoving(goodsA8, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 7);
+	//goodsMoving(goodsB, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 0);
+	//goodsMoving(goodsB2, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 1);
+	//goodsMoving(goodsB3, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 2);
+	//goodsMoving(goodsB4, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 3);
+	//goodsMoving(goodsB5, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 4);
+	//goodsMoving(goodsB6, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 5);
+	//goodsMoving(goodsB7, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 6);
+	//goodsMoving(goodsB8, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 7);
 
-	goodsMoving(goodsB, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 0);
-	goodsMoving(goodsB2, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 1);
-	goodsMoving(goodsB3, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 2);
-	goodsMoving(goodsB4, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 3);
-	goodsMoving(goodsB5, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 4);
-	goodsMoving(goodsB6, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 5);
-	goodsMoving(goodsB7, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 6);
-	goodsMoving(goodsB8, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 7);
-
-	pickGoodsDeviseControl();
+	pickGoodsDeviseControl(rushInput);
 
 }
 
@@ -866,36 +869,39 @@ void pickGoodsRender() {
 
 	SetUpTexture(playerHit, texturePC);
 
-	goodsRender(goodsA, g_isTakeA, 0, BEEF_TEX);
-	goodsRender(goodsA2, g_isTakeA, 1, BEEF_TEX);
-	goodsRender(goodsA3, g_isTakeA, 2, BEEF_TEX);
-	goodsRender(goodsA4, g_isTakeA, 3, BEEF_TEX);
-	goodsRender(goodsA5, g_isTakeA, 4, BEEF_TEX);
-	goodsRender(goodsA6, g_isTakeA, 5, BEEF_TEX);
-	goodsRender(goodsA7, g_isTakeA, 6, BEEF_TEX);
-	goodsRender(goodsA8, g_isTakeA, 7, BEEF_TEX);
+	//goodsRender(goodsA, g_isTakeA, 0, BEEF_TEX);
+	//goodsRender(goodsA2, g_isTakeA, 1, BEEF_TEX);
+	//goodsRender(goodsA3, g_isTakeA, 2, BEEF_TEX);
+	//goodsRender(goodsA4, g_isTakeA, 3, BEEF_TEX);
+	//goodsRender(goodsA5, g_isTakeA, 4, BEEF_TEX);
+	//goodsRender(goodsA6, g_isTakeA, 5, BEEF_TEX);
+	//goodsRender(goodsA7, g_isTakeA, 6, BEEF_TEX);
+	//goodsRender(goodsA8, g_isTakeA, 7, BEEF_TEX);
 
-	goodsRender(goodsB, g_isTakeB, 0, PORK_TEX);
-	goodsRender(goodsB2, g_isTakeB, 1, PORK_TEX);
-	goodsRender(goodsB3, g_isTakeB, 2, PORK_TEX);
-	goodsRender(goodsB4, g_isTakeB, 3, PORK_TEX);
-	goodsRender(goodsB5, g_isTakeB, 4, PORK_TEX);
-	goodsRender(goodsB6, g_isTakeB, 5, PORK_TEX);
-	goodsRender(goodsB7, g_isTakeB, 6, PORK_TEX);
-	goodsRender(goodsB8, g_isTakeB, 7, PORK_TEX);
-
-
-	WriteWord("セール品入手", testText, DT_CENTER, RED, HOGE_FONT);
+	//goodsRender(goodsB, g_isTakeB, 0, PORK_TEX);
+	//goodsRender(goodsB2, g_isTakeB, 1, PORK_TEX);
+	//goodsRender(goodsB3, g_isTakeB, 2, PORK_TEX);
+	//goodsRender(goodsB4, g_isTakeB, 3, PORK_TEX);
+	//goodsRender(goodsB5, g_isTakeB, 4, PORK_TEX);
+	//goodsRender(goodsB6, g_isTakeB, 5, PORK_TEX);
+	//goodsRender(goodsB7, g_isTakeB, 6, PORK_TEX);
+	//goodsRender(goodsB8, g_isTakeB, 7, PORK_TEX);
+	
+	EasyCreateSquareVertex(0, 150, WIDTH, 550, CUTIN_TEX);
+	char rushButton[10];
+	RECT rushButtonAppear = {500,200,900,500};
+	sprintf_s(rushButton, 10, "%c", comandButton(rushButtonShow));
+	WriteWord(rushButton, rushButtonAppear, DT_CENTER, RED, RUSH_FONT);
 #ifdef _DEBUG
 	char goodsNumA[10];
 	char goodsNumB[10];
 	char DebugTakeBoolA[10];
 	char DebugTakeBoolB[10];
 
-	sprintf_s(goodsNumA, 10, "%d ", g_goodsTakenNumA);
+	sprintf_s(goodsNumA, 10, "%d ", g_goodsTakenNum);
 	RECT DEBUGGoodsA = { 100 ,200,900,600 };
 	WriteWord(goodsNumA, DEBUGGoodsA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
-	sprintf_s(goodsNumB, 10, "%d ", g_goodsTakenNumB);
+	sprintf_s(goodsNumB, 10, "%d ", g_goodsTakenNum);
 	RECT DEBUGGoodsB = { 100 ,250,900,600 };
 	WriteWord(goodsNumB, DEBUGGoodsB, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 
@@ -941,7 +947,7 @@ void pickGoodsRender() {
 	EndSetTexture();
 }
 
-void pickGoodsDeviseControl() {
+void pickGoodsDeviseControl(int rushInput) {
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
@@ -957,17 +963,53 @@ void pickGoodsDeviseControl() {
 		g_scene = SCENE_RESULT;
 		g_gameScene = FLOAMOVE;
 	}
-
 	if (KeyState[DIK_A] == KeyRelease)
 	{
-		g_goodsTakenNumA++;
-		takeingGoods(g_isTakeA, 8);
-		buttonSE(Pick,7);
+		rushInput = ButtonA;
+		rushButtonCheck(rushInput, rushButtonShow);
+		//takeingGoods(g_isTakeA, 8);
+		buttonSE(Pick, 7);
 	}
+	if (KeyState[DIK_B] == KeyRelease)
+	{
+		rushInput = ButtonB;
+		rushButtonCheck(rushInput, rushButtonShow);
+		//takeingGoods(g_isTakeA, 8);
+		buttonSE(Pick, 7);
+	}
+	if (KeyState[DIK_X] == KeyRelease)
+	{
+		rushInput = ButtonX;
+		rushButtonCheck(rushInput, rushButtonShow);
+		//takeingGoods(g_isTakeA, 8);
+		buttonSE(Pick, 7);
+	}
+	if (KeyState[DIK_Y] == KeyRelease)
+	{
+		rushInput = ButtonY;
+		rushButtonCheck(rushInput, rushButtonShow);
+		//takeingGoods(g_isTakeA, 8);
+		buttonSE(Pick, 7);
+	}
+	if (KeyState[DIK_R] == KeyRelease)
+	{
+		rushInput = ButtonRB;
+		rushButtonCheck(rushInput, rushButtonShow);
+		//takeingGoods(g_isTakeA, 8);
+		buttonSE(Pick, 7);
+	}
+	if (KeyState[DIK_L] == KeyRelease)
+	{
+		rushInput = ButtonLB;
+		rushButtonCheck(rushInput, rushButtonShow);
+		//takeingGoods(g_isTakeA, 8);
+		buttonSE(Pick, 7);
+	}
+
 	if (KeyState[DIK_D] == KeyRelease)
 	{
-		g_goodsTakenNumB++;
-		takeingGoods(g_isTakeB, 8);
+		rushButtonCheck(rushInput, rushButtonShow);
+		//takeingGoods(g_isTakeB, 8);
 		buttonSE(Pick, 7);
 	}
 	if (KeyState[DIK_W])
@@ -982,31 +1024,58 @@ void pickGoodsDeviseControl() {
 	GetControl(0);
 	BottonCheck();
 
-	if (PadState[ButtonA] == PadRelease)
+	if (PadState[ButtonStart] == PadRelease)
 	{
 		g_isFirst = true;
 		g_scene = SCENE_RESULT;
 		g_gameScene = FLOAMOVE;
 	}
+	if (PadState[ButtonA] == PadRelease)
+	{
+		rushInput = ButtonA;
+		rushButtonCheck(rushInput, rushButtonShow);
+		buttonSE(Pick, 7);
+	}
 	if (PadState[ButtonB] == PadRelease)
 	{
-		g_goodsTakenNumB++;
-		takeingGoods(g_isTakeB, 8);
-		g_SoundSuccess = soundsManager.Start("PICK1", false) && g_SoundSuccess;
+		rushInput = ButtonB;
+		rushButtonCheck(rushInput, rushButtonShow);
+		buttonSE(Pick, 7);
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
-		g_goodsTakenNumA++;
-		takeingGoods(g_isTakeA, 8);
-		g_SoundSuccess = soundsManager.Start("PICK1", false) && g_SoundSuccess;
+		rushInput = ButtonX;
+		rushButtonCheck(rushInput, rushButtonShow);
+		buttonSE(Pick, 7);
 	}
 	if (PadState[ButtonY] == PadRelease)
 	{
-
+		rushInput = ButtonY;
+		rushButtonCheck(rushInput, rushButtonShow);
+		buttonSE(Pick, 7);
+	}
+	if (PadState[ButtonRB] == KeyRelease)
+	{
+		rushInput = ButtonRB;
+		rushButtonCheck(rushInput, rushButtonShow);
+		buttonSE(Pick, 7);
+	}
+	if (PadState[ButtonLB] == KeyRelease)
+	{
+		rushInput = ButtonLB;
+		rushButtonCheck(rushInput, rushButtonShow);
+		buttonSE(Pick, 7);
 	}
 
 }
+void rushButtonCheck(int rushInput, int rushShow)
+{
+	if (rushInput == rushShow) 
+	{
+		g_goodsTakenNum++;
 
+	}
+}
 void takeingGoods(bool take[],int size) {
 	switch (size)
 	{
@@ -1248,8 +1317,8 @@ void clothRushRender()
 		RevolveZ(clothSmoke, Rad, clothSmokeCentral[i]);
 		SetUpTexture(clothSmoke, SMOKE_TEX);
 	}
-	EasyCreateSquareVertexColor(800, 600, 1200, 650, 0xff00ff00, BLANK);
-	EasyCreateSquareVertexColor(800, 600, 1200 - (((800-1200)/ mobMAXHP)*(-mobHP)), 650, 0xff000000, BLANK);
+	EasyCreateSquareVertexColor(800, 600, 1200, 650,  0xff000000, BLANK);
+	EasyCreateSquareVertexColor(800, 600, 800 - (((800-1200)/ mobMAXHP)*(mobHP)), 650, 0xff00ff00, BLANK);
 
 	if (openCount < 20)
 	{

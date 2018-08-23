@@ -17,7 +17,7 @@ VOID titleControl(VOID)
 		soundsManager.Start("OP_BGM", true);
 	}
 
-		if (g_Xinput.Gamepad.wButtons == 0 && g_Xinput.Gamepad.sThumbLX <= 6000 && g_Xinput.Gamepad.sThumbLX >= -6000)
+		if (g_Xinput.Gamepad.wButtons == 0 && GetAnalogLValue(ANALOG_X) <= 6000 && GetAnalogLValue(ANALOG_X) >= -6000)
 		{
 			g_inCount = 0;
 		}
@@ -32,14 +32,14 @@ VOID titleControl(VOID)
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_A) || PadState[ButtonLEFT] == PadOn && !(g_inCount) || g_Xinput.Gamepad.sThumbLX <= -6000 && !(g_inCount))
+		if (InputKEY(DIK_A) || PadState[ButtonLEFT] == PadOn && !(g_inCount) || GetAnalogLValue(ANALOG_X) <= -6000 && !(g_inCount))
 		{
 			soundsManager.Start("CURSOR", false);
 			g_selectArrowSta.x = ARROWRIGHT;
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_D) || PadState[ButtonRIGHT] == PadOn && !(g_inCount) || g_Xinput.Gamepad.sThumbLX >= 6000 && !(g_inCount))
+		if (InputKEY(DIK_D) || PadState[ButtonRIGHT] == PadOn && !(g_inCount) || GetAnalogLValue(ANALOG_X) >= 6000 && !(g_inCount))
 		{
 			soundsManager.Start("CURSOR", false);
 			g_selectArrowSta.x = ARROWLEFT;

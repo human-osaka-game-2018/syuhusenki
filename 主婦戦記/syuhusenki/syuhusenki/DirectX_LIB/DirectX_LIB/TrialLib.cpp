@@ -605,7 +605,7 @@ void CreateSquareVertexColorEx(CUSTOMVERTEX* Vertex, CENTRAL_STATE Central,DWORD
 	Vertex[3] = { Central.x - Central.scaleX, Central.y + Central.scaleY, 1.f, 1.f, color, tu, tv + scaleTv };
 }
 void CreateSquareVertexColor(CUSTOMVERTEX* Vertex, CENTRAL_STATE Central, DWORD color){
-	CreateSquareVertexColorEx(Vertex, Central, 0xffffffff, NULL, NULL, 1, 1);
+	CreateSquareVertexColorEx(Vertex, Central, color, NULL, NULL, 1, 1);
 }
 
 
@@ -1012,6 +1012,19 @@ PADSTATE GetButton(ButtonIndex Index)
 	return PadState[Index];
 }
 
+
+int GetAnalogTrigger(int Trigger)
+{
+	switch (Trigger)
+	{
+	case LEFTTRIGGER:
+		return g_Xinput.Gamepad.bLeftTrigger;
+	case RIGHTTRIGGER:
+		return g_Xinput.Gamepad.bRightTrigger;
+
+	}
+}
+
 bool GetAnalogL(Analog AnalogState)
 {
 	switch (AnalogState)
@@ -1045,6 +1058,7 @@ bool GetAnalogL(Analog AnalogState)
 	}
 	return false;
 }
+
 bool GetAnalogR(Analog AnalogState)
 {
 	switch (AnalogState)
@@ -1077,6 +1091,34 @@ bool GetAnalogR(Analog AnalogState)
 		return false;
 	}
 	return false;
+}
+int GetAnalogLValue(Analog AnalogState)
+{
+	switch (AnalogState)
+	{
+	case ANALOG_Y:
+		return g_Xinput.Gamepad.sThumbLY;
+		break;
+	case ANALOG_X:
+		return g_Xinput.Gamepad.sThumbLX;
+		break;
+	default:
+		return 0;
+	}
+}
+int GetAnalogRValue(Analog AnalogState)
+{
+	switch (AnalogState)
+	{
+	case ANALOG_Y:
+		return g_Xinput.Gamepad.sThumbRY;
+		break;
+	case ANALOG_X:
+		return g_Xinput.Gamepad.sThumbRX;
+		break;
+	default:
+		return 0;
+	}
 }
 
 void CheckButtonState(WORD ButtomID, ButtonIndex ButtomIndex)
