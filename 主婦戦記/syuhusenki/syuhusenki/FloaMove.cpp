@@ -88,76 +88,76 @@ VOID floaMoveControl(VOID)
 		}
 	}
 
-	if (InputKEY(DIK_W)|| g_Xinput.Gamepad.sThumbLY)
+	if (InputKEY(DIK_W)|| GetAnalogLValue(ANALOG_Y))
 			{
 				if (!g_pause && !g_isTimeUp)
 				{
-					if (g_Xinput.Gamepad.sThumbLY >= 6000 && g_Xinput.Gamepad.sThumbLY <= 10000)
+					if (GetAnalogLValue(ANALOG_Y) >= 6000 && GetAnalogLValue(ANALOG_Y) <= 10000)
 					{
 						g_PCSta.y -= g_PCSpeed / 4;
 					}
-					else if (g_Xinput.Gamepad.sThumbLY >= 10000 && g_Xinput.Gamepad.sThumbLY <= 18000)
+					else if (GetAnalogLValue(ANALOG_Y) >= 10000 && GetAnalogLValue(ANALOG_Y) <= 18000)
 					{
 						g_PCSta.y -= g_PCSpeed / 2;
 					}
-					else if (g_Xinput.Gamepad.sThumbLY >= 18000)
+					else if (GetAnalogLValue(ANALOG_Y) >= 18000)
 					{
 						g_PCSta.y -= g_PCSpeed;
 					}
 				}
 			}
 
-	if (InputKEY(DIK_S)|| g_Xinput.Gamepad.sThumbLY)
+	if (InputKEY(DIK_S)|| GetAnalogLValue(ANALOG_Y))
 			{
 				if (!g_pause && !g_isTimeUp)
 				{
-					if (g_Xinput.Gamepad.sThumbLY <= -6000 && g_Xinput.Gamepad.sThumbLY >= -10000)
+					if (GetAnalogLValue(ANALOG_Y) <= -6000 && GetAnalogLValue(ANALOG_Y) >= -10000)
 					{
 						g_PCSta.y += g_PCSpeed / 4;
 					}
-					else if (g_Xinput.Gamepad.sThumbLY <= -10000 && g_Xinput.Gamepad.sThumbLY >= -18000)
+					else if (GetAnalogLValue(ANALOG_Y) <= -10000 && GetAnalogLValue(ANALOG_Y) >= -18000)
 					{
 						g_PCSta.y += g_PCSpeed / 2;
 					}
-					else if (g_Xinput.Gamepad.sThumbLY <= -18000)
+					else if (GetAnalogLValue(ANALOG_Y) <= -18000)
 					{
 						g_PCSta.y += g_PCSpeed;
 					}
 				}
 			}
 
-	if (InputKEY(DIK_D)|| g_Xinput.Gamepad.sThumbLX)
+	if (InputKEY(DIK_D)|| GetAnalogLValue(ANALOG_X))
 			{
 				if (!g_pause && !g_isTimeUp)
 				{
-					if (g_Xinput.Gamepad.sThumbLX >= 6000 && g_Xinput.Gamepad.sThumbLX <= 10000)
+					if (GetAnalogLValue(ANALOG_X) >= 6000 && GetAnalogLValue(ANALOG_X) <= 10000)
 					{
 						g_PCSta.x += g_PCSpeed / 4;
 					}
-					else if (g_Xinput.Gamepad.sThumbLX >= 10000 && g_Xinput.Gamepad.sThumbLX <= 18000)
+					else if (GetAnalogLValue(ANALOG_X) >= 10000 && GetAnalogLValue(ANALOG_X) <= 18000)
 					{
 						g_PCSta.x += g_PCSpeed / 2;
 					}
-					else if (g_Xinput.Gamepad.sThumbLX >= 18000)
+					else if (GetAnalogLValue(ANALOG_X) >= 18000)
 					{
 						g_PCSta.x += g_PCSpeed;
 					}
 				}
 			}
 
-	if (InputKEY(DIK_A)|| g_Xinput.Gamepad.sThumbLX)
+	if (InputKEY(DIK_A)|| GetAnalogLValue(ANALOG_X))
 			{
 				if (!g_pause && !g_isTimeUp)
 				{
-					if (g_Xinput.Gamepad.sThumbLX <= -6000 && g_Xinput.Gamepad.sThumbLX >= -10000)
+					if (GetAnalogLValue(ANALOG_X) <= -6000 && GetAnalogLValue(ANALOG_X) >= -10000)
 					{
 						g_PCSta.x -= g_PCSpeed / 4;
 					}
-					else if (g_Xinput.Gamepad.sThumbLX <= -10000 && g_Xinput.Gamepad.sThumbLX >= -18000)
+					else if (GetAnalogLValue(ANALOG_X) <= -10000 && GetAnalogLValue(ANALOG_X) >= -18000)
 					{
 						g_PCSta.x -= g_PCSpeed / 2;
 					}
-					else if (g_Xinput.Gamepad.sThumbLX <= -18000)
+					else if (GetAnalogLValue(ANALOG_X) <= -18000)
 					{
 						g_PCSta.x -= g_PCSpeed;
 					}

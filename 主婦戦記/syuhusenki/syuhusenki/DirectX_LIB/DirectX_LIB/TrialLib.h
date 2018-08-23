@@ -91,6 +91,8 @@ enum Analog
 	ANALOGDOWN,
 	ANALOGLEFT,
 	ANALOGRIGHT,
+	ANALOG_X,
+	ANALOG_Y,
 	ANALOGMAX
 };
 enum AnalogTrigger
@@ -527,6 +529,20 @@ bool GetAnalogL(Analog Analogstate);
 * }
 */
 bool GetAnalogR(Analog AnalogState);
+/**
+* @brief  Xinputでゲームパッドの左アナログスティック入力取得
+* @param Analogstate スティックの方向け先番号
+* @return 傾き具合の数値　MAX＝32767　MIN＝-32768
+* @sa enum Analog
+*/
+int GetAnalogLValue(Analog AnalogState);
+/**
+* @brief  Xinputでゲームパッドの右アナログスティック入力取得
+* @param Analogstate スティックの方向け先番号
+* @return 傾き具合の数値　MAX＝32767　MIN＝-32768
+* @sa enum Analog
+*/
+int GetAnalogRValue(Analog AnalogState);
 /**
 * @brief Dinputでキーボードの状態取得
 * @param ButtomID 取得したいXInputボタン番号

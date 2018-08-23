@@ -1058,6 +1058,7 @@ bool GetAnalogL(Analog AnalogState)
 	}
 	return false;
 }
+
 bool GetAnalogR(Analog AnalogState)
 {
 	switch (AnalogState)
@@ -1090,6 +1091,34 @@ bool GetAnalogR(Analog AnalogState)
 		return false;
 	}
 	return false;
+}
+int GetAnalogLValue(Analog AnalogState)
+{
+	switch (AnalogState)
+	{
+	case ANALOG_Y:
+		return g_Xinput.Gamepad.sThumbLY;
+		break;
+	case ANALOG_X:
+		return g_Xinput.Gamepad.sThumbLX;
+		break;
+	default:
+		return 0;
+	}
+}
+int GetAnalogRValue(Analog AnalogState)
+{
+	switch (AnalogState)
+	{
+	case ANALOG_Y:
+		return g_Xinput.Gamepad.sThumbRY;
+		break;
+	case ANALOG_X:
+		return g_Xinput.Gamepad.sThumbRX;
+		break;
+	default:
+		return 0;
+	}
 }
 
 void CheckButtonState(WORD ButtomID, ButtonIndex ButtomIndex)
