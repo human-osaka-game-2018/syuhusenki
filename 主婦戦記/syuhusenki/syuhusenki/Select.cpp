@@ -113,6 +113,14 @@ VOID selectControl(VOID)
 			g_isNextSelect = false;
 			g_inCount++;
 		}
+
+		if (g_isNextSelect && g_isLastCheck)
+		{
+			soundsManager.Start("BUTTON1", false);
+			g_isNextSelect = false;
+			g_isLastCheck = false;
+			g_inCount++;
+		}
 	}
 	if (PadState[ButtonUP] == PadOn && !(g_inCount))
 	{

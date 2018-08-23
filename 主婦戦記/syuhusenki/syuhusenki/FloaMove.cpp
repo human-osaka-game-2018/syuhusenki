@@ -12,7 +12,7 @@ CHARACTER_STATE g_mitukoSta = { 2.f, 1.5f, 1.25 };
 CHARACTER_STATE g_isokoSta = { 2.f, 2.f, 1.f };
 
 CENTRAL_STATE g_PCSta = { 900.f, 580.f, 32.f, 53.f };
-CENTRAL_STATE g_timerSta = { 1142.f, 543.f, 150.f, 150.f };
+CENTRAL_STATE g_timerSta = { 1210.f, 50.f, 50.f, 50.f };
 CENTRAL_STATE g_startCountSta = { 520.f, 350.f, 150.f, 150.f };
 CENTRAL_STATE g_startSta = { 520.f, 350.f, 200.f, 96.25f };
 CENTRAL_STATE g_timeUpSta = { 520.f, 350.f, 260.f, 100.f };
@@ -191,24 +191,24 @@ VOID floaMoveControl(VOID)
 //ìñÇΩÇËîªíËèàóù
 VOID collision(VOID)
 {
-	if (g_PCSta.x <= 50.f)
+	if (g_PCSta.x <= 40.f)
 	{
-		g_PCSta.x = 50.f;
+		g_PCSta.x = 40.f;
 	}
 
-	if (g_PCSta.x >= 965.f)
+	if (g_PCSta.x >= 1230.f)
 	{
-		g_PCSta.x = 965.f;
+		g_PCSta.x = 1230.f;
 	}
 
-	if (g_PCSta.y <= 90.f)
+	if (g_PCSta.y <= 160.f)
 	{
-		g_PCSta.y = 90.f;
+		g_PCSta.y = 160.f;
 	}
 
-	if (g_PCSta.y >= 600.f)
+	if (g_PCSta.y >= 620.f)
 	{
-		g_PCSta.y = 600.f;
+		g_PCSta.y = 620.f;
 	}
 }
 
@@ -223,10 +223,10 @@ VOID floaMoveRender(VOID)
 	char debugPC[10];
 	sprintf_s(debugPC, 10, "%.2f", g_PCSta.x);
 	RECT DEBUGTextA = { 100 ,500,900,600 };
-	WriteWord(debugPC, DEBUGTextA, DT_LEFT, 0xffffff00, DEBUG_FONT);
+	WriteWord(debugPC, DEBUGTextA, DT_LEFT, 0xff000000, DEBUG_FONT);
 	sprintf_s(debugPC, 10, "%.2f", g_PCSta.y);
 	DEBUGTextA = { 100 ,550,900,600 };
-	WriteWord(debugPC, DEBUGTextA, DT_LEFT, 0xffffff00, DEBUG_FONT);
+	WriteWord(debugPC, DEBUGTextA, DT_LEFT, 0xff000000, DEBUG_FONT);
 
 #endif
 
