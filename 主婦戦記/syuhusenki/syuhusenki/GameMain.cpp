@@ -512,7 +512,7 @@ void blowOffRender()
 		g_effectCount++;
 
 			static float Rad = 0;//5:4 400:360
-			Rad += 0.9;
+			Rad += 0.9f;
 
 			if (Rad < 0)
 			{
@@ -1251,10 +1251,10 @@ void clothRushControl()
 			clothRushInit();
 		}
 		if (Rad < 0.2) {
-			Rad -= 0.05;
+			Rad -= 0.05f;
 		}
 		if (Rad > 0) {
-			Rad += 0.05;
+			Rad += 0.05f;
 		}
 		static int clothCount = 0;
 		clothCount++;
