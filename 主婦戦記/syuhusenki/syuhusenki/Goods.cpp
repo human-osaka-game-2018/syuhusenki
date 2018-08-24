@@ -1,31 +1,124 @@
 #include "Goods.h"
+#include "Main.h"
+
+GOODSPARAMETER foodGoods[GOODS_MAX]
+{
+{BLANKGOODS,0,0,0},
 //ì˜
-GOODSPARAMETER beef{ BEEF,300,200,0};
-GOODSPARAMETER pork{ PORK,200,150,0};
-GOODSPARAMETER chicken{ CHICKEN,100,80,0};
-GOODSPARAMETER viennese{ VIENNESE,200,100,0 };
-GOODSPARAMETER mince{ MINCE,150,100,0 };
+{ BEEF,300,200,0 },
+{ PORK,200,150,0 },
+{ CHICKEN,100,80,0 },
+{ VIENNESE,200,100,0 },
+{ MINCE,150,100,0 },
 //ãõ
-GOODSPARAMETER shrimp{ SHRIMP,250,200,0 };
-GOODSPARAMETER octopus{ OCTOPUS,300,180,0 };
-GOODSPARAMETER inkfish{ INKFISH,200,180,0 };
-GOODSPARAMETER fish{ FISH,200,150,0 };
+{ SHRIMP,250,200,0 },
+{ OCTOPUS,300,180,0 },
+{ INKFISH,200,180,0 },
+{ FISH,200,150,0 },
 //ñÏçÿ
-GOODSPARAMETER ginseng{ GINESENG,50,30,0 };
-GOODSPARAMETER onion{ ONION,60,40,0 };
-GOODSPARAMETER potato{ POTATO,65,40,0 };
-GOODSPARAMETER tomato{ TOMATO,100,50,0 };
-GOODSPARAMETER radish{ RADISH,200,150,0 };
+{ GINESENG,50,30,0 },
+{ ONION,60,40,0 },
+{ POTATO,65,40,0 },
+{ TOMATO,100,50,0 },
+{ RADISH,200,150,0 },
 //Ç®âŸéq
-GOODSPARAMETER potatoChips{ POTATOCHIPS,100,80,0 };
-GOODSPARAMETER chocolate{ CHOCOLATE,100,50,0 };
-GOODSPARAMETER ice{ ICE,150,50,0 };
-GOODSPARAMETER riceCracker{ RICECRACKER,100,60,0 };
+{ POTATOCHIPS,100,80,0 },
+{ CHOCOLATE,100,50,0 },
+{ ICE,150,50,0 },
+{ RICECRACKER,100,60,0 },
 //â ï®
-GOODSPARAMETER apple{ APPLE,100,80,0 };
-GOODSPARAMETER orange{ ORANGE,200,150,0 };
-GOODSPARAMETER banana{ BANANA, 100,80,0 };
+{ APPLE,100,80,0 },
+{ ORANGE,200,150,0 },
+{ BANANA, 100,80,0 },
 //à˘Ç›ï®
-GOODSPARAMETER tea{TEA,100,70,0};
-GOODSPARAMETER juice{ JUICE,150,80,0 };
-GOODSPARAMETER beer{ BEER,200,100,0 };
+{ TEA,100,70,0 },
+{ JUICE,150,80,0 },
+{ BEER,200,100,0 },
+};
+
+COMBOPARAMETER foodCombo[COMBOMAX]{
+{ BURIDAIKON,100, FISH,RADISH,false },
+{ RELISH,100,BEER,VIENNESE ,false },
+{ TEATIME, 100, TEA, RICECRACKER ,false },
+{ CURRY, 150, POTATO, ONION, BEEF /*|| PORK || CHICKEN */,false },
+{ HAMBERG, 150, MINCE, ONION, GINESENG ,false },
+{ ASSORTEDSASHIMI, 150, SHRIMP, OCTOPUS, INKFISH ,false },
+{ AFTERNOONREFRESHMENT,150,ICE,JUICE,APPLE /*|| ORANGE || BANANA */,false },
+{ SOUP,200,VIENNESE,TOMATO,ONION ,false },
+{ NIMONO,200,RADISH,FISH,OCTOPUS ,false },
+{ PARFAIT,200,ICE,APPLE /*|| ORANGE || BANANA*/,APPLE /*|| ORANGE || BANANA*/ ,false },
+};
+
+struct COMBO_OK {
+	bool one;
+	bool twe;
+	bool three;
+};
+COMBO_OK checkOk{false,false,false};
+int count = 0;
+void comboCheck(int goodsId1, int goodsId2, int goodsId3 )
+{
+	if (foodGoods[goodsId1].haveValue)
+	{
+		for (int i = 0; i < COMBOMAX; i++) {
+			checkOk.one = false;
+			checkOk.twe = false;
+			checkOk.three = false;
+
+			if (foodGoods[goodsId1].goodsID == foodCombo[i].comboElement1 && (!checkOk.one))
+			{
+				checkOk.one = true; count++;
+			}
+			else if (foodGoods[goodsId1].goodsID == foodCombo[i].comboElement2 && (!checkOk.twe))
+			{
+				checkOk.twe = true; count++;
+			}
+			else if (foodGoods[goodsId1].goodsID == foodCombo[i].comboElement3 && (!checkOk.three))
+			{
+				checkOk.three = true; count++;
+			}
+
+			if (foodGoods[goodsId2].haveValue)
+			{
+				if (foodGoods[goodsId2].goodsID == foodCombo[i].comboElement1 && (!checkOk.one))
+				{
+					checkOk.one = true; count++;
+				}
+				else if (foodGoods[goodsId2].goodsID == foodCombo[i].comboElement2 && (!checkOk.twe))
+				{
+					checkOk.twe = true; count++;
+				}
+				else if (foodGoods[goodsId2].goodsID == foodCombo[i].comboElement3 && (!checkOk.three))
+				{
+					checkOk.three = true; count++;
+				}
+			}
+			if (goodsId3 != BLANKGOODS && foodGoods[goodsId3].haveValue)
+			{
+				if (foodGoods[goodsId3].goodsID == foodCombo[i].comboElement1 && (!checkOk.one))
+				{
+					checkOk.one = true; count++;
+				}
+				else if (foodGoods[goodsId3].goodsID == foodCombo[i].comboElement2 && (!checkOk.twe))
+				{
+					checkOk.twe = true; count++;
+				}
+				else if (foodGoods[goodsId3].goodsID == foodCombo[i].comboElement3 && (!checkOk.three))
+				{
+					checkOk.three = true; count++;
+				}
+			}
+			else if (goodsId3 == BLANKGOODS) {
+				checkOk.three = true;
+			}
+			if (checkOk.one && checkOk.twe && checkOk.three)
+			{
+				foodCombo[i].comboSucceed = true;
+				g_SoundSuccess = soundsManager.Start("SUCCESS", false) && g_SoundSuccess;
+			}
+			else if (!checkOk.one || !checkOk.twe || !checkOk.three) {
+				g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
+			}
+		}
+	}
+}

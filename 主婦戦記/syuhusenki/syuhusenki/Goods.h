@@ -2,6 +2,7 @@
 #define GOODS_H
 
 enum GOODSNUMBER {
+	BLANKGOODS,
 	BEEF,
 	PORK,
 	CHICKEN,
@@ -40,7 +41,7 @@ enum COMBOMEUE {
 	SOUP,
 	NIMONO,
 	PARFAIT,
-	CONBOMAX
+	COMBOMAX
 };
 
 struct GOODSPARAMETER {
@@ -56,39 +57,11 @@ struct COMBOPARAMETER {
 	const int comboElement1;
 	const int comboElement2;
 	const int comboElement3;
+	bool comboSucceed;
 };
+extern GOODSPARAMETER foodGoods[GOODS_MAX];
+extern COMBOPARAMETER foodCombo[COMBOMAX];
 
-//ì˜
-extern GOODSPARAMETER beef;
-extern GOODSPARAMETER pork;
-extern GOODSPARAMETER chicken;
-extern GOODSPARAMETER viennese;
-extern GOODSPARAMETER mince;
-//ãõ
-extern GOODSPARAMETER shrimp;
-extern GOODSPARAMETER octopus;
-extern GOODSPARAMETER inkfish;
-extern GOODSPARAMETER fish;
-//ñÏçÿ
-extern GOODSPARAMETER ginseng;
-extern GOODSPARAMETER onion;
-extern GOODSPARAMETER potato;
-extern GOODSPARAMETER tomato;
-extern GOODSPARAMETER radish;
-//Ç®âŸéq
-extern GOODSPARAMETER potatoChips;
-extern GOODSPARAMETER chocolate;
-extern GOODSPARAMETER ice;
-extern GOODSPARAMETER riceCracker;
-//â ï®
-extern GOODSPARAMETER apple;
-extern GOODSPARAMETER orange;
-extern GOODSPARAMETER banana;
-//à˘Ç›ï®
-extern GOODSPARAMETER tea;
-extern GOODSPARAMETER juice;
-extern GOODSPARAMETER beer;
-
-
-
+void comboCheck(int goodsId1, int goodsId2, int goodsId3);
+extern int count;
 #endif

@@ -14,7 +14,10 @@ struct SoundEffect {
 enum GAMESCENE {
 	FLOAMOVE,
 	PUSHENEMY,
-	PICKGOODS
+	PICKGOODS,
+#ifdef _DEBUG
+	TESTSCENE,
+#endif
 };
 
 enum FLOA {
