@@ -1,6 +1,7 @@
 #include "Main.h"
 #include "FloaMove.h"
 #include "GameMain.h"
+#include "Goods.h"
 
 #define PLAYER_FLOA_SCALE 100
 #define PLAYER_BLOWOFF_SCALE 150
@@ -14,6 +15,7 @@ enum MOBDIRECTION {
 	WEST
 };
 
+void testScene();
 
 int g_gameScene = FLOAMOVE;
 //int g_gameScene = PUSHENEMY;
@@ -195,6 +197,14 @@ void gameMain() {
 		g_selectFloa = CLOTH;
 	}
 
+#ifdef _DEBUG
+
+	CheckKeyState(DIK_F3);
+	if (KeyState[DIK_F3] == KeyRelease)
+	{
+		g_gameScene = TESTSCENE;
+	}
+#endif
 	switch (g_gameScene) {
 	case FLOAMOVE:
 		floaMove();
@@ -210,7 +220,10 @@ void gameMain() {
 		}
 		g_effectCount = 0;
 		break;
-	
+	case TESTSCENE:
+		testScene();
+		break;
+
 	}
 }
 void gameControl() {
@@ -1364,4 +1377,29 @@ void clothRushInit()
 	clothSmokeCentral[5]={ 500,400,200,200 };
 
 	g_gameScene = PUSHENEMY;
+}
+
+
+
+void testScene() 
+{
+	for (int i = 0; i < GOODS_MAX; i++) {
+		foodGoods[i].haveValue = 10;
+	}
+	BeginSetTexture();
+	static int takegoods[3]{ MINCE,ONION ,GINESENG };
+	comboCheck(takegoods[0], takegoods[1], takegoods[2]);
+	char testc[10];
+	sprintf_s(testc, 10, "%d", count);
+	RECT DEBUGTextC = { 100,200,900,600 };
+	WriteWord(testc, DEBUGTextC, DT_LEFT, 0xffffff00, DEBUG_FONT);
+
+	for (int i = 0; i < COMBOMAX; i++)
+	{
+		char test[10];
+		sprintf_s(test, 10, "%d", foodCombo[i].comboSucceed);
+		RECT DEBUGText = { 100+i*50 ,150,900,600 };
+		WriteWord(test, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
+	}
+	EndSetTexture();
 }
