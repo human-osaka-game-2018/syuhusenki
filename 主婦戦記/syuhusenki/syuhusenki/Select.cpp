@@ -46,6 +46,7 @@ VOID selectControl(VOID)
 		if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == LASTCHECKTOP)
 		{
 			soundsManager.Start("BUTTON1", false);
+			soundsManager.Stop("SELECT_BGM");
 			g_isNextSelect = false;
 			g_isLastCheck = false;
 			g_scene = SCENE_MAIN;
