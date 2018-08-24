@@ -201,14 +201,14 @@ VOID collision(VOID)
 		g_PCSta.x = 1230.f;
 	}
 
-	if (g_PCSta.y <= 160.f)
+	if (g_PCSta.y <= 165.f)
 	{
-		g_PCSta.y = 160.f;
+		g_PCSta.y = 165.f;
 	}
 
-	if (g_PCSta.y >= 620.f)
+	if (g_PCSta.y >= 645.f)
 	{
-		g_PCSta.y = 620.f;
+		g_PCSta.y = 645.f;
 	}
 }
 
