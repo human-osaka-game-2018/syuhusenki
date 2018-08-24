@@ -130,7 +130,7 @@ char comandButton(int comand);
 void pickGoods();
 void pickGoodsControl();
 void pickGoodsRender();
-void pickGoodsDeviseControl(int rushInput);
+void pickGoodsDeviseControl(int* rushInput);
 void rushButtonCheck(int rushInput, int rushShow);
 
 void takeingGoods(bool take[], int size);
@@ -854,7 +854,7 @@ void pickGoodsControl() {
 	//goodsMoving(goodsB7, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 6);
 	//goodsMoving(goodsB8, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 7);
 
-	pickGoodsDeviseControl(rushInput);
+	pickGoodsDeviseControl(&rushInput);
 
 }
 
@@ -889,7 +889,7 @@ void pickGoodsRender() {
 	
 	EasyCreateSquareVertex(0, 150, WIDTH, 550, CUTIN_TEX);
 	char rushButton[10];
-	RECT rushButtonAppear = {500,200,900,500};
+	RECT rushButtonAppear = {500,300,700,500};
 	sprintf_s(rushButton, 10, "%c", comandButton(rushButtonShow));
 	WriteWord(rushButton, rushButtonAppear, DT_CENTER, RED, RUSH_FONT);
 #ifdef _DEBUG
@@ -947,15 +947,17 @@ void pickGoodsRender() {
 	EndSetTexture();
 }
 
-void pickGoodsDeviseControl(int rushInput) {
+void pickGoodsDeviseControl(int* rushInput) {
 	BottonCheck();
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
 
 	CheckKeyState(DIK_A);
-	CheckKeyState(DIK_D);
-	CheckKeyState(DIK_W);
-	CheckKeyState(DIK_S);
+	CheckKeyState(DIK_B);
+	CheckKeyState(DIK_X);
+	CheckKeyState(DIK_Y);
+	CheckKeyState(DIK_R);
+	CheckKeyState(DIK_L);
 
 	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
@@ -965,50 +967,50 @@ void pickGoodsDeviseControl(int rushInput) {
 	}
 	if (KeyState[DIK_A] == KeyRelease)
 	{
-		rushInput = ButtonA;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonA;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 7);
 	}
 	if (KeyState[DIK_B] == KeyRelease)
 	{
-		rushInput = ButtonB;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonB;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 7);
 	}
 	if (KeyState[DIK_X] == KeyRelease)
 	{
-		rushInput = ButtonX;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonX;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 7);
 	}
 	if (KeyState[DIK_Y] == KeyRelease)
 	{
-		rushInput = ButtonY;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonY;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 7);
 	}
 	if (KeyState[DIK_R] == KeyRelease)
 	{
-		rushInput = ButtonRB;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonRB;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 7);
 	}
 	if (KeyState[DIK_L] == KeyRelease)
 	{
-		rushInput = ButtonLB;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonLB;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 7);
 	}
 
 	if (KeyState[DIK_D] == KeyRelease)
 	{
-		rushButtonCheck(rushInput, rushButtonShow);
+		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeB, 8);
 		buttonSE(Pick, 7);
 	}
@@ -1032,38 +1034,38 @@ void pickGoodsDeviseControl(int rushInput) {
 	}
 	if (PadState[ButtonA] == PadRelease)
 	{
-		rushInput = ButtonA;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonA;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		buttonSE(Pick, 7);
 	}
 	if (PadState[ButtonB] == PadRelease)
 	{
-		rushInput = ButtonB;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonB;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		buttonSE(Pick, 7);
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
-		rushInput = ButtonX;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonX;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		buttonSE(Pick, 7);
 	}
 	if (PadState[ButtonY] == PadRelease)
 	{
-		rushInput = ButtonY;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonY;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		buttonSE(Pick, 7);
 	}
 	if (PadState[ButtonRB] == KeyRelease)
 	{
-		rushInput = ButtonRB;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonRB;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		buttonSE(Pick, 7);
 	}
 	if (PadState[ButtonLB] == KeyRelease)
 	{
-		rushInput = ButtonLB;
-		rushButtonCheck(rushInput, rushButtonShow);
+		*rushInput = ButtonLB;
+		rushButtonCheck(*rushInput, rushButtonShow);
 		buttonSE(Pick, 7);
 	}
 
@@ -1075,6 +1077,8 @@ void rushButtonCheck(int rushInput, int rushShow)
 		g_goodsTakenNum++;
 
 	}
+	else g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
+
 }
 void takeingGoods(bool take[],int size) {
 	switch (size)

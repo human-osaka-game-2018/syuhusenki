@@ -24,6 +24,12 @@ VOID selectControl(VOID)
 {
 	GetControl(0);
 	BottonCheck();
+	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_NUMPADENTER);
+	CheckKeyState(DIK_A);
+	CheckKeyState(DIK_D);
+	CheckKeyState(DIK_W);
+	CheckKeyState(DIK_S);
 
 	if (g_Xinput.Gamepad.wButtons == 0 && GetAnalogLValue(ANALOG_X) <= 6000 && GetAnalogLValue(ANALOG_X) >= -6000)
 	{
@@ -34,7 +40,7 @@ VOID selectControl(VOID)
 		g_inCount++;
 	}
 
-	if (PadState[ButtonA] == PadOn && !(g_inCount))
+	if ((PadState[ButtonA] == PadOn || KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease )&& !(g_inCount))
 	{
 		//èoåÇämîFÇÃèàóù
 		if (g_isNextSelect && g_isLastCheck && g_lastCheckSta.y == LASTCHECKTOP)
@@ -64,7 +70,7 @@ VOID selectControl(VOID)
 		else if (g_stageSelectFrameSta.x == STAGESELECTRIGHT && g_isNextSelect && !(g_isLastCheck))
 		{
 			soundsManager.Start("MISS", false);
-			g_selectFloa = CLOTH;
+			//g_selectFloa = CLOTH;
 			//g_isLastCheck = true;
 			g_inCount++;
 		}
@@ -114,7 +120,7 @@ VOID selectControl(VOID)
 			g_inCount++;
 		}
 	}
-	if (PadState[ButtonUP] == PadOn && !(g_inCount))
+	if ((PadState[ButtonUP] == PadOn || KeyState[DIK_W] == KeyRelease )&& !(g_inCount))
 	{
 		if (g_lastCheckSta.y == LASTCHECKBOTTOM && g_isNextSelect && g_isLastCheck)
 		{
@@ -122,7 +128,7 @@ VOID selectControl(VOID)
 			g_lastCheckSta.y = LASTCHECKTOP;
 		}
 	}
-	if (PadState[ButtonDOWN] == PadOn && !(g_inCount))
+	if ((PadState[ButtonDOWN] == PadOn || KeyState[DIK_S] == KeyRelease )&& !(g_inCount))
 	{
 		if (g_lastCheckSta.y == LASTCHECKTOP && g_isNextSelect && g_isLastCheck)
 		{
@@ -130,7 +136,7 @@ VOID selectControl(VOID)
 			g_lastCheckSta.y = LASTCHECKBOTTOM;
 		}
 	}
-	if (PadState[ButtonRIGHT] == PadOn && !(g_inCount))
+	if ((PadState[ButtonRIGHT] == PadOn || KeyState[DIK_D] == KeyRelease)&& !(g_inCount))
 	{
 		if (g_charSelectFrameSta.x == CHARSELECTCENTER && !(g_isNextSelect) && !(g_isLastCheck))
 		{
@@ -152,7 +158,7 @@ VOID selectControl(VOID)
 			g_inCount++;
 		}
 	}
-	if (PadState[ButtonLEFT] == PadOn && !(g_inCount))
+	if ((PadState[ButtonLEFT] == PadOn || KeyState[DIK_A] == KeyRelease)&& !(g_inCount))
 	{
 		if (g_charSelectFrameSta.x == CHARSELECTRIGHT && !(g_isNextSelect) && !(g_isLastCheck))
 		{
