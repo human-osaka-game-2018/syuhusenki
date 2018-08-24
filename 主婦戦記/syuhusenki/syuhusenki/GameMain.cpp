@@ -66,45 +66,45 @@ CENTRAL_STATE effectExplosionCentral = {1000,800,300,300};
 CUSTOMVERTEX playerHit[4];
 CENTRAL_STATE playerCentralHit = {200,350,300,250};
 
-CUSTOMVERTEX goodsA[4];
-CUSTOMVERTEX goodsB[4];
-CUSTOMVERTEX goodsA2[4];
-CUSTOMVERTEX goodsB2[4];
-CUSTOMVERTEX goodsA3[4];
-CUSTOMVERTEX goodsB3[4]; 
-CUSTOMVERTEX goodsA4[4];
-CUSTOMVERTEX goodsB4[4];
-CUSTOMVERTEX goodsA5[4];
-CUSTOMVERTEX goodsB5[4];
-CUSTOMVERTEX goodsA6[4];
-CUSTOMVERTEX goodsB6[4];
-CUSTOMVERTEX goodsA7[4];
-CUSTOMVERTEX goodsB7[4];
-CUSTOMVERTEX goodsA8[4];
-CUSTOMVERTEX goodsB8[4];
-
-CENTRAL_STATE goodsCentralA[8]{
-	{ 600,550,g_goodsScaleA[0],g_goodsScaleA[0]},
-	{ 600,550,g_goodsScaleA[1],g_goodsScaleA[1]},
-	{ 600,550,g_goodsScaleA[2],g_goodsScaleA[2] },
-	{ 600,550,g_goodsScaleA[3],g_goodsScaleA[3] },
-	{ 600,550,g_goodsScaleA[4],g_goodsScaleA[4] },
-	{ 600,550,g_goodsScaleA[5],g_goodsScaleA[5] },
-	{ 600,550,g_goodsScaleA[6],g_goodsScaleA[6] },
-	{ 600,550,g_goodsScaleA[7],g_goodsScaleA[7] }
-};
-
-CENTRAL_STATE goodsCentralB[8]{
-	{ 500,500,g_goodsScaleB[0],g_goodsScaleB[0] },
-	{ 500,500,g_goodsScaleB[1],g_goodsScaleB[1] },
-	{ 500,500,g_goodsScaleB[2],g_goodsScaleB[2] },
-	{ 500,500,g_goodsScaleB[3],g_goodsScaleB[3] },
-	{ 600,550,g_goodsScaleB[4],g_goodsScaleB[4] },
-	{ 600,550,g_goodsScaleB[5],g_goodsScaleB[5] },
-	{ 600,550,g_goodsScaleB[6],g_goodsScaleB[6] },
-	{ 600,550,g_goodsScaleB[7],g_goodsScaleB[7] }
-
-};
+//CUSTOMVERTEX goodsA[4];
+//CUSTOMVERTEX goodsB[4];
+//CUSTOMVERTEX goodsA2[4];
+//CUSTOMVERTEX goodsB2[4];
+//CUSTOMVERTEX goodsA3[4];
+//CUSTOMVERTEX goodsB3[4]; 
+//CUSTOMVERTEX goodsA4[4];
+//CUSTOMVERTEX goodsB4[4];
+//CUSTOMVERTEX goodsA5[4];
+//CUSTOMVERTEX goodsB5[4];
+//CUSTOMVERTEX goodsA6[4];
+//CUSTOMVERTEX goodsB6[4];
+//CUSTOMVERTEX goodsA7[4];
+//CUSTOMVERTEX goodsB7[4];
+//CUSTOMVERTEX goodsA8[4];
+//CUSTOMVERTEX goodsB8[4];
+//
+//CENTRAL_STATE goodsCentralA[8]{
+//	{ 600,550,g_goodsScaleA[0],g_goodsScaleA[0]},
+//	{ 600,550,g_goodsScaleA[1],g_goodsScaleA[1]},
+//	{ 600,550,g_goodsScaleA[2],g_goodsScaleA[2] },
+//	{ 600,550,g_goodsScaleA[3],g_goodsScaleA[3] },
+//	{ 600,550,g_goodsScaleA[4],g_goodsScaleA[4] },
+//	{ 600,550,g_goodsScaleA[5],g_goodsScaleA[5] },
+//	{ 600,550,g_goodsScaleA[6],g_goodsScaleA[6] },
+//	{ 600,550,g_goodsScaleA[7],g_goodsScaleA[7] }
+//};
+//
+//CENTRAL_STATE goodsCentralB[8]{
+//	{ 500,500,g_goodsScaleB[0],g_goodsScaleB[0] },
+//	{ 500,500,g_goodsScaleB[1],g_goodsScaleB[1] },
+//	{ 500,500,g_goodsScaleB[2],g_goodsScaleB[2] },
+//	{ 500,500,g_goodsScaleB[3],g_goodsScaleB[3] },
+//	{ 600,550,g_goodsScaleB[4],g_goodsScaleB[4] },
+//	{ 600,550,g_goodsScaleB[5],g_goodsScaleB[5] },
+//	{ 600,550,g_goodsScaleB[6],g_goodsScaleB[6] },
+//	{ 600,550,g_goodsScaleB[7],g_goodsScaleB[7] }
+//
+//};
 
 CENTRAL_STATE durabilityPointCentral = { 900,75 ,15,40};
 void gameControl();
@@ -112,8 +112,8 @@ void gameRender();
 void floaMove();
 //void floaMoveControl();
 //void floaMoveRender();
-void keyControl(CENTRAL_STATE* central);
-void mobMoving(CENTRAL_STATE* mob);
+//void keyControl(CENTRAL_STATE* central);
+//void mobMoving(CENTRAL_STATE* mob);
 
 
 
@@ -147,37 +147,37 @@ void gameMain() {
 	if (g_isFirst) {
 		static bool canRead = true;
 		if (canRead) {
-			ReadInTexture("Texture/testFrame.png", FRAME_TEX);
-			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
-			ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
-			ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
-			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
-			//ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
-			ReadInTexture("Texture/beef.png", BEEF_TEX);
-			ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
-			ReadInTexture("Texture/pork.png", PORK_TEX);
-			ReadInTexture("Texture/cardboard.png", BOX_TEX);
-			ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
-			ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
-			ReadInTexture("Texture/smoke.png", SMOKE_TEX);
+			//ReadInTexture("Texture/testFrame.png", FRAME_TEX);
+			//ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
+			//ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
+			//ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
+			//ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
+			////ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
+			//ReadInTexture("Texture/beef.png", BEEF_TEX);
+			//ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
+			//ReadInTexture("Texture/pork.png", PORK_TEX);
+			//ReadInTexture("Texture/cardboard.png", BOX_TEX);
+			//ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
+			//ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
+			//ReadInTexture("Texture/smoke.png", SMOKE_TEX);
 
-			ReadInTexture("Texture/timerFrame.png", TIMER_FRAME_TEX);
-			ReadInTexture("Texture/timerHand.png", TIMER_HAND_TEX);
-			ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
-			ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
-			ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
-			ReadInTexture("Texture/kariStart.png", START_TEX);
-			ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
-			ReadInTexture("Texture/end.png", TIMEUP_TEX);
-			//ReadInTexture("Texture/cardboard.png", PC_TEX);
-			ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
+			//ReadInTexture("Texture/timerFrame.png", TIMER_FRAME_TEX);
+			//ReadInTexture("Texture/timerHand.png", TIMER_HAND_TEX);
+			//ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
+			//ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
+			//ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
+			//ReadInTexture("Texture/kariStart.png", START_TEX);
+			//ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
+			//ReadInTexture("Texture/end.png", TIMEUP_TEX);
+			////ReadInTexture("Texture/cardboard.png", PC_TEX);
+			//ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
 			canRead = false;
 		}
-		mobCentralBlowOff[0] = { 850,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[1] = { 900,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[2] = { 950,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[3] = { 1000,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[4] = { 1050,650 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[0] = {  850,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[1] = {  900,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[2] = {  950,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[3] = { 1000,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+		mobCentralBlowOff[4] = { 1050,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
 
 		effectExplosionCentral = { 900,750,300,300 };
 
@@ -279,7 +279,7 @@ void gameRender()
 //フロア移動場面
 void floaMove() {
 	
-	
+	comandMake();
 	floaMoveControl();
 	floaMoveRender();
 }
@@ -330,106 +330,106 @@ void floaMove() {
 //
 //	EndSetTexture();
 //}
-
-void keyControl(CENTRAL_STATE* central) {
-	CheckKeyState(DIK_LEFT);
-	CheckKeyState(DIK_RIGHT);
-	CheckKeyState(DIK_UP);
-	CheckKeyState(DIK_DOWN);
-	if (KeyState[DIK_LEFT])// →キーを押してる
-	{
-		central->x -= MOVE_MILEAGE;
-	}
-	if (KeyState[DIK_RIGHT])// ←キーを押してる
-	{
-		central->x += MOVE_MILEAGE;
-	}
-	if (KeyState[DIK_UP])// ↑キーを押してる
-	{
-		central->y -= MOVE_MILEAGE;
-	}
-	if (KeyState[DIK_DOWN])// ↓キーを押してる
-	{
-		central->y += MOVE_MILEAGE;
-	}
-	//XInputデバイス操作
-	GetControl(0);
-	BottonCheck();
-	if (GetAnalogL(ANALOGRIGHT))
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			central->x += MOVE_MILEAGE_STICK;
-		}
-	}
-
-	if (GetAnalogL(ANALOGLEFT))
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			central->x -= MOVE_MILEAGE_STICK;
-		}
-	}
-	if (!GetAnalogL(ANALOGDOWN))
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			central->y -= MOVE_MILEAGE_STICK;
-		}
-	}
-	if (!GetAnalogL(ANALOGUP))
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			central->y += MOVE_MILEAGE_STICK;
-		}
-	}
-	if (PadState[ButtonLEFT])// →キーを押してる
-	{
-		central->x += MOVE_MILEAGE;
-	}
-	if (PadState[ButtonRIGHT])// ←キーを押してる
-	{
-		central->x -= MOVE_MILEAGE;
-	}
-	if (PadState[ButtonUP])// ↑キーを押してる
-	{
-		central->y += MOVE_MILEAGE;
-	}
-	if (PadState[ButtonDOWN])// ↓キーを押してる
-	{
-		central->y -= MOVE_MILEAGE;
-	}
-
-}
-
-void mobMoving(CENTRAL_STATE* mob) {
-	static int mobDirection = EAST;
-	static int mobTurnCount = 0;
-	mobTurnCount++;
-	if (mobTurnCount > 10) {
-		mobDirection = rand() % 4;
-		mobTurnCount = 0;
-	}
-	switch (mobDirection) {
-	case NORTH:
-		mob->y -= MOVE_MILEAGE;
-		break;
-
-	case SOUTH:	
-		mob->y += MOVE_MILEAGE;
-		break;
-
-	case EAST:
-		mob->x += MOVE_MILEAGE;
-		break;
-
-	case WEST:
-		mob->x -= MOVE_MILEAGE;
-		break;
-	}
-}
-
+//
+//void keyControl(CENTRAL_STATE* central) {
+//	CheckKeyState(DIK_LEFT);
+//	CheckKeyState(DIK_RIGHT);
+//	CheckKeyState(DIK_UP);
+//	CheckKeyState(DIK_DOWN);
+//	if (KeyState[DIK_LEFT])// →キーを押してる
+//	{
+//		central->x -= MOVE_MILEAGE;
+//	}
+//	if (KeyState[DIK_RIGHT])// ←キーを押してる
+//	{
+//		central->x += MOVE_MILEAGE;
+//	}
+//	if (KeyState[DIK_UP])// ↑キーを押してる
+//	{
+//		central->y -= MOVE_MILEAGE;
+//	}
+//	if (KeyState[DIK_DOWN])// ↓キーを押してる
+//	{
+//		central->y += MOVE_MILEAGE;
+//	}
+//	//XInputデバイス操作
+//	GetControl(0);
+//	BottonCheck();
+//	if (GetAnalogL(ANALOGRIGHT))
+//	{
+//		for (int i = 0; i < 4; i++)
+//		{
+//			central->x += MOVE_MILEAGE_STICK;
+//		}
+//	}
+//
+//	if (GetAnalogL(ANALOGLEFT))
+//	{
+//		for (int i = 0; i < 4; i++)
+//		{
+//			central->x -= MOVE_MILEAGE_STICK;
+//		}
+//	}
+//	if (!GetAnalogL(ANALOGDOWN))
+//	{
+//		for (int i = 0; i < 4; i++)
+//		{
+//			central->y -= MOVE_MILEAGE_STICK;
+//		}
+//	}
+//	if (!GetAnalogL(ANALOGUP))
+//	{
+//		for (int i = 0; i < 4; i++)
+//		{
+//			central->y += MOVE_MILEAGE_STICK;
+//		}
+//	}
+//	if (PadState[ButtonLEFT])// →キーを押してる
+//	{
+//		central->x += MOVE_MILEAGE;
+//	}
+//	if (PadState[ButtonRIGHT])// ←キーを押してる
+//	{
+//		central->x -= MOVE_MILEAGE;
+//	}
+//	if (PadState[ButtonUP])// ↑キーを押してる
+//	{
+//		central->y += MOVE_MILEAGE;
+//	}
+//	if (PadState[ButtonDOWN])// ↓キーを押してる
+//	{
+//		central->y -= MOVE_MILEAGE;
+//	}
+//
+//}
+//
+//void mobMoving(CENTRAL_STATE* mob) {
+//	static int mobDirection = EAST;
+//	static int mobTurnCount = 0;
+//	mobTurnCount++;
+//	if (mobTurnCount > 10) {
+//		mobDirection = rand() % 4;
+//		mobTurnCount = 0;
+//	}
+//	switch (mobDirection) {
+//	case NORTH:
+//		mob->y -= MOVE_MILEAGE;
+//		break;
+//
+//	case SOUTH:	
+//		mob->y += MOVE_MILEAGE;
+//		break;
+//
+//	case EAST:
+//		mob->x += MOVE_MILEAGE;
+//		break;
+//
+//	case WEST:
+//		mob->x -= MOVE_MILEAGE;
+//		break;
+//	}
+//}
+//
 ////////////////////////////////////////////
 //コマンド入力場面
 void blowOff() {
@@ -578,6 +578,7 @@ int comandCheck(int comand[], int inputComand[],int count)
 	return 2;
 }
 void comandMake() {
+	srand((unsigned int)time(NULL));
 	comandPresentment[0] = rand() % 6;
 	comandPresentment[1]= rand() % 6;
 	comandPresentment[2]= rand() % 6;

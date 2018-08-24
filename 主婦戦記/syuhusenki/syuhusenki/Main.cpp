@@ -45,6 +45,31 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/lastCheck.png",SELECTLASTCHECK_TEX);
 	ReadInTexture("Texture/arrow.png", TITLEICON_TEX);
 
+	ReadInTexture("Texture/testFrame.png", FRAME_TEX);
+	ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
+	ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
+	ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
+	ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
+	//ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
+	ReadInTexture("Texture/beef.png", BEEF_TEX);
+	ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
+	ReadInTexture("Texture/pork.png", PORK_TEX);
+	ReadInTexture("Texture/cardboard.png", BOX_TEX);
+	ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
+	ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
+	ReadInTexture("Texture/smoke.png", SMOKE_TEX);
+
+	ReadInTexture("Texture/timerFrame.png", TIMER_FRAME_TEX);
+	ReadInTexture("Texture/timerHand.png", TIMER_HAND_TEX);
+	ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
+	ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
+	ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
+	ReadInTexture("Texture/kariStart.png", START_TEX);
+	ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
+	ReadInTexture("Texture/end.png", TIMEUP_TEX);
+	//ReadInTexture("Texture/cardboard.png", PC_TEX);
+	ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
+
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);
 	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
 	SetUpFont(125, 100, DEFAULT_CHARSET, NULL, RUSH_FONT);
@@ -80,6 +105,7 @@ unsigned int gameRoop() {
 		titleRender();
 		break;
 	case SCENE_SERECTCHARANDSTAGE:
+		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
 		selectControl();
 		selectRender();
 		break;
