@@ -105,7 +105,7 @@ unsigned int gameRoop() {
 		titleRender();
 		break;
 	case SCENE_SERECTCHARANDSTAGE:
-		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+		
 		selectControl();
 		selectRender();
 		break;

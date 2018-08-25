@@ -117,7 +117,7 @@ void floaMove();
 //void keyControl(CENTRAL_STATE* central);
 //void mobMoving(CENTRAL_STATE* mob);
 
-
+int texturePC = YASUKO_TEX;
 
 void blowOff();
 void blowOffControl();
@@ -139,10 +139,10 @@ void takeingGoods(bool take[], int size);
 void goodsMoving(CUSTOMVERTEX vertex[], float goodsScale[], bool take[], CENTRAL_STATE goodsCentral[], float deleatPosX, int arreyNum);
 void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum, int texNum);
 
-void clothRush();
-void clothRushControl();
-void clothRushRender();
-void clothRushInit();
+//void clothRush();
+//void clothRushControl();
+//void clothRushRender();
+//void clothRushInit();
 /////////////////////////////////////
 void gameMain() {
 	srand((unsigned int)time(NULL));
@@ -173,6 +173,8 @@ void gameMain() {
 			//ReadInTexture("Texture/end.png", TIMEUP_TEX);
 			////ReadInTexture("Texture/cardboard.png", PC_TEX);
 			//ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
+			g_SoundSuccess = soundsManager.Stop("SELECT_BGM") && g_SoundSuccess;
+
 			canRead = false;
 		}
 		mobCentralBlowOff[0] = {  850,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
@@ -220,10 +222,11 @@ void gameMain() {
 		}
 		g_effectCount = 0;
 		break;
+#ifdef _DEBUG
 	case TESTSCENE:
 		testScene();
 		break;
-
+#endif
 	}
 }
 void gameControl() {
@@ -825,7 +828,7 @@ void pickGoods() {
 		pickGoodsRender();
 		break;
 	case CLOTH:
-		clothRush();
+		//clothRush();
 		break;
 	}
 }
@@ -1159,226 +1162,226 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum,int texNum) {
 }
 
 /////////////////////////////////////
-int texturePC = YASUKO_TEX;
-static int clothMAXHP = 1000;
-static int mobMAXHP = 50;
-static int clothHP = clothMAXHP;
-static int mobHP = mobMAXHP;
-
-static bool clothBreak = false;
-static bool clothStolen = false;
-static bool getCloth = false;
-static int openCount = 0;
-static float Rad;
-CENTRAL_STATE clothMobCentral = {900,500,200,300};
-CENTRAL_STATE clothPCCentral = { 300,500,200,300};
-CUSTOMVERTEX clothSmoke[4];
-CENTRAL_STATE clothSmokeCentral[6] = 
-{
-	{800,550,200,200},
-	{700,450,200,200},
-	{600,500,230,230},
-	{650,600,200,200},
-	{450,500,230,230},
-	{500,400,200,200}
-};
-
-
-
-void clothRush() 
-{
-	clothRushControl();
-	clothRushRender();
-}
-
-void clothRushControl() 
-{
-	openCount++;
-	CheckKeyState(DIK_RETURN);
-	CheckKeyState(DIK_NUMPADENTER);
-	CheckKeyState(DIK_A);
-	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
-	{
-		g_scene = SCENE_RESULT;
-		g_gameScene = FLOAMOVE;
-	}
-	if (openCount > 20)
-	{
-		if (durabilityPointCentral.x <= 600 || !clothHP)
-		{
-			clothBreak = true;
-		}
-		if (durabilityPointCentral.x >= 1200)
-		{
-			clothStolen = true;
-		}
-		if (durabilityPointCentral.x >= 600 && durabilityPointCentral.x <= 1200)
-		{
-			if (KeyState[DIK_A] == KeyRelease) {
-				durabilityPointCentral.x -= 10;
-				mobHP--;
-			}
-		}
-		if (durabilityPointCentral.x <= 805 && clothHP)
-		{
-			clothHP--;
-		}
-		if (!mobHP)
-		{
-			getCloth = true;
-		}
-		else if (durabilityPointCentral.x <= 1200 && !clothStolen)
-		{
-			durabilityPointCentral.x += 1;
-		}
-
-
-		if (clothBreak)
-		{
-			soundsManager.Start("BREAK", false);
-			clothBreak = false;
-			clothRushInit();
-		}
-		if (clothStolen)
-		{
-			soundsManager.Start("LOSE", false);
-			clothStolen = false;
-			clothRushInit();
-		}
-		if (getCloth && durabilityPointCentral.x <= 1000 && durabilityPointCentral.x >= 805)
-		{
-			soundsManager.Start("WIN", false);
-			getCloth = false;
-			clothRushInit();
-		}
-		else if (getCloth && durabilityPointCentral.x >= 1000)
-		{
-			soundsManager.Start("LOSE", false);
-			getCloth = false;
-			clothRushInit();
-		}
-		else if (getCloth && durabilityPointCentral.x <= 805)
-		{
-			soundsManager.Start("BREAK", false);
-			getCloth = false;
-			clothRushInit();
-		}
-		if (Rad < 0.2) {
-			Rad -= 0.05;
-		}
-		if (Rad > 0) {
-			Rad += 0.05;
-		}
-		static int clothCount = 0;
-		clothCount++;
-		static bool smokeVary = false;
-		static bool charMove = false;
-		if (clothPCCentral.x >= 350) {
-			charMove = true;
-		}
-		if (clothPCCentral.x <= 250) {
-			charMove = false;
-		}
-		if (!charMove) {
-		clothPCCentral.x += 1;
-		clothMobCentral.x += 1;
-		}
-		if (charMove) {
-			clothPCCentral.x -= 1;
-			clothMobCentral.x -= 1;
-		}
-		if (clothCount <= 50) {
-			for (int i = 0; i < 6; i++)
-			{
-				clothSmokeCentral[i].scaleX += rand() % 4;
-				clothSmokeCentral[i].scaleY += rand() % 4;
-
-			}
-		}
-		if (clothCount > 50) {
-			smokeVary = true;
-			for (int i = 0; i < 6; i++)
-			{
-				clothSmokeCentral[i].scaleX -= rand() % 4;
-				clothSmokeCentral[i].scaleY -= rand() % 4;
-
-			}
-			smokeVary = false;
-		}
-		if (clothCount > 100) {
-			clothCount = 0;
-		}
-	}
-}
-
-void clothRushRender() 
-{
-	CUSTOMVERTEX durabilityPoint[4];
-	CUSTOMVERTEX clothMob[4];
-	CUSTOMVERTEX clothPC[4];
-
-	CreateSquareVertex(clothMob, clothMobCentral);
-	CreateSquareVertex(clothPC, clothPCCentral);
-	CreateSquareVertexColor(durabilityPoint, durabilityPointCentral,0xff000000);
-
-
-	BeginSetTexture();
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, CLOTH_BG_TEX);
-	EasyCreateSquareVertex(600,50,1200,100,DURABILITY_TEX);
-															  
-	SetUpTexture(durabilityPoint, BLANK);
-
-	SetUpTexture(clothMob, MOB_TEX);
-	SetUpTexture(clothPC, texturePC);
-	for (int i = 0; i < 6; i++) 
-	{
-		RevolveZ(clothSmoke, Rad, clothSmokeCentral[i]);
-		SetUpTexture(clothSmoke, SMOKE_TEX);
-	}
-	EasyCreateSquareVertexColor(800, 600, 1200, 650,  0xff000000, BLANK);
-	EasyCreateSquareVertexColor(800, 600, 800 - (((800-1200)/ mobMAXHP)*(mobHP)), 650, 0xff00ff00, BLANK);
-
-	if (openCount < 20)
-	{
-		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, START_TEX);
-	}
-
-#ifdef _DEBUG
-	char debugcloth[10];
-	sprintf_s(debugcloth, 10, "%.2f ", durabilityPointCentral.x);
-	RECT DEBUGText = { 100 ,150,900,600 };
-	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
-
-	sprintf_s(debugcloth, 10, "%d ", clothHP);
-	DEBUGText = { 100 ,200,900,600 };
-	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
-
-	sprintf_s(debugcloth, 10, "%d ", mobHP);
-	DEBUGText = { 100 ,250,900,600 };
-	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
-
-#endif
-
-	EndSetTexture();
-
-}
-
-void clothRushInit() 
-{
-	durabilityPointCentral.x = 900;
-	clothHP = clothMAXHP;
-	mobHP = mobMAXHP;
-	openCount = 0;
-	clothSmokeCentral[0]={ 800,550,200,200 };
-	clothSmokeCentral[1]={ 700,450,200,200 };
-	clothSmokeCentral[2]={ 600,500,250,250 };
-	clothSmokeCentral[3]={ 650,600,200,200 };
-	clothSmokeCentral[4]={ 400,500,250,250 };
-	clothSmokeCentral[5]={ 500,400,200,200 };
-
-	g_gameScene = PUSHENEMY;
-}
-
+//int texturePC = YASUKO_TEX;
+//static int clothMAXHP = 1000;
+//static int mobMAXHP = 50;
+//static int clothHP = clothMAXHP;
+//static int mobHP = mobMAXHP;
+//
+//static bool clothBreak = false;
+//static bool clothStolen = false;
+//static bool getCloth = false;
+//static int openCount = 0;
+//static float Rad;
+//CENTRAL_STATE clothMobCentral = {900,500,200,300};
+//CENTRAL_STATE clothPCCentral = { 300,500,200,300};
+//CUSTOMVERTEX clothSmoke[4];
+//CENTRAL_STATE clothSmokeCentral[6] = 
+//{
+//	{800,550,200,200},
+//	{700,450,200,200},
+//	{600,500,230,230},
+//	{650,600,200,200},
+//	{450,500,230,230},
+//	{500,400,200,200}
+//};
+//
+//
+//
+//void clothRush() 
+//{
+//	clothRushControl();
+//	clothRushRender();
+//}
+//
+//void clothRushControl() 
+//{
+//	openCount++;
+//	CheckKeyState(DIK_RETURN);
+//	CheckKeyState(DIK_NUMPADENTER);
+//	CheckKeyState(DIK_A);
+//	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
+//	{
+//		g_scene = SCENE_RESULT;
+//		g_gameScene = FLOAMOVE;
+//	}
+//	if (openCount > 20)
+//	{
+//		if (durabilityPointCentral.x <= 600 || !clothHP)
+//		{
+//			clothBreak = true;
+//		}
+//		if (durabilityPointCentral.x >= 1200)
+//		{
+//			clothStolen = true;
+//		}
+//		if (durabilityPointCentral.x >= 600 && durabilityPointCentral.x <= 1200)
+//		{
+//			if (KeyState[DIK_A] == KeyRelease) {
+//				durabilityPointCentral.x -= 10;
+//				mobHP--;
+//			}
+//		}
+//		if (durabilityPointCentral.x <= 805 && clothHP)
+//		{
+//			clothHP--;
+//		}
+//		if (!mobHP)
+//		{
+//			getCloth = true;
+//		}
+//		else if (durabilityPointCentral.x <= 1200 && !clothStolen)
+//		{
+//			durabilityPointCentral.x += 1;
+//		}
+//
+//
+//		if (clothBreak)
+//		{
+//			soundsManager.Start("BREAK", false);
+//			clothBreak = false;
+//			clothRushInit();
+//		}
+//		if (clothStolen)
+//		{
+//			soundsManager.Start("LOSE", false);
+//			clothStolen = false;
+//			clothRushInit();
+//		}
+//		if (getCloth && durabilityPointCentral.x <= 1000 && durabilityPointCentral.x >= 805)
+//		{
+//			soundsManager.Start("WIN", false);
+//			getCloth = false;
+//			clothRushInit();
+//		}
+//		else if (getCloth && durabilityPointCentral.x >= 1000)
+//		{
+//			soundsManager.Start("LOSE", false);
+//			getCloth = false;
+//			clothRushInit();
+//		}
+//		else if (getCloth && durabilityPointCentral.x <= 805)
+//		{
+//			soundsManager.Start("BREAK", false);
+//			getCloth = false;
+//			clothRushInit();
+//		}
+//		if (Rad < 0.2) {
+//			Rad -= 0.05;
+//		}
+//		if (Rad > 0) {
+//			Rad += 0.05;
+//		}
+//		static int clothCount = 0;
+//		clothCount++;
+//		static bool smokeVary = false;
+//		static bool charMove = false;
+//		if (clothPCCentral.x >= 350) {
+//			charMove = true;
+//		}
+//		if (clothPCCentral.x <= 250) {
+//			charMove = false;
+//		}
+//		if (!charMove) {
+//		clothPCCentral.x += 1;
+//		clothMobCentral.x += 1;
+//		}
+//		if (charMove) {
+//			clothPCCentral.x -= 1;
+//			clothMobCentral.x -= 1;
+//		}
+//		if (clothCount <= 50) {
+//			for (int i = 0; i < 6; i++)
+//			{
+//				clothSmokeCentral[i].scaleX += rand() % 4;
+//				clothSmokeCentral[i].scaleY += rand() % 4;
+//
+//			}
+//		}
+//		if (clothCount > 50) {
+//			smokeVary = true;
+//			for (int i = 0; i < 6; i++)
+//			{
+//				clothSmokeCentral[i].scaleX -= rand() % 4;
+//				clothSmokeCentral[i].scaleY -= rand() % 4;
+//
+//			}
+//			smokeVary = false;
+//		}
+//		if (clothCount > 100) {
+//			clothCount = 0;
+//		}
+//	}
+//}
+//
+//void clothRushRender() 
+//{
+//	CUSTOMVERTEX durabilityPoint[4];
+//	CUSTOMVERTEX clothMob[4];
+//	CUSTOMVERTEX clothPC[4];
+//
+//	CreateSquareVertex(clothMob, clothMobCentral);
+//	CreateSquareVertex(clothPC, clothPCCentral);
+//	CreateSquareVertexColor(durabilityPoint, durabilityPointCentral,0xff000000);
+//
+//
+//	BeginSetTexture();
+//	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, CLOTH_BG_TEX);
+//	EasyCreateSquareVertex(600,50,1200,100,DURABILITY_TEX);
+//															  
+//	SetUpTexture(durabilityPoint, BLANK);
+//
+//	SetUpTexture(clothMob, MOB_TEX);
+//	SetUpTexture(clothPC, texturePC);
+//	for (int i = 0; i < 6; i++) 
+//	{
+//		RevolveZ(clothSmoke, Rad, clothSmokeCentral[i]);
+//		SetUpTexture(clothSmoke, SMOKE_TEX);
+//	}
+//	EasyCreateSquareVertexColor(800, 600, 1200, 650,  0xff000000, BLANK);
+//	EasyCreateSquareVertexColor(800, 600, 800 - (((800-1200)/ mobMAXHP)*(mobHP)), 650, 0xff00ff00, BLANK);
+//
+//	if (openCount < 20)
+//	{
+//		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, START_TEX);
+//	}
+//
+//#ifdef _DEBUG
+//	char debugcloth[10];
+//	sprintf_s(debugcloth, 10, "%.2f ", durabilityPointCentral.x);
+//	RECT DEBUGText = { 100 ,150,900,600 };
+//	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
+//
+//	sprintf_s(debugcloth, 10, "%d ", clothHP);
+//	DEBUGText = { 100 ,200,900,600 };
+//	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
+//
+//	sprintf_s(debugcloth, 10, "%d ", mobHP);
+//	DEBUGText = { 100 ,250,900,600 };
+//	WriteWord(debugcloth, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
+//
+//#endif
+//
+//	EndSetTexture();
+//
+//}
+//
+//void clothRushInit() 
+//{
+//	durabilityPointCentral.x = 900;
+//	clothHP = clothMAXHP;
+//	mobHP = mobMAXHP;
+//	openCount = 0;
+//	clothSmokeCentral[0]={ 800,550,200,200 };
+//	clothSmokeCentral[1]={ 700,450,200,200 };
+//	clothSmokeCentral[2]={ 600,500,250,250 };
+//	clothSmokeCentral[3]={ 650,600,200,200 };
+//	clothSmokeCentral[4]={ 400,500,250,250 };
+//	clothSmokeCentral[5]={ 500,400,200,200 };
+//
+//	g_gameScene = PUSHENEMY;
+//}
+//
 
 
 void testScene() 
