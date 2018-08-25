@@ -528,7 +528,7 @@ void blowOffRender()
 		g_effectCount++;
 
 			static float Rad = 0;//5:4 400:360
-			Rad += 0.9;
+			Rad += 0.9f;
 
 			if (Rad < 0)
 			{

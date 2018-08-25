@@ -36,14 +36,35 @@
 #define X_BUTTON 0x4000
 #define Y_BUTTON 0x8000
 
+//0ïb
+#define ZERO_SECOND 0
+
+//1ïb
+#define ONE_SECOND 60
+
+//2ïb
+#define TWO_SECOND 120
+
+//3ïb
+#define THREE_SECOND 180
+
+//4ïb
+#define FOUR_SECOND 240
+
+//3ï™
+#define THREE_MINUTE 10800
+
+//3ï™Ç≈3é¸Ç∑ÇÈRad
+#define THREE_MINUTE_RADIAN 0.001745f
+
 extern XINPUT_STATE g_Xinput;
 
 //éÂïwÇÃÉXÉeÅ[É^ÉX
 struct CHARACTER_STATE
 {
-	FLOAT strength;
+	INT strength;
 	FLOAT speed;
-	FLOAT skill;
+	DOUBLE skill;
 };
 
 enum SOUND {
@@ -78,7 +99,7 @@ extern CHARACTER_STATE g_mitukoSta;
 extern CHARACTER_STATE g_isokoSta;
 
 extern int g_inCount;
-extern int g_gameCount;
+extern int g_timerCount;
 
 extern bool g_pause;
 extern bool g_isGameStart;
