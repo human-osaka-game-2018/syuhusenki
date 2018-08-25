@@ -2,6 +2,9 @@
 #include "FloaMove.h"
 #include "GameMain.h"
 #include "Goods.h"
+#include "Timer.h"
+
+
 
 #define PLAYER_FLOA_SCALE 100
 #define PLAYER_BLOWOFF_SCALE 150
@@ -463,7 +466,7 @@ void blowOff() {
 }
 void blowOffControl() 
 {
-	
+	timerControl();
 	CreateSquareVertex(effectExplosion, effectExplosionCentral);
 
 	if (comandCount < 5) 
@@ -571,7 +574,7 @@ void blowOffRender()
 	RECT DEBUGText = { 100 ,550,900,600 };
 	WriteWord(DebugCounter, DEBUGText, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 #endif
-
+	timerRender();
 	EndSetTexture();
 }
 int comandCheck(int comand[], int inputComand[],int count)
@@ -834,6 +837,7 @@ void pickGoods() {
 }
 
 void pickGoodsControl() {
+	timerControl();
 	float deleatPosX = 250;
 	int rushInput = 10;
 	//CreateSquareVertex(goodsA, goodsCentralA[0]);
@@ -961,6 +965,7 @@ void pickGoodsRender() {
 	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
 
 #endif
+	timerRender();
 	EndSetTexture();
 }
 

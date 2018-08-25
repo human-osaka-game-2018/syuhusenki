@@ -45,8 +45,10 @@ VOID titleControl(VOID)
 			g_selectArrowSta.x = ARROWLEFT;
 			g_inCount++;
 		}
+		CheckKeyState(DIK_RETURN);
+		CheckKeyState(DIK_NUMPADENTER);
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT)
+		if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT)
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("OP_BGM");
@@ -58,7 +60,7 @@ VOID titleControl(VOID)
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadOn && g_selectArrowSta.x == ARROWLEFT)
+		if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadOn && g_selectArrowSta.x == ARROWLEFT)
 		{
 			PostQuitMessage(0);
 		}
