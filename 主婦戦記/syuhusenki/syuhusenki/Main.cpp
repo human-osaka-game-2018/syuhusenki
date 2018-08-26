@@ -2,6 +2,8 @@
 #include "GameMain.h"
 #include "Select.h"
 #include "Title.h"
+#include "Result.h"
+
 
 SoundLib::SoundsManager soundsManager;
 
@@ -58,6 +60,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
 	ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
 	ReadInTexture("Texture/smoke.png", SMOKE_TEX);
+	ReadInTexture("Texture/calculation.png", RESULT_BG_TEX);
 
 	ReadInTexture("Texture/timerFrame.png", TIMER_FRAME_TEX);
 	ReadInTexture("Texture/timerHand.png", TIMER_HAND_TEX);
@@ -113,8 +116,7 @@ unsigned int gameRoop() {
 		gameMain();
 		break;
 	case SCENE_RESULT:
-		control();
-		render();
+		result();
 		break;
 	}
 	CheckKeyState(DIK_ESCAPE);
