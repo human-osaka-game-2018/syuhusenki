@@ -87,6 +87,16 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 unsigned int gameRoop() {
 	static bool isFirst = true;
 	sound();
+#ifdef _DEBUG
+	CheckKeyState(DIK_F4);
+	if (KeyState[DIK_F4] == KeyRelease)
+	{
+		g_scene = SCENE_RESULT;
+		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+	}
+
+#endif
+
 	switch (g_scene) {
 	case SCENE_TEAMLOGO:
 		if (isFirst) {

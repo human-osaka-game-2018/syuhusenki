@@ -27,6 +27,8 @@ enum GOODSNUMBER {
 	TEA,
 	JUICE,
 	BEER,
+	MEET,
+	FRUIT,
 	GOODS_MAX
 };
 

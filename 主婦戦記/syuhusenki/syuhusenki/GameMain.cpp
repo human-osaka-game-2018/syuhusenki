@@ -1395,7 +1395,7 @@ void testScene()
 		foodGoods[i].haveValue = 10;
 	}
 	BeginSetTexture();
-	static int takegoods[3]{ MINCE,ONION ,GINESENG };
+	static int takegoods[3]{ ICE ,ORANGE ,JUICE };
 	comboCheck(takegoods[0], takegoods[1], takegoods[2]);
 	char testc[10];
 	sprintf_s(testc, 10, "%d", count);
