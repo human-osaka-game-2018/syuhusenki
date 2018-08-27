@@ -13,7 +13,7 @@ VOID titleControl(VOID)
 
 	for (BGM; BGM < 1; BGM++)
 	{
-		soundsManager.SetVolume("OP_BGM", 25);
+		//soundsManager.SetVolume("OP_BGM", 25);
 		soundsManager.Start("OP_BGM", true);
 	}
 
@@ -62,6 +62,7 @@ VOID titleControl(VOID)
 
 		if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadOn && g_selectArrowSta.x == ARROWLEFT)
 		{
+			soundsManager.Start("BOW", false);
 			PostQuitMessage(0);
 		}
 }

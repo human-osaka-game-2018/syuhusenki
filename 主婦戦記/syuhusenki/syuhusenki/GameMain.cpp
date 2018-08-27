@@ -41,7 +41,7 @@ static int rushButtonShow;
 static bool g_isTakeA[8] = { false,false,false,false,false,false,false,false };
 static bool g_isTakeB[8] = { false,false,false,false,false,false,false,false };
 SoundEffect Button{ "BUTTON1","BUTTON2","BUTTON3" };
-SoundEffect Pick{ "PICK1", "PICK2","PICK3", "PICK4","PICK5", "PICK6" , "PICK7" };
+SoundEffect Pick{ "PICK1", "PICK2","PICK3", "PICK4","PICK5", "PICK6" , "PICK7" ,"PICK8","PICK9","PICK10" };
 static float g_goodsScaleA[8] = { 60,60,60,60,60,60,60,60 };
 static float g_goodsScaleB[8] = { 60,60,60,60,60,60,60,60 };
 RECT testText = { 100,200,900,500 };
@@ -159,30 +159,68 @@ void gameMain() {
 	if (g_isFirst) {
 		static bool canRead = true;
 		if (canRead) {
-			//ReadInTexture("Texture/testFrame.png", FRAME_TEX);
-			//ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
-			//ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
-			//ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
-			//ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
-			////ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
-			//ReadInTexture("Texture/beef.png", BEEF_TEX);
-			//ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
-			//ReadInTexture("Texture/pork.png", PORK_TEX);
-			//ReadInTexture("Texture/cardboard.png", BOX_TEX);
-			//ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
-			//ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
-			//ReadInTexture("Texture/smoke.png", SMOKE_TEX);
+			BeginSetTexture();
+			EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, LOAD_TEX);
+			EndSetTexture();
 
-			//ReadInTexture("Texture/timerFrame.png", TIMER_FRAME_TEX);
-			//ReadInTexture("Texture/timerHand.png", TIMER_HAND_TEX);
-			//ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
-			//ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
-			//ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
-			//ReadInTexture("Texture/kariStart.png", START_TEX);
-			//ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
-			//ReadInTexture("Texture/end.png", TIMEUP_TEX);
-			////ReadInTexture("Texture/cardboard.png", PC_TEX);
-			//ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
+			ReadInTexture("Texture/testFrame.png", FRAME_TEX);
+			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
+			ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
+			ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
+			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
+			////ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
+			ReadInTexture("Texture/cardboard.png", BOX_TEX);
+			ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
+			ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
+			ReadInTexture("Texture/smoke.png", SMOKE_TEX);
+
+			ReadInTexture("Texture/timerFrame.png", TIMER_FRAME_TEX);
+			ReadInTexture("Texture/timerHand.png", TIMER_HAND_TEX);
+			ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
+			ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
+			ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
+			ReadInTexture("Texture/kariStart.png", START_TEX);
+			ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
+			ReadInTexture("Texture/end.png", TIMEUP_TEX);
+			ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
+
+			ReadInTexture("Texture/merchandise/beef.png", BEEF_TEX);
+			ReadInTexture("Texture/merchandise/chicken.png", CHICKEN_TEX);
+			ReadInTexture("Texture/merchandise/pork.png", PORK_TEX);
+			ReadInTexture("Texture/merchandise/wiener.png", VIENNESE_TEX);
+			ReadInTexture("Texture/merchandise/mince.png", MINCE_TEX);
+			ReadInTexture("Texture/merchandise/shrimp.png", SHRIMP_TEX);
+			ReadInTexture("Texture/merchandise/octopus.png", OCTOPUS_TEX);
+			ReadInTexture("Texture/merchandise/squid.png", INKFISH_TEX);
+			ReadInTexture("Texture/merchandise/fish_mackerel.png", FISH_TEX);
+			ReadInTexture("Texture/merchandise/carrot.png", GINESENG_TEX);
+			ReadInTexture("Texture/merchandise/onion.png", ONION_TEX);
+			ReadInTexture("Texture/merchandise/potato.png", POTATO_TEX);
+			ReadInTexture("Texture/merchandise/tomato.png", TOMATO_TEX);
+			ReadInTexture("Texture/merchandise/radish.png", RADISH_TEX);
+			ReadInTexture("Texture/merchandise/snack.png", POTATOCHIPS_TEX);
+			ReadInTexture("Texture/merchandise/chco.png", CHOCOLATE_TEX);
+			ReadInTexture("Texture/merchandise/ice.png", ICE_TEX);
+			ReadInTexture("Texture/merchandise/ricecracker.png", RICECRACKER_TEX);
+			ReadInTexture("Texture/merchandise/apple.png", APPLE_TEX);
+			ReadInTexture("Texture/merchandise/orenge.png", ORANGE_TEX);
+			ReadInTexture("Texture/merchandise/banana.png", BANANA_TEX);
+			ReadInTexture("Texture/merchandise/tea.png", TEA_TEX);
+			ReadInTexture("Texture/merchandise/juice.png", JUICE_TEX);
+			ReadInTexture("Texture/merchandise/beer.png", BEER_TEX);
+			ReadInTexture("Texture/merchandise/buridaikon.png", BURIDAIKON_TEX);
+			ReadInTexture("Texture/merchandise/tumami.png", RELISH_TEX);
+			ReadInTexture("Texture/merchandise/teatime.png", TEATIME_TEX);
+			ReadInTexture("Texture/merchandise/curry.png", CURRY_TEX);
+			ReadInTexture("Texture/merchandise/hamberg.png", HAMBERG_TEX);
+			ReadInTexture("Texture/merchandise/sashimi.png", ASSORTEDSASHIMI_TEX);
+			ReadInTexture("Texture/merchandise/oyatu.png", AFTERNOONREFRESHMENT_TEX);
+			ReadInTexture("Texture/merchandise/soup.png", SOUP_TEX);
+			ReadInTexture("Texture/merchandise/nimono.png", NIMONO_TEX);
+			ReadInTexture("Texture/merchandise/parfait.png", PARFAIT_TEX);
+
+			g_SoundSuccess = soundsManager.Start("LOAD", false) && g_SoundSuccess;
+
 			g_SoundSuccess = soundsManager.Stop("SELECT_BGM") && g_SoundSuccess;
 
 			canRead = false;
@@ -833,12 +871,37 @@ void buttonSE(SoundEffect Button,int SoundNumber) {
 	}
 
 	switch (buttonKeyID) {
+	case 9:
+		if (buttonKeyID == 9 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE10) && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start(Button.SE10, false) && g_SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 0;
+			break;
+		}
+	case 8:
+		if (buttonKeyID == 8 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE9) && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start(Button.SE9, false) && g_SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 9;
+			break;
+		}
+
+	case 7:
+		if (buttonKeyID == 7 && buttonKeyID != prevbuttonKeyID) {
+			g_SoundSuccess = soundsManager.Stop(Button.SE8) && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start(Button.SE8, false) && g_SoundSuccess;
+			prevbuttonKeyID = buttonKeyID;
+			buttonKeyID = 8;
+			break;
+		}
 	case 6:
 		if (buttonKeyID == 6 && buttonKeyID != prevbuttonKeyID) {
 			g_SoundSuccess = soundsManager.Stop(Button.SE7) && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.Start(Button.SE7, false) && g_SoundSuccess;
 			prevbuttonKeyID = buttonKeyID;
-			buttonKeyID = 0;
+			buttonKeyID = 7;
 			break;
 		}
 	case 5:
@@ -1090,49 +1153,49 @@ void pickGoodsDeviseControl(int* rushInput) {
 		*rushInput = ButtonA;
 		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_B] == KeyRelease)
 	{
 		*rushInput = ButtonB;
 		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_X] == KeyRelease)
 	{
 		*rushInput = ButtonX;
 		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_Y] == KeyRelease)
 	{
 		*rushInput = ButtonY;
 		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_R] == KeyRelease)
 	{
 		*rushInput = ButtonRB;
 		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_L] == KeyRelease)
 	{
 		*rushInput = ButtonLB;
 		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeA, 8);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 
 	if (KeyState[DIK_D] == KeyRelease)
 	{
 		rushButtonCheck(*rushInput, rushButtonShow);
 		//takeingGoods(g_isTakeB, 8);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_W])
 	{
@@ -1156,37 +1219,37 @@ void pickGoodsDeviseControl(int* rushInput) {
 	{
 		*rushInput = ButtonA;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (PadState[ButtonB] == PadRelease)
 	{
 		*rushInput = ButtonB;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
 		*rushInput = ButtonX;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (PadState[ButtonY] == PadRelease)
 	{
 		*rushInput = ButtonY;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (PadState[ButtonRB] == KeyRelease)
 	{
 		*rushInput = ButtonRB;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 	if (PadState[ButtonLB] == KeyRelease)
 	{
 		*rushInput = ButtonLB;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		buttonSE(Pick, 7);
+		buttonSE(Pick, 10);
 	}
 
 }

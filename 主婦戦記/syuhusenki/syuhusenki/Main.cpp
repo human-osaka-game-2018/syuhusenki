@@ -33,6 +33,11 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	InitWindowFullscreenEx("☆主婦戦記☆", &hWnd, WIDTH, HEIGHT, hInst, hInstance, NULL, "Texture/Yasuko.png");
 #endif
 	g_SoundSuccess = soundsManager.Initialize();
+	ReadInTexture("Texture/nowloading.png", LOAD_TEX);
+	BeginSetTexture();
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, LOAD_TEX);
+	EndSetTexture();
+	soundsManager.AddFile("Sound/loadEnd.mp3", "LOAD");
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
@@ -47,70 +52,13 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/lastCheck.png",SELECTLASTCHECK_TEX);
 	ReadInTexture("Texture/arrow.png", TITLEICON_TEX);
 
-	ReadInTexture("Texture/testFrame.png", FRAME_TEX);
-	ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
-	ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
-	ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
-	ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
-	//ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
-	ReadInTexture("Texture/商品/beef.png", BEEF_TEX);
-	ReadInTexture("Texture/商品/chicken.png", CHICKEN_TEX);
-	ReadInTexture("Texture/商品/pork.png", PORK_TEX);
-	ReadInTexture("Texture/商品/wiener.png", VIENNESE_TEX);
-	ReadInTexture("Texture/商品/mince.png", MINCE_TEX );
-	ReadInTexture("Texture/商品/shrimp.png", SHRIMP_TEX );
-	ReadInTexture("Texture/商品/octopus.png", OCTOPUS_TEX );
-	ReadInTexture("Texture/商品/squid.png", INKFISH_TEX );
-	ReadInTexture("Texture/商品/fish_mackerel.png", FISH_TEX );
-	ReadInTexture("Texture/商品/carrot.png", GINESENG_TEX );
-	ReadInTexture("Texture/商品/onion.png", ONION_TEX );
-	ReadInTexture("Texture/商品/potato.png", POTATO_TEX );
-	ReadInTexture("Texture/商品/tomato.png", TOMATO_TEX );
-	ReadInTexture("Texture/商品/radish.png", RADISH_TEX );
-	ReadInTexture("Texture/商品/snack.png", POTATOCHIPS_TEX );
-	ReadInTexture("Texture/商品/chco.png", CHOCOLATE_TEX );
-	ReadInTexture("Texture/商品/ice.png", ICE_TEX );
-	ReadInTexture("Texture/商品/ricecracker.png", RICECRACKER_TEX );
-	ReadInTexture("Texture/商品/apple.png", APPLE_TEX );
-	ReadInTexture("Texture/商品/orenge.png", ORANGE_TEX );
-	ReadInTexture("Texture/商品/banana.png", BANANA_TEX );
-	ReadInTexture("Texture/商品/tea.png", TEA_TEX );
-	ReadInTexture("Texture/商品/juice.png", JUICE_TEX );
-	ReadInTexture("Texture/商品/beer.png", BEER_TEX );
-	ReadInTexture("Texture/商品/buridaikon.png", BURIDAIKON_TEX );
-	ReadInTexture("Texture/商品/tumami.png", RELISH_TEX );
-	ReadInTexture("Texture/商品/teatime.png", TEATIME_TEX );
-	ReadInTexture("Texture/商品/curry.png", CURRY_TEX );
-	ReadInTexture("Texture/商品/hamberg.png", HAMBERG_TEX );
-	ReadInTexture("Texture/商品/sashimi.png", ASSORTEDSASHIMI_TEX );
-	ReadInTexture("Texture/商品/oyatu.png", AFTERNOONREFRESHMENT_TEX );
-	ReadInTexture("Texture/商品/soup.png", SOUP_TEX );
-	ReadInTexture("Texture/商品/nimono.png", NIMONO_TEX );
-	ReadInTexture("Texture/商品/parfait.png", PARFAIT_TEX );
-
-	ReadInTexture("Texture/cardboard.png", BOX_TEX);
-	ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
-	ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
-	ReadInTexture("Texture/smoke.png", SMOKE_TEX);
-	ReadInTexture("Texture/calculation2.png", RESULT_BG_TEX);
-
-	ReadInTexture("Texture/timerFrame.png", TIMER_FRAME_TEX);
-	ReadInTexture("Texture/timerHand.png", TIMER_HAND_TEX);
-	ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
-	ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
-	ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
-	ReadInTexture("Texture/kariStart.png", START_TEX);
-	ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
-	ReadInTexture("Texture/end.png", TIMEUP_TEX);
-	//ReadInTexture("Texture/cardboard.png", PC_TEX);
-	ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);
 	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
 	SetUpFont(125, 100, DEFAULT_CHARSET, NULL, RUSH_FONT);
 
 	soundLoad();
-	
+	g_SoundSuccess = soundsManager.Start("LOAD", false) && g_SoundSuccess;
 
 	FlameRoop(gameRoop);
 
@@ -133,11 +81,7 @@ unsigned int gameRoop() {
 	case SCENE_TEAMLOGO:
 		if (isFirst) {
 
-			ReadInTexture("Texture/Blank.jpg", BLANK);
-			ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
-
-
-			g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;
+			//g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;
 
 			isFirst = false;
 		}
@@ -272,13 +216,16 @@ void gamePad() {
 
 void soundLoad() {
 	soundsManager.AddFile("Sound/foodbgm.mp3", "FOOD");
+
 	soundsManager.AddFile("Sound/bottun.mp3", "BUTTON1");
 	soundsManager.AddFile("Sound/bottun.mp3", "BUTTON2");
 	soundsManager.AddFile("Sound/bottun.mp3", "BUTTON3");
+
 	soundsManager.AddFile("Sound/thankyou.mp3", "BOW");
 	soundsManager.AddFile("Sound/correct answer.mp3", "SUCCESS");
 	soundsManager.AddFile("Sound/mistake.mp3", "MISS");
 	soundsManager.AddFile("Sound/explosion.mp3", "ATTACK");
+
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK1");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK2");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK3");
@@ -286,13 +233,22 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK5");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK6");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK7");
+	soundsManager.AddFile("Sound/shopping.mp3", "PICK8");
+	soundsManager.AddFile("Sound/shopping.mp3", "PICK9");
+	soundsManager.AddFile("Sound/shopping.mp3", "PICK10");
+
 	soundsManager.AddFile("Sound/selectBGM.mp3", "SELECT");
 	soundsManager.AddFile("Sound/cursor.mp3", "CURSOR");
 	soundsManager.AddFile("Sound/gong.mp3", "GONG");
 	soundsManager.AddFile("Sound/whistle1.mp3", "WHISYLE");
-	soundsManager.AddFile("Sound/op.mp3", "OP_BGM");
+	soundsManager.AddFile("Sound/OP.mp3", "OP_BGM");
 	soundsManager.AddFile("Sound/select.mp3", "SELECT_BGM");
 	soundsManager.AddFile("Sound/clothBreak.mp3", "BREAK"); 
 	soundsManager.AddFile("Sound/stupid3.mp3", "LOSE"); 
 	soundsManager.AddFile("Sound/trumpet1.mp3", "WIN");
+	soundsManager.AddFile("Sound/select.mp3", "SELECT_BGM");
+	soundsManager.AddFile("Sound/clothBreak.mp3", "BREAK");
+	soundsManager.AddFile("Sound/stupid3.mp3", "LOSE");
+	soundsManager.AddFile("Sound/trumpet1.mp3", "WIN");
+
 }
