@@ -31,6 +31,7 @@ int g_selectFloa = FOOD;
 static bool g_isBlowOff = false;
 static bool g_isFirst = true;
 static int g_effectCount = 0;
+static float mobRad = 0;//5:4 400:360
 
 static int comandInput[5] = { 10,10,10,10,10 };
 static int comandPresentment[5];
@@ -48,22 +49,13 @@ RECT testText = { 100,200,900,500 };
 static int g_goodsTakenNum = 0;
 //static int g_goodsTakenNum = 0;
 
-//プレイヤーの画像頂点
-CUSTOMVERTEX playerFloa[4];
-CENTRAL_STATE playerCentralFloa = {800,800,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
-
+CENTRAL_STATE playerCutinCentral = { 1200,350,300,250 };
 
 //モブの画像頂点
 CUSTOMVERTEX mobFloa[4];
 CENTRAL_STATE mobCentralFloa = { 500,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
 
-CENTRAL_STATE mobCentralBlowOff[5]{
-//{ 900,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE },
-//{ 1100,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE},
-//{ 1300,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE},
-//{ 1500,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE},
-//{ 1700,800 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE}
-};
+CENTRAL_STATE mobCentralBlowOff[5];
 
 //エフェクト
 CUSTOMVERTEX effectExplosion[4];
@@ -73,45 +65,6 @@ CENTRAL_STATE effectExplosionCentral = {1000,800,300,300};
 CUSTOMVERTEX playerHit[4];
 CENTRAL_STATE playerCentralHit = {200,350,300,250};
 
-//CUSTOMVERTEX goodsA[4];
-//CUSTOMVERTEX goodsB[4];
-//CUSTOMVERTEX goodsA2[4];
-//CUSTOMVERTEX goodsB2[4];
-//CUSTOMVERTEX goodsA3[4];
-//CUSTOMVERTEX goodsB3[4]; 
-//CUSTOMVERTEX goodsA4[4];
-//CUSTOMVERTEX goodsB4[4];
-//CUSTOMVERTEX goodsA5[4];
-//CUSTOMVERTEX goodsB5[4];
-//CUSTOMVERTEX goodsA6[4];
-//CUSTOMVERTEX goodsB6[4];
-//CUSTOMVERTEX goodsA7[4];
-//CUSTOMVERTEX goodsB7[4];
-//CUSTOMVERTEX goodsA8[4];
-//CUSTOMVERTEX goodsB8[4];
-//
-//CENTRAL_STATE goodsCentralA[8]{
-//	{ 600,550,g_goodsScaleA[0],g_goodsScaleA[0]},
-//	{ 600,550,g_goodsScaleA[1],g_goodsScaleA[1]},
-//	{ 600,550,g_goodsScaleA[2],g_goodsScaleA[2] },
-//	{ 600,550,g_goodsScaleA[3],g_goodsScaleA[3] },
-//	{ 600,550,g_goodsScaleA[4],g_goodsScaleA[4] },
-//	{ 600,550,g_goodsScaleA[5],g_goodsScaleA[5] },
-//	{ 600,550,g_goodsScaleA[6],g_goodsScaleA[6] },
-//	{ 600,550,g_goodsScaleA[7],g_goodsScaleA[7] }
-//};
-//
-//CENTRAL_STATE goodsCentralB[8]{
-//	{ 500,500,g_goodsScaleB[0],g_goodsScaleB[0] },
-//	{ 500,500,g_goodsScaleB[1],g_goodsScaleB[1] },
-//	{ 500,500,g_goodsScaleB[2],g_goodsScaleB[2] },
-//	{ 500,500,g_goodsScaleB[3],g_goodsScaleB[3] },
-//	{ 600,550,g_goodsScaleB[4],g_goodsScaleB[4] },
-//	{ 600,550,g_goodsScaleB[5],g_goodsScaleB[5] },
-//	{ 600,550,g_goodsScaleB[6],g_goodsScaleB[6] },
-//	{ 600,550,g_goodsScaleB[7],g_goodsScaleB[7] }
-//
-//};
 
 CENTRAL_STATE durabilityPointCentral = { 900,75 ,15,40};
 void gameControl();
@@ -156,9 +109,11 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum, int texNum);
 /////////////////////////////////////
 void gameMain() {
 	srand((unsigned int)time(NULL));
-	if (g_isFirst) {
+	if (g_isFirst) 
+	{
 		static bool canRead = true;
-		if (canRead) {
+		if (canRead) 
+		{
 			BeginSetTexture();
 			EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, LOAD_TEX);
 			EndSetTexture();
@@ -225,13 +180,8 @@ void gameMain() {
 
 			canRead = false;
 		}
-		mobCentralBlowOff[0] = {  850,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[1] = {  900,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[2] = {  950,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[3] = { 1000,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
-		mobCentralBlowOff[4] = { 1050,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
 
-		effectExplosionCentral = { 900,750,300,300 };
+		comandMake();
 
 		g_isBlowOff = false;
 		g_isFirst = false;
@@ -259,7 +209,8 @@ void gameMain() {
 	}
 
 #endif
-	switch (g_gameScene) {
+	switch (g_gameScene) 
+	{
 	case FLOAMOVE:
 	{
 		floaMove();
@@ -271,15 +222,28 @@ void gameMain() {
 		choseGoods();
 		break;
 	case PUSHENEMY:
+		if (!g_isBlowOff) 
+		{
+
+			mobCentralBlowOff[0] = { 450,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+			mobCentralBlowOff[1] = { 600,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+			mobCentralBlowOff[2] = { 750,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+			mobCentralBlowOff[3] = { 900,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+			mobCentralBlowOff[4] = { 1050,550 ,PLAYER_BLOWOFF_SCALE,PLAYER_BLOWOFF_SCALE };
+
+			effectExplosionCentral = { 900,750,300,300 };
+			g_effectCount = 0;
+			playerCutinCentral.x = 1200;
+		}
 		blowOff();		
 		break;
 	case PICKGOODS:
 		pickGoods();
+		comandMake();
 		for (int i = 0; i < 5; i++)
 		{
 			comandInput[i] = 10;
 		}
-		g_effectCount = 0;
 		break;
 #ifdef _DEBUG
 	case TESTSCENE:
@@ -354,158 +318,9 @@ void gameRender()
 //フロア移動場面
 void floaMove() {
 	
-	comandMake();
 	floaMoveControl();
 	floaMoveRender();
 }
-//void floaMoveControl() {
-//	CreateSquareVertex(playerFloa, playerCentralFloa);
-//	CreateSquareVertex(mobFloa,mobCentralFloa);
-//
-//	BottonCheck();
-//	CheckKeyState(DIK_RETURN);
-//	CheckKeyState(DIK_NUMPADENTER);
-//
-//	keyControl(&playerCentralFloa);
-//
-//	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
-//	{
-//		comandMake();
-//			g_gameScene = PUSHENEMY;
-//	}
-//
-//	GetControl(0);
-//	if (PadState[ButtonA] == KeyRelease)
-//	{
-//		comandMake();
-//			g_gameScene = PUSHENEMY;
-//	}
-//	mobMoving(&mobCentralFloa);
-//	MoveInToErea(&playerCentralFloa, 10, 60, 1000, 680);
-//	MoveInToErea(&mobCentralFloa, 10, 60, 1000, 680);
-//}
-//
-//void floaMoveRender() {
-//	BeginSetTexture();
-//	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
-//	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FRAME_TEX);
-//	switch (g_selectFloa) {
-//	case FOOD:
-//		EasyCreateSquareVertex(10, 15, 1000, 680, FOOD_STAGE_TEX);
-//		break;
-//	case CLOTH:
-//		EasyCreateSquareVertex(10, 15, 1000, 680, CLOTH_STAGE_TEX);
-//		break;
-//	}
-//	SetUpTexture(mobFloa, MOB_TEX);
-//	SetUpTexture(playerFloa, YASUKO_TEX);
-//
-//	WriteWord("フロア移動", testText, DT_CENTER, RED, HOGE_FONT);
-//
-//	EndSetTexture();
-//}
-//
-//void keyControl(CENTRAL_STATE* central) {
-//	CheckKeyState(DIK_LEFT);
-//	CheckKeyState(DIK_RIGHT);
-//	CheckKeyState(DIK_UP);
-//	CheckKeyState(DIK_DOWN);
-//	if (KeyState[DIK_LEFT])// →キーを押してる
-//	{
-//		central->x -= MOVE_MILEAGE;
-//	}
-//	if (KeyState[DIK_RIGHT])// ←キーを押してる
-//	{
-//		central->x += MOVE_MILEAGE;
-//	}
-//	if (KeyState[DIK_UP])// ↑キーを押してる
-//	{
-//		central->y -= MOVE_MILEAGE;
-//	}
-//	if (KeyState[DIK_DOWN])// ↓キーを押してる
-//	{
-//		central->y += MOVE_MILEAGE;
-//	}
-//	//XInputデバイス操作
-//	GetControl(0);
-//	BottonCheck();
-//	if (GetAnalogL(ANALOGRIGHT))
-//	{
-//		for (int i = 0; i < 4; i++)
-//		{
-//			central->x += MOVE_MILEAGE_STICK;
-//		}
-//	}
-//
-//	if (GetAnalogL(ANALOGLEFT))
-//	{
-//		for (int i = 0; i < 4; i++)
-//		{
-//			central->x -= MOVE_MILEAGE_STICK;
-//		}
-//	}
-//	if (!GetAnalogL(ANALOGDOWN))
-//	{
-//		for (int i = 0; i < 4; i++)
-//		{
-//			central->y -= MOVE_MILEAGE_STICK;
-//		}
-//	}
-//	if (!GetAnalogL(ANALOGUP))
-//	{
-//		for (int i = 0; i < 4; i++)
-//		{
-//			central->y += MOVE_MILEAGE_STICK;
-//		}
-//	}
-//	if (PadState[ButtonLEFT])// →キーを押してる
-//	{
-//		central->x += MOVE_MILEAGE;
-//	}
-//	if (PadState[ButtonRIGHT])// ←キーを押してる
-//	{
-//		central->x -= MOVE_MILEAGE;
-//	}
-//	if (PadState[ButtonUP])// ↑キーを押してる
-//	{
-//		central->y += MOVE_MILEAGE;
-//	}
-//	if (PadState[ButtonDOWN])// ↓キーを押してる
-//	{
-//		central->y -= MOVE_MILEAGE;
-//	}
-//
-//}
-//
-//void mobMoving(CENTRAL_STATE* mob) {
-//	static int mobDirection = EAST;
-//	static int mobTurnCount = 0;
-//	mobTurnCount++;
-//	if (mobTurnCount > 10) {
-//		mobDirection = rand() % 4;
-//		mobTurnCount = 0;
-//	}
-//	switch (mobDirection) {
-//	case NORTH:
-//		mob->y -= MOVE_MILEAGE;
-//		break;
-//
-//	case SOUTH:	
-//		mob->y += MOVE_MILEAGE;
-//		break;
-//
-//	case EAST:
-//		mob->x += MOVE_MILEAGE;
-//		break;
-//
-//	case WEST:
-//		mob->x -= MOVE_MILEAGE;
-//		break;
-//	}
-//}
-//
-////////////////////////////////////////////
-//コマンド入力場面
 
 void choseGoods() {
 
@@ -641,9 +456,8 @@ void blowOffControl()
 		madamBlowOff();
 		effectExplosionCentral.scaleX++;
 		effectExplosionCentral.scaleY++;
-		if (g_effectCount >= 600) {
+		if (g_effectCount >= 180) {
 			g_gameScene = PICKGOODS;
-			g_isBlowOff = false;
 		}
 	}
 }
@@ -661,22 +475,21 @@ void blowOffRender()
 	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
 
 	for (int i = 0; i < 5; i++) {
-		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
+		CreateSquareVertex(mobFloa, mobCentralBlowOff[i]);
 		if(g_isBlowOff){
 		g_effectCount++;
 
-			static float Rad = 0;//5:4 400:360
-			Rad += 0.9f;
+			mobRad += 0.9f;
 
-			if (Rad < 0)
+			if (mobRad < 0)
 			{
-				Rad = Rad * -1;
+				mobRad = mobRad * -1;
 			}
 			if (i % 2)
 			{
-				Rad = Rad * -1;
+				mobRad = mobRad * -1;
 			}
-			RevolveZ(mobFloa, Rad, mobCentralBlowOff[i]);
+			RevolveZ(mobFloa, mobRad, mobCentralBlowOff[i]);
 		}
 		SetUpTexture(mobFloa, MOB_TEX);
 	}
@@ -685,7 +498,6 @@ void blowOffRender()
 	}
 	SetUpTexture(playerHit, texturePC);
 
-	WriteWord("モブ主婦排除", testText, DT_CENTER, RED, HOGE_FONT);
 	char debugComandInput[10];
 	char debugComandOutput[10];
 	char DebugCounter[10];
@@ -1000,47 +812,23 @@ void pickGoodsControl() {
 	timerControl();
 	float deleatPosX = 250;
 	int rushInput = 10;
-	//CreateSquareVertex(goodsA, goodsCentralA[0]);
-	//CreateSquareVertex(goodsB, goodsCentralB[0]);
-	//CreateSquareVertex(goodsA2, goodsCentralA[1]);
-	//CreateSquareVertex(goodsB2, goodsCentralB[1]);
-	//CreateSquareVertex(goodsA3, goodsCentralA[2]);
-	//CreateSquareVertex(goodsB3, goodsCentralB[2]); 
-	//CreateSquareVertex(goodsA4, goodsCentralA[3]);
-	//CreateSquareVertex(goodsB4, goodsCentralB[3]);
-	//CreateSquareVertex(goodsA5, goodsCentralA[4]);
-	//CreateSquareVertex(goodsB5, goodsCentralB[4]);
-	//CreateSquareVertex(goodsA6, goodsCentralA[5]);
-	//CreateSquareVertex(goodsB6, goodsCentralB[5]);
-	//CreateSquareVertex(goodsA7, goodsCentralA[6]);
-	//CreateSquareVertex(goodsB7, goodsCentralB[6]);
-	//CreateSquareVertex(goodsA8, goodsCentralA[7]);
-	//CreateSquareVertex(goodsB8, goodsCentralB[7]);
-
-	//goodsMoving(goodsA, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 0);
-	//goodsMoving(goodsA2, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 1);
-	//goodsMoving(goodsA3, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 2);
-	//goodsMoving(goodsA4, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 3);
-	//goodsMoving(goodsA5, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 4);
-	//goodsMoving(goodsA6, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 5);
-	//goodsMoving(goodsA7, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 6);
-	//goodsMoving(goodsA8, g_goodsScaleA, g_isTakeA, goodsCentralA, deleatPosX, 7);
-
-	//goodsMoving(goodsB, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 0);
-	//goodsMoving(goodsB2, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 1);
-	//goodsMoving(goodsB3, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 2);
-	//goodsMoving(goodsB4, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 3);
-	//goodsMoving(goodsB5, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 4);
-	//goodsMoving(goodsB6, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 5);
-	//goodsMoving(goodsB7, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 6);
-	//goodsMoving(goodsB8, g_goodsScaleB, g_isTakeB, goodsCentralB, deleatPosX, 7);
-
+	playerCutinCentral.x -= 1;
+	if (playerCutinCentral.x < 50)
+	{
+		g_isBlowOff = false;
+		g_gameScene = PUSHENEMY;
+	}
 	pickGoodsDeviseControl(&rushInput);
+	if (g_isBlowOff) {
+		madamBlowOff();
+	}
 
 }
 
 void pickGoodsRender() {
+	CUSTOMVERTEX playerCutin[4];
 	CreateSquareVertex(playerHit, playerCentralHit);
+	CreateSquareVertexEx(playerCutin, playerCutinCentral,0,0,1,0.5f);
 
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);
@@ -1049,52 +837,45 @@ void pickGoodsRender() {
 	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
 	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
 
+	for (int i = 0; i < 5; i++) {
+		CreateSquareVertex(mobFloa, mobCentralBlowOff[i]);
+		if (g_isBlowOff) {
+			g_effectCount++;
+
+			mobRad += 0.9f;
+
+			if (mobRad < 0)
+			{
+				mobRad = mobRad * -1;
+			}
+			if (i % 2)
+			{
+				mobRad = mobRad * -1;
+			}
+			RevolveZ(mobFloa, mobRad, mobCentralBlowOff[i]);
+		}
+		SetUpTexture(mobFloa, MOB_TEX);
+	}
+
+
 	SetUpTexture(playerHit, texturePC);
 
-	//goodsRender(goodsA, g_isTakeA, 0, BEEF_TEX);
-	//goodsRender(goodsA2, g_isTakeA, 1, BEEF_TEX);
-	//goodsRender(goodsA3, g_isTakeA, 2, BEEF_TEX);
-	//goodsRender(goodsA4, g_isTakeA, 3, BEEF_TEX);
-	//goodsRender(goodsA5, g_isTakeA, 4, BEEF_TEX);
-	//goodsRender(goodsA6, g_isTakeA, 5, BEEF_TEX);
-	//goodsRender(goodsA7, g_isTakeA, 6, BEEF_TEX);
-	//goodsRender(goodsA8, g_isTakeA, 7, BEEF_TEX);
-
-	//goodsRender(goodsB, g_isTakeB, 0, PORK_TEX);
-	//goodsRender(goodsB2, g_isTakeB, 1, PORK_TEX);
-	//goodsRender(goodsB3, g_isTakeB, 2, PORK_TEX);
-	//goodsRender(goodsB4, g_isTakeB, 3, PORK_TEX);
-	//goodsRender(goodsB5, g_isTakeB, 4, PORK_TEX);
-	//goodsRender(goodsB6, g_isTakeB, 5, PORK_TEX);
-	//goodsRender(goodsB7, g_isTakeB, 6, PORK_TEX);
-	//goodsRender(goodsB8, g_isTakeB, 7, PORK_TEX);
 	
 	EasyCreateSquareVertex(0, 150, WIDTH, 550, CUTIN_TEX);
+
+	SetUpTexture(playerCutin, texturePC);
+
 	char rushButton[10];
 	RECT rushButtonAppear = {500,300,700,500};
 	sprintf_s(rushButton, 10, "%c", comandButton(rushButtonShow));
 	WriteWord(rushButton, rushButtonAppear, DT_CENTER, RED, RUSH_FONT);
 #ifdef _DEBUG
 	char goodsNumA[10];
-	char goodsNumB[10];
 	char DebugTakeBoolA[10];
-	char DebugTakeBoolB[10];
 
 	sprintf_s(goodsNumA, 10, "%d ", g_goodsTakenNum);
 	RECT DEBUGGoodsA = { 100 ,200,900,600 };
 	WriteWord(goodsNumA, DEBUGGoodsA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
-	sprintf_s(goodsNumB, 10, "%d ", g_goodsTakenNum);
-	RECT DEBUGGoodsB = { 100 ,250,900,600 };
-	WriteWord(goodsNumB, DEBUGGoodsB, DT_LEFT, 0xff00ffff, DEBUG_FONT);
-
-	for (int i = 0; i < 8; i++) {
-		sprintf_s(DebugTakeBoolA, 10, "%d ", g_isTakeA[i]);
-		RECT DEBUGTextA = { 100 + i * 50 ,500,900,600 };
-		WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
-		sprintf_s(DebugTakeBoolB, 10, "%d ", g_isTakeB[i]);
-		RECT DEBUGTextB = { 100 + i * 50 ,550,900,600 };
-		WriteWord(DebugTakeBoolB, DEBUGTextB, DT_LEFT, 0xff00ffff, DEBUG_FONT);
-	}
 
 	SoundLib::PlayingStatus status = soundsManager.GetStatus("PICK1");
 	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
@@ -1124,6 +905,18 @@ void pickGoodsRender() {
 	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
 	DEBUGTextA = { 400  ,150,900,600 };
 	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+	status = soundsManager.GetStatus("PICK8");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	DEBUGTextA = { 450  ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+	status = soundsManager.GetStatus("PICK9");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	DEBUGTextA = { 500  ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
+	status = soundsManager.GetStatus("PICK10");
+	sprintf_s(DebugTakeBoolA, 10, "%d ", status);
+	DEBUGTextA = { 550  ,150,900,600 };
+	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
 
 #endif
 	timerRender();
@@ -1152,59 +945,39 @@ void pickGoodsDeviseControl(int* rushInput) {
 	{
 		*rushInput = ButtonA;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_B] == KeyRelease)
 	{
 		*rushInput = ButtonB;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_X] == KeyRelease)
 	{
 		*rushInput = ButtonX;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_Y] == KeyRelease)
 	{
 		*rushInput = ButtonY;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_R] == KeyRelease)
 	{
 		*rushInput = ButtonRB;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 10);
 	}
 	if (KeyState[DIK_L] == KeyRelease)
 	{
 		*rushInput = ButtonLB;
 		rushButtonCheck(*rushInput, rushButtonShow);
-		//takeingGoods(g_isTakeA, 8);
 		buttonSE(Pick, 10);
 	}
 
-	if (KeyState[DIK_D] == KeyRelease)
-	{
-		rushButtonCheck(*rushInput, rushButtonShow);
-		//takeingGoods(g_isTakeB, 8);
-		buttonSE(Pick, 10);
-	}
-	if (KeyState[DIK_W])
-	{
-
-	}
-	if (KeyState[DIK_S])
-	{
-
-	}
 	//XInputデバイス操作
 	GetControl(0);
 	BottonCheck();
@@ -1239,13 +1012,13 @@ void pickGoodsDeviseControl(int* rushInput) {
 		rushButtonCheck(*rushInput, rushButtonShow);
 		buttonSE(Pick, 10);
 	}
-	if (PadState[ButtonRB] == KeyRelease)
+	if (PadState[ButtonRB] == PadRelease)
 	{
 		*rushInput = ButtonRB;
 		rushButtonCheck(*rushInput, rushButtonShow);
 		buttonSE(Pick, 10);
 	}
-	if (PadState[ButtonLB] == KeyRelease)
+	if (PadState[ButtonLB] == PadRelease)
 	{
 		*rushInput = ButtonLB;
 		rushButtonCheck(*rushInput, rushButtonShow);
@@ -1338,7 +1111,7 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum,int texNum) {
 //static bool clothStolen = false;
 //static bool getCloth = false;
 //static int openCount = 0;
-//static float Rad;
+//static float mobRad;
 //CENTRAL_STATE clothMobCentral = {900,500,200,300};
 //CENTRAL_STATE clothPCCentral = { 300,500,200,300};
 //CUSTOMVERTEX clothSmoke[4];
@@ -1432,11 +1205,11 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum,int texNum) {
 //			getCloth = false;
 //			clothRushInit();
 //		}
-//		if (Rad < 0.2) {
-//			Rad -= 0.05;
+//		if (mobRad < 0.2) {
+//			mobRad -= 0.05;
 //		}
-//		if (Rad > 0) {
-//			Rad += 0.05;
+//		if (mobRad > 0) {
+//			mobRad += 0.05;
 //		}
 //		static int clothCount = 0;
 //		clothCount++;
@@ -1501,7 +1274,7 @@ void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum,int texNum) {
 //	SetUpTexture(clothPC, texturePC);
 //	for (int i = 0; i < 6; i++) 
 //	{
-//		RevolveZ(clothSmoke, Rad, clothSmokeCentral[i]);
+//		RevolveZ(clothSmoke, mobRad, clothSmokeCentral[i]);
 //		SetUpTexture(clothSmoke, SMOKE_TEX);
 //	}
 //	EasyCreateSquareVertexColor(800, 600, 1200, 650,  0xff000000, BLANK);
