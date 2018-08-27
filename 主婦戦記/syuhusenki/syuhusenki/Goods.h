@@ -1,6 +1,10 @@
 #ifndef GOODS_H
 #define GOODS_H
 
+#define RARE1 100
+#define RARE2 150
+#define RARE3 200
+
 enum GOODSNUMBER {
 	BLANKGOODS,
 	BEEF,
@@ -65,5 +69,5 @@ extern GOODSPARAMETER foodGoods[GOODS_MAX];
 extern COMBOPARAMETER foodCombo[COMBOMAX];
 
 void comboCheck(int goodsId1, int goodsId2, int goodsId3);
-extern int count;
+
 #endif

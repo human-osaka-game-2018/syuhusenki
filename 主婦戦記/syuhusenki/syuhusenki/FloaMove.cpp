@@ -166,7 +166,7 @@ VOID floaMoveControl(VOID)
 	CheckKeyState(DIK_SPACE);
 	if (KeyState[DIK_SPACE] == KeyRelease)
 	{
-		g_gameScene = PUSHENEMY;
+		g_gameScene = CHOSEGOODS;
 	}
 
 }

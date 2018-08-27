@@ -53,14 +53,46 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
 	ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
 	//ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
-	ReadInTexture("Texture/beef.png", BEEF_TEX);
-	ReadInTexture("Texture/chicken.png", CHICKEN_TEX);
-	ReadInTexture("Texture/pork.png", PORK_TEX);
+	ReadInTexture("Texture/商品/beef.png", BEEF_TEX);
+	ReadInTexture("Texture/商品/chicken.png", CHICKEN_TEX);
+	ReadInTexture("Texture/商品/pork.png", PORK_TEX);
+	ReadInTexture("Texture/商品/wiener.png", VIENNESE_TEX);
+	ReadInTexture("Texture/商品/mince.png", MINCE_TEX );
+	ReadInTexture("Texture/商品/shrimp.png", SHRIMP_TEX );
+	ReadInTexture("Texture/商品/octopus.png", OCTOPUS_TEX );
+	ReadInTexture("Texture/商品/squid.png", INKFISH_TEX );
+	ReadInTexture("Texture/商品/fish_mackerel.png", FISH_TEX );
+	ReadInTexture("Texture/商品/carrot.png", GINESENG_TEX );
+	ReadInTexture("Texture/商品/onion.png", ONION_TEX );
+	ReadInTexture("Texture/商品/potato.png", POTATO_TEX );
+	ReadInTexture("Texture/商品/tomato.png", TOMATO_TEX );
+	ReadInTexture("Texture/商品/radish.png", RADISH_TEX );
+	ReadInTexture("Texture/商品/snack.png", POTATOCHIPS_TEX );
+	ReadInTexture("Texture/商品/chco.png", CHOCOLATE_TEX );
+	ReadInTexture("Texture/商品/ice.png", ICE_TEX );
+	ReadInTexture("Texture/商品/ricecracker.png", RICECRACKER_TEX );
+	ReadInTexture("Texture/商品/apple.png", APPLE_TEX );
+	ReadInTexture("Texture/商品/orenge.png", ORANGE_TEX );
+	ReadInTexture("Texture/商品/banana.png", BANANA_TEX );
+	ReadInTexture("Texture/商品/tea.png", TEA_TEX );
+	ReadInTexture("Texture/商品/juice.png", JUICE_TEX );
+	ReadInTexture("Texture/商品/beer.png", BEER_TEX );
+	ReadInTexture("Texture/商品/buridaikon.png", BURIDAIKON_TEX );
+	ReadInTexture("Texture/商品/tumami.png", RELISH_TEX );
+	ReadInTexture("Texture/商品/teatime.png", TEATIME_TEX );
+	ReadInTexture("Texture/商品/curry.png", CURRY_TEX );
+	ReadInTexture("Texture/商品/hamberg.png", HAMBERG_TEX );
+	ReadInTexture("Texture/商品/sashimi.png", ASSORTEDSASHIMI_TEX );
+	ReadInTexture("Texture/商品/oyatu.png", AFTERNOONREFRESHMENT_TEX );
+	ReadInTexture("Texture/商品/soup.png", SOUP_TEX );
+	ReadInTexture("Texture/商品/nimono.png", NIMONO_TEX );
+	ReadInTexture("Texture/商品/parfait.png", PARFAIT_TEX );
+
 	ReadInTexture("Texture/cardboard.png", BOX_TEX);
 	ReadInTexture("Texture/durabilityBar.jpg", DURABILITY_TEX);
 	ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
 	ReadInTexture("Texture/smoke.png", SMOKE_TEX);
-	ReadInTexture("Texture/calculation.png", RESULT_BG_TEX);
+	ReadInTexture("Texture/calculation2.png", RESULT_BG_TEX);
 
 	ReadInTexture("Texture/timerFrame.png", TIMER_FRAME_TEX);
 	ReadInTexture("Texture/timerHand.png", TIMER_HAND_TEX);
@@ -101,13 +133,13 @@ unsigned int gameRoop() {
 	case SCENE_TEAMLOGO:
 		if (isFirst) {
 
-		ReadInTexture("Texture/Blank.jpg", BLANK);
-		ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
-	
-		
-		g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;
+			ReadInTexture("Texture/Blank.jpg", BLANK);
+			ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
 
-		isFirst = false;
+
+			g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;
+
+			isFirst = false;
 		}
 		soundsManager.SetVolume("FOOD", 25);
 		control();
@@ -118,12 +150,16 @@ unsigned int gameRoop() {
 		titleRender();
 		break;
 	case SCENE_SERECTCHARANDSTAGE:
-		
+
 		selectControl();
 		selectRender();
 		break;
 	case SCENE_MAIN:
 		gameMain();
+		if (g_isTimeUp)
+		{
+			g_scene = SCENE_RESULT;
+		}
 		break;
 	case SCENE_RESULT:
 		result();

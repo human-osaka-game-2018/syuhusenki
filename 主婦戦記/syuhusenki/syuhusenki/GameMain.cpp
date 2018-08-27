@@ -122,6 +122,11 @@ void floaMove();
 
 int texturePC = YASUKO_TEX;
 
+void choseGoods();
+void choseGoodsControl();
+void choseGoodsReader();
+
+
 void blowOff();
 void blowOffControl();
 void blowOffRender();
@@ -191,6 +196,7 @@ void gameMain() {
 		g_isBlowOff = false;
 		g_isFirst = false;
 	}
+#ifdef _DEBUG
 	CheckKeyState(DIK_F1);
 	if (KeyState[DIK_F1] == KeyRelease)
 	{
@@ -201,18 +207,24 @@ void gameMain() {
 	{
 		g_selectFloa = CLOTH;
 	}
-
-#ifdef _DEBUG
-
 	CheckKeyState(DIK_F3);
 	if (KeyState[DIK_F3] == KeyRelease)
 	{
 		g_gameScene = TESTSCENE;
 	}
+	CheckKeyState(DIK_F5);
+	if (KeyState[DIK_F5] == KeyRelease)
+	{
+		g_gameScene = CHOSEGOODS;
+	}
+
 #endif
 	switch (g_gameScene) {
 	case FLOAMOVE:
 		floaMove();
+		break;
+	case CHOSEGOODS:
+		choseGoods();
 		break;
 	case PUSHENEMY:
 		blowOff();		
@@ -302,7 +314,6 @@ void floaMove() {
 	floaMoveControl();
 	floaMoveRender();
 }
-
 //void floaMoveControl() {
 //	CreateSquareVertex(playerFloa, playerCentralFloa);
 //	CreateSquareVertex(mobFloa,mobCentralFloa);
@@ -451,6 +462,76 @@ void floaMove() {
 //
 ////////////////////////////////////////////
 //ÉRÉ}ÉìÉhì¸óÕèÍñ 
+
+void choseGoods() {
+
+	choseGoodsControl();
+	choseGoodsReader();
+}
+void choseGoodsControl() {
+
+
+
+	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_NUMPADENTER);
+	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
+	{
+		g_gameScene = PUSHENEMY;
+	}
+	CheckKeyState(DIK_A);
+	if (KeyState[DIK_A] == KeyRelease)
+	{
+
+	}
+	CheckKeyState(DIK_D);
+	if (KeyState[DIK_D] == KeyRelease)
+	{
+
+	}
+
+	GetControl(0);
+	BottonCheck();
+
+	if (PadState[ButtonStart] == PadRelease)
+	{
+		g_gameScene = PUSHENEMY;
+	}
+	if (PadState[ButtonA] == PadRelease)
+	{
+
+	}
+	if (PadState[ButtonB] == PadRelease)
+	{
+
+	}
+	if (PadState[ButtonX] == PadRelease)
+	{
+
+	}
+
+}
+void choseGoodsReader() {
+
+	BeginSetTexture();
+	CreateSquareVertex(playerHit, playerCentralHit);
+
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
+
+	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
+	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
+
+	for (int i = 0; i < 5; i++) {
+		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
+		SetUpTexture(mobFloa, MOB_TEX);
+	}
+	SetUpTexture(playerHit, texturePC);
+
+
+	timerRender();
+	EndSetTexture();
+
+}
+
 void blowOff() {
 	switch (g_selectFloa) {
 	case FOOD:
@@ -1397,10 +1478,6 @@ void testScene()
 	BeginSetTexture();
 	static int takegoods[3]{ ICE ,ORANGE ,JUICE };
 	comboCheck(takegoods[0], takegoods[1], takegoods[2]);
-	char testc[10];
-	sprintf_s(testc, 10, "%d", count);
-	RECT DEBUGTextC = { 100,200,900,600 };
-	WriteWord(testc, DEBUGTextC, DT_LEFT, 0xffffff00, DEBUG_FONT);
 
 	for (int i = 0; i < COMBOMAX; i++)
 	{
