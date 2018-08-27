@@ -3,54 +3,54 @@
 
 GOODSPARAMETER foodGoods[GOODS_MAX]
 {
-{BLANKGOODS,0,0,0},
+{BLANKGOODS,BLANK,0,0,0},
 //ì˜
-{ BEEF,300,200,0 },
-{ PORK,200,150,0 },
-{ CHICKEN,100,80,0 },
-{ VIENNESE,200,100,0 },
-{ MINCE,150,100,0 },
+{ BEEF,BEEF_TEX,300,200,0 },
+{ PORK,PORK_TEX,200,150,0 },
+{ CHICKEN,CHICKEN_TEX,100,80,0 },
+{ VIENNESE,VIENNESE_TEX,200,100,0 },
+{ MINCE,MINCE_TEX,150,100,0 },
 //ãõ
-{ SHRIMP,250,200,0 },
-{ OCTOPUS,300,180,0 },
-{ INKFISH,200,180,0 },
-{ FISH,200,150,0 },
+{ SHRIMP,SHRIMP_TEX,250,200,0 },
+{ OCTOPUS,OCTOPUS_TEX,300,180,0 },
+{ INKFISH,INKFISH_TEX,200,180,0 },
+{ FISH,FISH_TEX,200,150,0 },
 //ñÏçÿ
-{ GINESENG,50,30,0 },
-{ ONION,60,40,0 },
-{ POTATO,65,40,0 },
-{ TOMATO,100,50,0 },
-{ RADISH,200,150,0 },
+{ GINESENG,GINESENG_TEX,50,30,0 },
+{ ONION,ONION_TEX,60,40,0 },
+{ POTATO,POTATO_TEX,65,40,0 },
+{ TOMATO,TOMATO_TEX,100,50,0 },
+{ RADISH,RADISH_TEX,200,150,0 },
 //Ç®âŸéq
-{ POTATOCHIPS,100,80,0 },
-{ CHOCOLATE,100,50,0 },
-{ ICE,150,50,0 },
-{ RICECRACKER,100,60,0 },
+{ POTATOCHIPS,POTATOCHIPS_TEX,100,80,0 },
+{ CHOCOLATE,CHOCOLATE_TEX,100,50,0 },
+{ ICE,ICE_TEX,150,50,0 },
+{ RICECRACKER,RICECRACKER_TEX,100,60,0 },
 //â ï®
-{ APPLE,100,80,0 },
-{ ORANGE,200,150,0 },
-{ BANANA, 100,80,0 },
+{ APPLE,APPLE_TEX,100,80,0 },
+{ ORANGE,ORANGE_TEX,200,150,0 },
+{ BANANA,BANANA_TEX,100,80,0 },
 //à˘Ç›ï®
-{ TEA,100,70,0 },
-{ JUICE,150,80,0 },
-{ BEER,200,100,0 },
+{ TEA,TEA_TEX,100,70,0 },
+{ JUICE,JUICE_TEX,150,80,0 },
+{ BEER,BEER_TEX,200,100,0 },
 
-{ MEET,0,0,0 },
-{ FRUIT,0,0,0 },
+{ MEET,BLANK,0,0,0 },
+{ FRUIT,BLANK,0,0,0 },
 
 };
 
 COMBOPARAMETER foodCombo[COMBOMAX]{
-{ BURIDAIKON,RARE1, FISH,RADISH,false },
-{ RELISH,RARE1,BEER,VIENNESE ,false },
-{ TEATIME, RARE1, TEA, RICECRACKER ,false },
-{ CURRY, RARE2, POTATO, ONION, MEET,false },
-{ HAMBERG, RARE2, MINCE, ONION, GINESENG ,false },
-{ ASSORTEDSASHIMI, RARE2, SHRIMP, OCTOPUS, INKFISH ,false },
-{ AFTERNOONREFRESHMENT,RARE2,ICE,JUICE,FRUIT,false },
-{ SOUP,RARE3,VIENNESE,TOMATO,ONION ,false },
-{ NIMONO,RARE3,RADISH,FISH,OCTOPUS ,false },
-{ PARFAIT,RARE3,ICE,FRUIT,FRUIT,false },
+{ BURIDAIKON,BURIDAIKON_TEX,RARE1, FISH,RADISH,false },
+{ RELISH,RELISH_TEX,RARE1,BEER,VIENNESE ,false },
+{ TEATIME,TEATIME_TEX, RARE1, TEA, RICECRACKER ,false },
+{ CURRY, CURRY_TEX,RARE2, POTATO, ONION, MEET,false },
+{ HAMBERG,HAMBERG_TEX, RARE2, MINCE, ONION, GINESENG ,false },
+{ ASSORTEDSASHIMI,ASSORTEDSASHIMI_TEX, RARE2, SHRIMP, OCTOPUS, INKFISH ,false },
+{ AFTERNOONREFRESHMENT,AFTERNOONREFRESHMENT_TEX,RARE2,ICE,JUICE,FRUIT,false },
+{ SOUP,SOUP_TEX,RARE3,VIENNESE,TOMATO,ONION ,false },
+{ NIMONO,NIMONO_TEX,RARE3,RADISH,FISH,OCTOPUS ,false },
+{ PARFAIT,PARFAIT_TEX,RARE3,ICE,FRUIT,FRUIT,false },
 };
 
 struct COMBO_OK {
@@ -274,5 +274,67 @@ void comboCheck(int goodsId1, int goodsId2, int goodsId3 )
 				g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
 			}
 		}
+	}
+}
+
+void selectGoods(int goodssort,int goodsSelector[]) {
+	int randBuff[2];
+	switch (goodssort)
+	{
+	case MEET_SORT:
+		randBuff[0] = rand() % 5;
+		switch (randBuff[0])
+		{
+			case 0:
+				goodsSelector[0] = BEEF;
+			break;
+			case 1:
+				goodsSelector[0] = PORK;
+				break;
+			case 2:
+				goodsSelector[0] = CHICKEN;
+				break;
+			case 3:
+				goodsSelector[0] = VIENNESE;
+				break;
+			case 4:
+				goodsSelector[0] = MINCE;
+				break;
+		}
+
+		randBuff[1] = rand() % 5;
+		while (randBuff[0] == randBuff[1]) {
+			randBuff[1] = rand() % 5;
+		}
+
+		switch (randBuff[1])
+		{
+		case 0:
+			goodsSelector[1] = BEEF;
+			break;
+		case 1:
+			goodsSelector[1] = PORK;
+			break;
+		case 2:
+			goodsSelector[1] = CHICKEN;
+			break;
+		case 3:
+			goodsSelector[1] = VIENNESE;
+			break;
+		case 4:
+			goodsSelector[1] = MINCE;
+			break;
+		}
+
+		//goodsSelector[0]
+		break;
+	case VEGETABLE_SORT:
+		break;
+	case SEAFOOD_SORT:
+		break;
+	case FRUIT_SORT:
+		break;
+	case DRINK_SORT:
+		break;
 	}
 }

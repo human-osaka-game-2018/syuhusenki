@@ -20,6 +20,8 @@ enum MOBDIRECTION {
 
 void testScene();
 
+int g_goodsselector[2];
+int g_goodsTweSelect;
 int g_gameScene = FLOAMOVE;
 //int g_gameScene = PUSHENEMY;
 //int g_gameScene = PICKGOODS;
@@ -221,8 +223,12 @@ void gameMain() {
 #endif
 	switch (g_gameScene) {
 	case FLOAMOVE:
+	{
 		floaMove();
+		int goodssort = MEET_SORT;
+		selectGoods(goodssort, g_goodsselector);
 		break;
+	}
 	case CHOSEGOODS:
 		choseGoods();
 		break;
@@ -470,7 +476,7 @@ void choseGoods() {
 }
 void choseGoodsControl() {
 
-
+	timerControl();
 
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
@@ -481,12 +487,14 @@ void choseGoodsControl() {
 	CheckKeyState(DIK_A);
 	if (KeyState[DIK_A] == KeyRelease)
 	{
-
+		g_goodsTweSelect = g_goodsselector[0];
+		g_gameScene = PUSHENEMY;
 	}
 	CheckKeyState(DIK_D);
 	if (KeyState[DIK_D] == KeyRelease)
 	{
-
+		g_goodsTweSelect = g_goodsselector[1];
+		g_gameScene = PUSHENEMY;
 	}
 
 	GetControl(0);
@@ -502,11 +510,13 @@ void choseGoodsControl() {
 	}
 	if (PadState[ButtonB] == PadRelease)
 	{
-
+		g_goodsTweSelect = g_goodsselector[1];
+		g_gameScene = PUSHENEMY;
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
-
+		g_goodsTweSelect = g_goodsselector[0];
+		g_gameScene = PUSHENEMY;
 	}
 
 }
@@ -514,17 +524,21 @@ void choseGoodsReader() {
 
 	BeginSetTexture();
 	CreateSquareVertex(playerHit, playerCentralHit);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);
 
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
+	EasyCreateSquareVertexColor(0, 0, WIDTH, HEIGHT, HARFCLEAR,BLANK);
 
 	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
 	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
+
 
 	for (int i = 0; i < 5; i++) {
 		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
 		SetUpTexture(mobFloa, MOB_TEX);
 	}
 	SetUpTexture(playerHit, texturePC);
+	EasyCreateSquareVertex(350, 50, 600, 400, foodGoods[g_goodsselector[0]].textureID);
+	EasyCreateSquareVertex(660, 50, 910, 400, foodGoods[g_goodsselector[1]].textureID);
 
 
 	timerRender();
@@ -601,7 +615,9 @@ void blowOffRender()
 	CreateSquareVertex(playerHit, playerCentralHit);
 
 	BeginSetTexture();
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);
+
+	EasyCreateSquareVertexColor(0, 0, WIDTH, HEIGHT, HARFCLEAR, BLANK);
 
 	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
 	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
@@ -964,8 +980,9 @@ void pickGoodsRender() {
 	CreateSquareVertex(playerHit, playerCentralHit);
 
 	BeginSetTexture();
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);
 
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
+	EasyCreateSquareVertexColor(0, 0, WIDTH, HEIGHT, HARFCLEAR, BLANK);
 	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
 	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
 
