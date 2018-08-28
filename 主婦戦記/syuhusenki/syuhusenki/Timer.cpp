@@ -5,7 +5,7 @@ CENTRAL_STATE g_timerSta = { 1210.f, 50.f, 50.f, 50.f };
 CENTRAL_STATE g_timeUpSta = { 520.f, 350.f, 260.f, 100.f };
 
 int g_timerCount = 0;
-
+bool g_tern[3];
 //タイマー制御処理
 VOID timerControl(VOID)
 {

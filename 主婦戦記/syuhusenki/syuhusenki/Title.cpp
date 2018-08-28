@@ -13,7 +13,7 @@ VOID titleControl(VOID)
 
 	for (BGM; BGM < 1; BGM++)
 	{
-		soundsManager.SetVolume("OP_BGM", 25);
+		//soundsManager.SetVolume("OP_BGM", 25);
 		soundsManager.Start("OP_BGM", true);
 	}
 
@@ -45,20 +45,24 @@ VOID titleControl(VOID)
 			g_selectArrowSta.x = ARROWLEFT;
 			g_inCount++;
 		}
+		CheckKeyState(DIK_RETURN);
+		CheckKeyState(DIK_NUMPADENTER);
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT)
+		if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT)
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("OP_BGM");
 			soundsManager.SetVolume("SELECT_BGM", 25);
 			soundsManager.Start("SELECT_BGM", true);
+			g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
 			BGM = 0;
 			g_scene = SCENE_SERECTCHARANDSTAGE;
 			g_inCount++;
 		}
 
-		if (InputKEY(DIK_RETURN)&& g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadOn && g_selectArrowSta.x == ARROWLEFT)
+		if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadOn && g_selectArrowSta.x == ARROWLEFT)
 		{
+			soundsManager.Start("BOW", false);
 			PostQuitMessage(0);
 		}
 }

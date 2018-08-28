@@ -1,6 +1,7 @@
 #ifndef GAMEMAIN_H
 #define GAMEMAIN_H
 
+
 struct SoundEffect {
 	const char SE1[20];
 	const char SE2[20];
@@ -9,10 +10,15 @@ struct SoundEffect {
 	const char SE5[20];
 	const char SE6[20];
 	const char SE7[20];
+	const char SE8[20];
+	const char SE9[20];
+	const char SE10[20];
+
 };
 
 enum GAMESCENE {
 	FLOAMOVE,
+	CHOSEGOODS,
 	PUSHENEMY,
 	PICKGOODS,
 #ifdef _DEBUG

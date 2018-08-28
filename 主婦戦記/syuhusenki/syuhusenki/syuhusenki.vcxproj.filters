@@ -30,11 +30,13 @@
     <ClCompile Include="FloaMove.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Timer.cpp">
-=======
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Goods.cpp">
->>>>>>> 8b27efc49b943e7857d354421703fea7fc8af72e
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Result.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -57,11 +59,13 @@
     <ClInclude Include="FloaMove.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Timer.h">
-=======
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="Goods.h">
->>>>>>> 8b27efc49b943e7857d354421703fea7fc8af72e
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Result.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

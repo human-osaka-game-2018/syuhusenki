@@ -23,6 +23,7 @@
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Goods.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Result.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Goods.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Result.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Title.h" />

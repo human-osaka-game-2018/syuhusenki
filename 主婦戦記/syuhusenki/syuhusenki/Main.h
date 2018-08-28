@@ -19,6 +19,7 @@
 #define WIDTH 1280
 #define HEIGHT 720
 #define RED 0xFFFF0000
+#define HARFCLEAR 0x8a000000
 
 //ゲームパッドの状態
 #define UP_BUTTON 0x0001
@@ -107,5 +108,7 @@ extern bool g_isTimeUp;
 extern bool g_isSound;
 extern bool g_isNextSelect;
 extern bool g_isLastCheck;
+
+void setNuwLoading();
 
 #endif // !MAIN_H
