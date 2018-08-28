@@ -5,7 +5,8 @@
 #define RARE2 150
 #define RARE3 200
 
-enum GOODSNUMBER {
+enum GOODSNUMBER 
+{
 	BLANKGOODS,
 	BEEF,
 	PORK,
@@ -36,7 +37,8 @@ enum GOODSNUMBER {
 	GOODS_MAX
 };
 
-enum COMBOMEUE {
+enum COMBOMEUE 
+{
 	BURIDAIKON,
 	RELISH,
 	TEATIME,
@@ -55,10 +57,12 @@ enum GOODSSORTING
 	MEET_SORT,
 	VEGETABLE_SORT,
 	SEAFOOD_SORT,
+	SWEET_SORT,
 	FRUIT_SORT,
 	DRINK_SORT
 };
-struct GOODSPARAMETER {
+struct GOODSPARAMETER 
+{
 	const int goodsID;
 	const int textureID;
 	const int nominalCost;
@@ -67,7 +71,8 @@ struct GOODSPARAMETER {
 
 };
 
-struct COMBOPARAMETER {
+struct COMBOPARAMETER 
+{
 	const int comboID;
 	const int textureID;
 	const int comboBonus;
@@ -79,6 +84,7 @@ struct COMBOPARAMETER {
 extern GOODSPARAMETER foodGoods[GOODS_MAX];
 extern COMBOPARAMETER foodCombo[COMBOMAX];
 
+int comboSucceceCheck();
 void comboCheck(int goodsId1, int goodsId2, int goodsId3);
 void selectGoods(int goodssort, int goodsSelector[]);
 #endif

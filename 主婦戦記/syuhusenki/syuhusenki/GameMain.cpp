@@ -5,7 +5,6 @@
 #include "Timer.h"
 
 
-
 #define PLAYER_FLOA_SCALE 100
 #define PLAYER_BLOWOFF_SCALE 150
 #define MOVE_MILEAGE 8
@@ -23,6 +22,7 @@ void testScene();
 int g_goodsselector[2];
 int g_goodsTweSelect;
 int g_gameScene = FLOAMOVE;
+//int g_gameScene = CHOSEGOODS;
 //int g_gameScene = PUSHENEMY;
 //int g_gameScene = PICKGOODS;
 int g_selectFloa = FOOD;
@@ -67,8 +67,7 @@ CENTRAL_STATE playerCentralHit = {200,350,300,250};
 
 
 CENTRAL_STATE durabilityPointCentral = { 900,75 ,15,40};
-void gameControl();
-void gameRender();
+
 void floaMove();
 //void floaMoveControl();
 //void floaMoveRender();
@@ -90,6 +89,7 @@ void madamBlowOff();
 int comandCheck(int comand[], int inputComand[], int count);
 void comandMake();
 char comandButton(int comand);
+int comandButtonTexture(int comand);
 
 
 void pickGoods();
@@ -114,9 +114,7 @@ void gameMain() {
 		static bool canRead = true;
 		if (canRead) 
 		{
-			BeginSetTexture();
-			EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, LOAD_TEX);
-			EndSetTexture();
+			setNuwLoading();
 
 			ReadInTexture("Texture/testFrame.png", FRAME_TEX);
 			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
@@ -139,37 +137,53 @@ void gameMain() {
 			ReadInTexture("Texture/end.png", TIMEUP_TEX);
 			ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
 
+			ReadInTexture("Texture/button/a.png", A_TEX);
+			ReadInTexture("Texture/button/b.png", B_TEX);
+			ReadInTexture("Texture/button/x.png", X_TEX);
+			ReadInTexture("Texture/button/y.png", Y_TEX);
+			ReadInTexture("Texture/button/r.png", R_TEX);
+			ReadInTexture("Texture/button/l.png", L_TEX);
+			ReadInTexture("Texture/button/button.png", NULL_BUTTON_TEX);
+
 			ReadInTexture("Texture/merchandise/beef.png", BEEF_TEX);
 			ReadInTexture("Texture/merchandise/chicken.png", CHICKEN_TEX);
 			ReadInTexture("Texture/merchandise/pork.png", PORK_TEX);
 			ReadInTexture("Texture/merchandise/wiener.png", VIENNESE_TEX);
 			ReadInTexture("Texture/merchandise/mince.png", MINCE_TEX);
+
 			ReadInTexture("Texture/merchandise/shrimp.png", SHRIMP_TEX);
 			ReadInTexture("Texture/merchandise/octopus.png", OCTOPUS_TEX);
 			ReadInTexture("Texture/merchandise/squid.png", INKFISH_TEX);
 			ReadInTexture("Texture/merchandise/fish_mackerel.png", FISH_TEX);
+
 			ReadInTexture("Texture/merchandise/carrot.png", GINESENG_TEX);
 			ReadInTexture("Texture/merchandise/onion.png", ONION_TEX);
 			ReadInTexture("Texture/merchandise/potato.png", POTATO_TEX);
 			ReadInTexture("Texture/merchandise/tomato.png", TOMATO_TEX);
 			ReadInTexture("Texture/merchandise/radish.png", RADISH_TEX);
+
 			ReadInTexture("Texture/merchandise/snack.png", POTATOCHIPS_TEX);
 			ReadInTexture("Texture/merchandise/chco.png", CHOCOLATE_TEX);
 			ReadInTexture("Texture/merchandise/ice.png", ICE_TEX);
 			ReadInTexture("Texture/merchandise/ricecracker.png", RICECRACKER_TEX);
+
 			ReadInTexture("Texture/merchandise/apple.png", APPLE_TEX);
 			ReadInTexture("Texture/merchandise/orenge.png", ORANGE_TEX);
 			ReadInTexture("Texture/merchandise/banana.png", BANANA_TEX);
+
 			ReadInTexture("Texture/merchandise/tea.png", TEA_TEX);
 			ReadInTexture("Texture/merchandise/juice.png", JUICE_TEX);
 			ReadInTexture("Texture/merchandise/beer.png", BEER_TEX);
+
 			ReadInTexture("Texture/merchandise/buridaikon.png", BURIDAIKON_TEX);
 			ReadInTexture("Texture/merchandise/tumami.png", RELISH_TEX);
 			ReadInTexture("Texture/merchandise/teatime.png", TEATIME_TEX);
+
 			ReadInTexture("Texture/merchandise/curry.png", CURRY_TEX);
 			ReadInTexture("Texture/merchandise/hamberg.png", HAMBERG_TEX);
 			ReadInTexture("Texture/merchandise/sashimi.png", ASSORTEDSASHIMI_TEX);
 			ReadInTexture("Texture/merchandise/oyatu.png", AFTERNOONREFRESHMENT_TEX);
+
 			ReadInTexture("Texture/merchandise/soup.png", SOUP_TEX);
 			ReadInTexture("Texture/merchandise/nimono.png", NIMONO_TEX);
 			ReadInTexture("Texture/merchandise/parfait.png", PARFAIT_TEX);
@@ -202,11 +216,6 @@ void gameMain() {
 	{
 		g_gameScene = TESTSCENE;
 	}
-	CheckKeyState(DIK_F5);
-	if (KeyState[DIK_F5] == KeyRelease)
-	{
-		g_gameScene = CHOSEGOODS;
-	}
 
 #endif
 	switch (g_gameScene) 
@@ -214,7 +223,7 @@ void gameMain() {
 	case FLOAMOVE:
 	{
 		floaMove();
-		int goodssort = MEET_SORT;
+		int goodssort = VEGETABLE_SORT;//rand()%6;//フロア移動で決めたものを入れる
 		selectGoods(goodssort, g_goodsselector);
 		break;
 	}
@@ -252,68 +261,7 @@ void gameMain() {
 #endif
 	}
 }
-void gameControl() {
-	GetControl(0);
-	BottonCheck();
-	CheckKeyState(DIK_RETURN);
-	CheckKeyState(DIK_NUMPADENTER);
-	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
-	{
 
-		switch (g_gameScene) {
-		//case FLOAMOVE:
-		//	gameScene = PUSHENEMY;
-		//	break;
-		case PUSHENEMY:
-			g_gameScene = PICKGOODS;
-			break;
-		case PICKGOODS:
-			g_scene = SCENE_RESULT;
-			g_gameScene = FLOAMOVE;
-			break;
-		}
-	}
-	if (PadState[ButtonA] == KeyRelease)
-	{
-
-		switch (g_gameScene) {
-		case FLOAMOVE:
-			g_gameScene = PUSHENEMY;
-			break;
-		case PUSHENEMY:
-			g_gameScene = PICKGOODS;
-			break;
-		case PICKGOODS:
-			g_scene = SCENE_RESULT;
-			g_gameScene = FLOAMOVE;
-			break;
-		}
-	}
-}
-
-void gameRender() 
-{
-	BeginSetTexture();
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
-
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
-
-		WriteWord("メインゲーム", testWord, DT_CENTER, RED, HOGE_FONT);
-	switch (g_gameScene) {
-	//case FLOAMOVE:
-	//	WriteWord("フロア移動", testText, DT_CENTER, RED, FONT);
-	//	break;
-	case PUSHENEMY:
-		WriteWord("モブ主婦排除", testText, DT_CENTER, RED, HOGE_FONT);
-		break;
-	case PICKGOODS:
-		WriteWord("セール品入手", testText, DT_CENTER, RED, HOGE_FONT);
-		break;
-
-	}
-
-	EndSetTexture();
-}
 ////////////////////////////////////////////////
 //フロア移動場面
 void floaMove() {
@@ -333,17 +281,18 @@ void choseGoodsControl() {
 
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
+	CheckKeyState(DIK_A);
+	CheckKeyState(DIK_D);
+
 	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
-		g_gameScene = PUSHENEMY;
+		//g_gameScene = PUSHENEMY;
 	}
-	CheckKeyState(DIK_A);
 	if (KeyState[DIK_A] == KeyRelease)
 	{
 		g_goodsTweSelect = g_goodsselector[0];
 		g_gameScene = PUSHENEMY;
 	}
-	CheckKeyState(DIK_D);
 	if (KeyState[DIK_D] == KeyRelease)
 	{
 		g_goodsTweSelect = g_goodsselector[1];
@@ -353,24 +302,24 @@ void choseGoodsControl() {
 	GetControl(0);
 	BottonCheck();
 
-	if (PadState[ButtonStart] == PadRelease)
-	{
-		g_gameScene = PUSHENEMY;
-	}
-	if (PadState[ButtonA] == PadRelease)
-	{
+	//if (PadState[ButtonStart] == PadRelease)
+	//{
+	//	//g_gameScene = PUSHENEMY;
+	//}
+	//if (PadState[ButtonA] == PadRelease)
+	//{
 
-	}
-	if (PadState[ButtonB] == PadRelease)
-	{
-		g_goodsTweSelect = g_goodsselector[1];
-		g_gameScene = PUSHENEMY;
-	}
-	if (PadState[ButtonX] == PadRelease)
-	{
-		g_goodsTweSelect = g_goodsselector[0];
-		g_gameScene = PUSHENEMY;
-	}
+	//}
+	//if (PadState[ButtonB] == PadRelease)
+	//{
+	//	g_goodsTweSelect = g_goodsselector[1];
+	//	g_gameScene = PUSHENEMY;
+	//}
+	//if (PadState[ButtonX] == PadRelease)
+	//{
+	//	g_goodsTweSelect = g_goodsselector[0];
+	//	g_gameScene = PUSHENEMY;
+	//}
 
 }
 void choseGoodsReader() {
@@ -503,6 +452,18 @@ void blowOffRender()
 	char DebugCounter[10];
 	for (int i = 0; i < 5; i++)
 	{
+		RECT DEBUGText = { 300 + (i * 100),200,450 + (i * 100),300 };
+		EasyCreateRECTVertex(DEBUGText, comandButtonTexture(comandPresentment[i]));
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		RECT DEBUGText = { 300 + (i * 100),300,450 + (i * 100),400 };
+		EasyCreateRECTVertex( DEBUGText, comandButtonTexture(comandInput[i]));
+	}
+#ifdef _DEBUG
+
+	for (int i = 0; i < 5; i++)
+	{
 		sprintf_s(debugComandInput, 10, "%c", comandButton(comandInput[i]));
 
 		RECT DEBUGText = { 100+(i*50),500,900,600 };
@@ -516,7 +477,6 @@ void blowOffRender()
 		WriteWord(debugComandOutput, DEBUGText, DT_LEFT, 0xff0000ff, DEBUG_FONT);
 	}
 
-#ifdef _DEBUG
 	sprintf_s(DebugCounter, 10, "%d", comandCount);
 	RECT DEBUGText = { 100 ,550,900,600 };
 	WriteWord(DebugCounter, DEBUGText, DT_LEFT, 0xff00ffff, DEBUG_FONT);
@@ -567,6 +527,26 @@ char comandButton(int comand)
 		return 'R';
 	case ButtonLB:
 		return 'L';
+	}
+
+}
+int comandButtonTexture(int comand)
+{
+	switch (comand) {
+	case ButtonA:
+		return A_TEX;
+	case ButtonB:
+		return B_TEX;
+	case ButtonX:
+		return X_TEX;
+	case ButtonY:
+		return Y_TEX;
+	case ButtonRB:
+		return R_TEX;
+	case ButtonLB:
+		return L_TEX;
+	default:
+		return NULL_BUTTON_TEX;
 	}
 
 }
@@ -812,7 +792,7 @@ void pickGoodsControl() {
 	timerControl();
 	float deleatPosX = 250;
 	int rushInput = 10;
-	playerCutinCentral.x -= 1;
+	playerCutinCentral.x -= 5;
 	if (playerCutinCentral.x < 50)
 	{
 		g_isBlowOff = false;
@@ -865,10 +845,12 @@ void pickGoodsRender() {
 
 	SetUpTexture(playerCutin, texturePC);
 
-	char rushButton[10];
-	RECT rushButtonAppear = {500,300,700,500};
-	sprintf_s(rushButton, 10, "%c", comandButton(rushButtonShow));
-	WriteWord(rushButton, rushButtonAppear, DT_CENTER, RED, RUSH_FONT);
+	//char rushButton[10];
+	RECT rushButtonAppear = {470,200,810,550};
+	EasyCreateRECTVertex(rushButtonAppear, comandButtonTexture(rushButtonShow));
+
+	//sprintf_s(rushButton, 10, "%c", comandButton(rushButtonShow));
+	//WriteWord(rushButton, rushButtonAppear, DT_CENTER, RED, RUSH_FONT);
 #ifdef _DEBUG
 	char goodsNumA[10];
 	char DebugTakeBoolA[10];

@@ -3,8 +3,8 @@
 
 #define BLACK 0xff000000
 
+
 void result(void);
 extern int selectedGoods[3];
-
 
 #endif

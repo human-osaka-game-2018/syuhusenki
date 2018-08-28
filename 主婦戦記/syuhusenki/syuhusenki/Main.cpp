@@ -3,7 +3,7 @@
 #include "Select.h"
 #include "Title.h"
 #include "Result.h"
-
+#include "Goods.h"
 
 SoundLib::SoundsManager soundsManager;
 
@@ -34,9 +34,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 #endif
 	g_SoundSuccess = soundsManager.Initialize();
 	ReadInTexture("Texture/nowloading.png", LOAD_TEX);
-	BeginSetTexture();
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, LOAD_TEX);
-	EndSetTexture();
+	setNuwLoading();
 	soundsManager.AddFile("Sound/loadEnd.mp3", "LOAD");
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
@@ -51,7 +49,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/selectFrame.png",SELECTFRAME_TEX);
 	ReadInTexture("Texture/lastCheck.png",SELECTLASTCHECK_TEX);
 	ReadInTexture("Texture/arrow.png", TITLEICON_TEX);
-
+	ReadInTexture("Texture/calculation2", RESULT_BG_TEX);
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);
 	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
@@ -88,6 +86,11 @@ unsigned int gameRoop() {
 		soundsManager.SetVolume("FOOD", 25);
 		control();
 		render();
+		for (int i = 0; i < 3; i++)
+		{
+			selectedGoods[i] = rand() % MEET;
+			foodGoods[selectedGoods[i]].haveValue = 10;
+		}
 		break;
 	case SCENE_TITLE:
 		titleControl();
@@ -251,4 +254,11 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/stupid3.mp3", "LOSE");
 	soundsManager.AddFile("Sound/trumpet1.mp3", "WIN");
 
+}
+
+void setNuwLoading()
+{
+	BeginSetTexture();
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, LOAD_TEX);
+	EndSetTexture();
 }

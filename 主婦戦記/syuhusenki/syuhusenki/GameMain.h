@@ -1,7 +1,6 @@
 #ifndef GAMEMAIN_H
 #define GAMEMAIN_H
 
-#define HARFCLEAR 0xaf000000
 
 struct SoundEffect {
 	const char SE1[20];

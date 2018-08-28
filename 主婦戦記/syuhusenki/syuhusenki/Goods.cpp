@@ -276,8 +276,18 @@ void comboCheck(int goodsId1, int goodsId2, int goodsId3 )
 		}
 	}
 }
-
-void selectGoods(int goodssort,int goodsSelector[]) {
+int comboSucceceCheck()
+{
+	for (int i = 0; i < COMBOMAX; i++) 
+	{
+		if (foodCombo[i].comboSucceed)
+		{
+			return i;
+		}
+	}
+}
+void selectGoods(int goodssort,int goodsSelector[]) 
+{
 	int randBuff[2];
 	switch (goodssort)
 	{
@@ -285,21 +295,21 @@ void selectGoods(int goodssort,int goodsSelector[]) {
 		randBuff[0] = rand() % 5;
 		switch (randBuff[0])
 		{
-			case 0:
-				goodsSelector[0] = BEEF;
+		case 0:
+			goodsSelector[0] = BEEF;
 			break;
-			case 1:
-				goodsSelector[0] = PORK;
-				break;
-			case 2:
-				goodsSelector[0] = CHICKEN;
-				break;
-			case 3:
-				goodsSelector[0] = VIENNESE;
-				break;
-			case 4:
-				goodsSelector[0] = MINCE;
-				break;
+		case 1:
+			goodsSelector[0] = PORK;
+			break;
+		case 2:
+			goodsSelector[0] = CHICKEN;
+			break;
+		case 3:
+			goodsSelector[0] = VIENNESE;
+			break;
+		case 4:
+			goodsSelector[0] = MINCE;
+			break;
 		}
 
 		randBuff[1] = rand() % 5;
@@ -325,16 +335,207 @@ void selectGoods(int goodssort,int goodsSelector[]) {
 			goodsSelector[1] = MINCE;
 			break;
 		}
-
-		//goodsSelector[0]
 		break;
 	case VEGETABLE_SORT:
+	{
+		randBuff[0] = rand() % 5;
+		switch (randBuff[0])
+		{
+		case 0:
+			goodsSelector[0] = GINESENG;
+			break;
+		case 1:
+			goodsSelector[0] = ONION;
+			break;
+		case 2:
+			goodsSelector[0] = POTATO;
+			break;
+		case 3:
+			goodsSelector[0] = TOMATO;
+			break;
+		case 4:
+			goodsSelector[0] = RADISH;
+			break;
+		}
+
+		randBuff[1] = rand() % 5;
+
+		while (randBuff[0] == randBuff[1]) {
+			randBuff[1] = rand() % 5;
+		}
+
+		switch (randBuff[1])
+		{
+		case 0:
+			goodsSelector[0] = GINESENG;
+			break;
+		case 1:
+			goodsSelector[0] = ONION;
+			break;
+		case 2:
+			goodsSelector[0] = POTATO;
+			break;
+		case 3:
+			goodsSelector[0] = TOMATO;
+			break;
+		case 4:
+			goodsSelector[0] = RADISH;
+			break;
+		}
 		break;
+	}
 	case SEAFOOD_SORT:
+	{
+		randBuff[0] = rand() % 4;
+		switch (randBuff[0])
+		{
+		case 0:
+			goodsSelector[0] = SHRIMP;
+			break;
+		case 1:
+			goodsSelector[0] = OCTOPUS;
+			break;
+		case 2:
+			goodsSelector[0] = INKFISH;
+			break;
+		case 3:
+			goodsSelector[0] = FISH;
+			break;
+		}
+
+		randBuff[1] = rand() % 4;
+		while (randBuff[0] == randBuff[1]) {
+			randBuff[1] = rand() % 4;
+		}
+
+		switch (randBuff[1])
+		{
+		case 0:
+			goodsSelector[1] = SHRIMP;
+			break;
+		case 1:
+			goodsSelector[1] = OCTOPUS;
+			break;
+		case 2:
+			goodsSelector[1] = INKFISH;
+			break;
+		case 3:
+			goodsSelector[1] = FISH;
+			break;
+		}
 		break;
+	}
+	case SWEET_SORT:
+	{
+		randBuff[0] = rand() % 4;
+		switch (randBuff[0])
+		{
+		case 0:
+			goodsSelector[0] = POTATOCHIPS;
+			break;
+		case 1:
+			goodsSelector[0] = CHOCOLATE;
+			break;
+		case 2:
+			goodsSelector[0] = ICE;
+			break;
+		case 3:
+			goodsSelector[0] = RICECRACKER;
+			break;
+		}
+
+		randBuff[1] = rand() % 4;
+		while (randBuff[0] == randBuff[1]) {
+			randBuff[1] = rand() % 4;
+		}
+
+		switch (randBuff[1])
+		{
+		case 0:
+			goodsSelector[1] = POTATOCHIPS;
+			break;
+		case 1:
+			goodsSelector[1] = CHOCOLATE;
+			break;
+		case 2:
+			goodsSelector[1] = ICE;
+			break;
+		case 3:
+			goodsSelector[1] = RICECRACKER;
+			break;
+		}
+
+		break;
+	}
 	case FRUIT_SORT:
+	{
+		randBuff[0] = rand() % 3;
+		switch (randBuff[0])
+		{
+		case 0:
+			goodsSelector[0] = APPLE;
+			break;
+		case 1:
+			goodsSelector[0] = ORANGE;
+			break;
+		case 2:
+			goodsSelector[0] = BANANA;
+			break;
+		}
+
+		randBuff[1] = rand() % 3;
+		while (randBuff[0] == randBuff[1]) {
+			randBuff[1] = rand() % 3;
+		}
+
+		switch (randBuff[1])
+		{
+		case 0:
+			goodsSelector[1] = APPLE;
+			break;
+		case 1:
+			goodsSelector[1] = ORANGE;
+			break;
+		case 2:
+			goodsSelector[1] = BANANA;
+			break;
+		}
 		break;
+	}
 	case DRINK_SORT:
+	{
+		randBuff[0] = rand() % 3;
+		switch (randBuff[0])
+		{
+		case 0:
+			goodsSelector[0] = TEA;
+			break;
+		case 1:
+			goodsSelector[0] = JUICE;
+			break;
+		case 2:
+			goodsSelector[0] = BEER;
+			break;
+		}
+
+		randBuff[1] = rand() % 3;
+		while (randBuff[0] == randBuff[1]) {
+			randBuff[1] = rand() % 3;
+		}
+
+		switch (randBuff[1])
+		{
+		case 0:
+			goodsSelector[1] = TEA;
+			break;
+		case 1:
+			goodsSelector[1] = JUICE;
+			break;
+		case 2:
+			goodsSelector[1] = BEER;
+			break;
+		}
 		break;
+	}
 	}
 }
