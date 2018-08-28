@@ -1335,8 +1335,8 @@ void clothRushRender()
 		RevolveZ(clothSmoke, Rad, clothSmokeCentral[i]);
 		SetUpTexture(clothSmoke, SMOKE_TEX);
 	}
-	EasyCreateSquareVertexColor(800, 600, 1200, 650,  0xff000000, BLANK);
-	EasyCreateSquareVertexColor(800, 600, 800 - (((800-1200)/ mobMAXHP)*(mobHP)), 650, 0xff00ff00, BLANK);
+	EasyCreateSquareVertexColor(800.f, 600.f, 1200.f, 650.f,  0xff000000, BLANK);
+	EasyCreateSquareVertexColor(800.f, 600.f, 800.f - (((800.f-1200.f)/ mobMAXHP)*(mobHP)), 650.f, 0xff00ff00, BLANK);
 
 	if (openCount < 20)
 	{
