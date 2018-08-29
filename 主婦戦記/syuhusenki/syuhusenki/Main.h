@@ -109,6 +109,6 @@ extern bool g_isSound;
 extern bool g_isNextSelect;
 extern bool g_isLastCheck;
 
-void setNuwLoading();
+void setNowLoading();
 
 #endif // !MAIN_H

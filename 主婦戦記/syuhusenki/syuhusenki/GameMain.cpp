@@ -114,7 +114,7 @@ void gameMain() {
 		static bool canRead = true;
 		if (canRead) 
 		{
-			setNuwLoading();
+			setNowLoading();
 
 			ReadInTexture("Texture/testFrame.png", FRAME_TEX);
 			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
@@ -175,18 +175,6 @@ void gameMain() {
 			ReadInTexture("Texture/merchandise/juice.png", JUICE_TEX);
 			ReadInTexture("Texture/merchandise/beer.png", BEER_TEX);
 
-			ReadInTexture("Texture/merchandise/buridaikon.png", BURIDAIKON_TEX);
-			ReadInTexture("Texture/merchandise/tumami.png", RELISH_TEX);
-			ReadInTexture("Texture/merchandise/teatime.png", TEATIME_TEX);
-
-			ReadInTexture("Texture/merchandise/curry.png", CURRY_TEX);
-			ReadInTexture("Texture/merchandise/hamberg.png", HAMBERG_TEX);
-			ReadInTexture("Texture/merchandise/sashimi.png", ASSORTEDSASHIMI_TEX);
-			ReadInTexture("Texture/merchandise/oyatu.png", AFTERNOONREFRESHMENT_TEX);
-
-			ReadInTexture("Texture/merchandise/soup.png", SOUP_TEX);
-			ReadInTexture("Texture/merchandise/nimono.png", NIMONO_TEX);
-			ReadInTexture("Texture/merchandise/parfait.png", PARFAIT_TEX);
 
 			g_SoundSuccess = soundsManager.Start("LOAD", false) && g_SoundSuccess;
 

@@ -34,7 +34,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 #endif
 	g_SoundSuccess = soundsManager.Initialize();
 	ReadInTexture("Texture/nowloading.png", LOAD_TEX);
-	setNuwLoading();
+	setNowLoading();
 	soundsManager.AddFile("Sound/loadEnd.mp3", "LOAD");
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
@@ -86,10 +86,13 @@ unsigned int gameRoop() {
 		soundsManager.SetVolume("FOOD", 25);
 		control();
 		render();
+		//è§ïièÓïÒÇÃâºì¸ÇÍ
+		selectedGoods[0] = ICE;
+		selectedGoods[1] = ORANGE;
+		selectedGoods[2] = APPLE;
 		for (int i = 0; i < 3; i++)
 		{
-			selectedGoods[i] = rand() % MEET;
-			foodGoods[selectedGoods[i]].haveValue = 10;
+			foodGoods[selectedGoods[i]].haveValue = 100;
 		}
 		break;
 	case SCENE_TITLE:
@@ -254,9 +257,15 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/stupid3.mp3", "LOSE");
 	soundsManager.AddFile("Sound/trumpet1.mp3", "WIN");
 
+	soundsManager.AddFile("Sound/money.mp3", "COIN1");
+	soundsManager.AddFile("Sound/money.mp3", "COIN2");
+	soundsManager.AddFile("Sound/money.mp3", "COIN3");
+	soundsManager.AddFile("Sound/money.mp3", "COIN4");
+	soundsManager.AddFile("Sound/money.mp3", "COIN5");
+
 }
 
-void setNuwLoading()
+void setNowLoading()
 {
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, LOAD_TEX);

@@ -2,8 +2,8 @@
 #define GOODS_H
 
 #define RARE1 100
-#define RARE2 150
-#define RARE3 200
+#define RARE2 300
+#define RARE3 500
 
 enum GOODSNUMBER 
 {
