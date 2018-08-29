@@ -17,12 +17,9 @@ int g_scene = SCENE_TEAMLOGO;
 //int g_scene = SCENE_SERECTCHARANDSTAGE;
 void render(void);//仮
 void control(void);//仮
-void sound(void);//仮
-
 void gamePad(void);
 
 
-bool seOn = false;
 
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdShow) {
 	HWND hWnd = NULL;
@@ -64,7 +61,6 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 unsigned int gameRoop() {
 	static bool isFirst = true;
-	sound();
 #ifdef _DEBUG
 	CheckKeyState(DIK_F4);
 	if (KeyState[DIK_F4] == KeyRelease)
@@ -79,7 +75,6 @@ unsigned int gameRoop() {
 	case SCENE_TEAMLOGO:
 		if (isFirst) {
 
-			//g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;
 
 			isFirst = false;
 		}
@@ -131,7 +126,6 @@ void control(void) {
 
 	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
-		seOn = true;
 		switch (g_scene) {
 		case SCENE_TEAMLOGO:
 			g_scene = SCENE_TITLE;
@@ -186,18 +180,11 @@ void render(void) {
 	EndSetTexture();
 
 }
-void sound(void) {
-	if (seOn) {
-		seOn = false;
-	}
-
-}
 void gamePad() {
 	//XInputデバイス操作
 	GetControl(0);
 	BottonCheck();
 	if (PadState[ButtonA] == PadRelease) {
-		seOn = true;
 		switch (g_scene) {
 		case SCENE_TEAMLOGO:
 			g_scene = SCENE_TITLE;
@@ -227,6 +214,7 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/bottun.mp3", "BUTTON2");
 	soundsManager.AddFile("Sound/bottun.mp3", "BUTTON3");
 
+	soundsManager.AddFile("Sound/Welcome.mp3", "GREETING");
 	soundsManager.AddFile("Sound/thankyou.mp3", "BOW");
 	soundsManager.AddFile("Sound/correct answer.mp3", "SUCCESS");
 	soundsManager.AddFile("Sound/mistake.mp3", "MISS");

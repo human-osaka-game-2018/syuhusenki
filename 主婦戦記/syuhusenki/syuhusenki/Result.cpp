@@ -278,6 +278,18 @@ void resultRenderTwo(void)
 	sprintf_s(resulttantValue, 32, "%d",nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus);
 	RECT resultTotal{ 50,235,430,400 };
 	WriteWord(resulttantValue, resultTotal, DT_RIGHT, BLACK, LAST_SCORE_FONT);
+	CUSTOMVERTEX resultPCTex[4];
+	CENTRAL_STATE resultPC{ 1050,350,200,300 };
+	CreateSquareVertex(resultPCTex, resultPC);
+	if ((nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) < LOW_SCORE) {
+		SetUpTexture(resultPCTex, YASUKO_TEX);
+	}
+	if (LOW_SCORE <= (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) <= HIGH_SCORE) {
+		SetUpTexture(resultPCTex, YASUKO_TEX);
+	}
+	if (HIGH_SCORE < (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus)) {
+		SetUpTexture(resultPCTex, YASUKO_TEX);
+	}
 
 }
 

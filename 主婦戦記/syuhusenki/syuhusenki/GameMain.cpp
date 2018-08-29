@@ -163,7 +163,7 @@ void gameMain() {
 			ReadInTexture("Texture/merchandise/radish.png", RADISH_TEX);
 
 			ReadInTexture("Texture/merchandise/snack.png", POTATOCHIPS_TEX);
-			ReadInTexture("Texture/merchandise/chco.png", CHOCOLATE_TEX);
+			ReadInTexture("Texture/merchandise/choco.png", CHOCOLATE_TEX);
 			ReadInTexture("Texture/merchandise/ice.png", ICE_TEX);
 			ReadInTexture("Texture/merchandise/ricecracker.png", RICECRACKER_TEX);
 

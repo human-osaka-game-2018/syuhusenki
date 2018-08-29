@@ -268,12 +268,12 @@ void comboCheck(int goodsId1, int goodsId2, int goodsId3 )
 			if (checkOk.one && checkOk.twe && checkOk.three)
 			{
 				foodCombo[i].comboSucceed = true;
-				g_SoundSuccess = soundsManager.Start("SUCCESS", false) && g_SoundSuccess;
+				//g_SoundSuccess = soundsManager.Start("SUCCESS", false) && g_SoundSuccess;
 				return;
 			}
 		}
 		if (!checkOk.one || !checkOk.twe || !checkOk.three) {
-			g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
+			//g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
 		}
 
 	}
