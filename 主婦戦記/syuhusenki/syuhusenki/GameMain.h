@@ -37,7 +37,7 @@ extern int g_gameScene;
 extern SoundEffect Button;
 
 void gameMain();
-
+void goodsScoreShow();
 void buttonSE(SoundEffect Button, int SoundNumber);
 
 #endif

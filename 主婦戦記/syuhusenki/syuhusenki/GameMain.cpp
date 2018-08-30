@@ -116,9 +116,8 @@ void gameMain() {
 		{
 			setNowLoading();
 
-			ReadInTexture("Texture/testFrame.png", FRAME_TEX);
+			ReadInTexture("Texture/frame_goods.png", FRAME_TEX);
 			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
-			ReadInTexture("Texture/ClothingOrnament.png", CLOTH_STAGE_TEX);
 			ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
 			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
 			////ReadInTexture("Texture/", BG_PICKGGOODS_TEX);
@@ -136,6 +135,25 @@ void gameMain() {
 			ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
 			ReadInTexture("Texture/end.png", TIMEUP_TEX);
 			ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
+
+			ReadInTexture("Texture/scoretext/50.png", FIFTY_TEX );
+			ReadInTexture("Texture/scoretext/60.png", SIXTY_TEX );
+			ReadInTexture("Texture/scoretext/65.png", SIXTYFIVE_TEX );
+			ReadInTexture("Texture/scoretext/100.png", HUNDRED_TEX );
+			ReadInTexture("Texture/scoretext/150.png", HUNDREDFIFTY_TEX);
+			ReadInTexture("Texture/scoretext/200.png", TWEHANDRED_TEX );
+			ReadInTexture("Texture/scoretext/250.png", TWEHANDREDFIFTY_TEX );
+			ReadInTexture("Texture/scoretext/300.png", THREEHANDRED_TEX );
+			ReadInTexture("Texture/scoretext/s30.png", S_THRTY_TEX );
+			ReadInTexture("Texture/scoretext/s40.png", S_FOURTY_TEX );
+			ReadInTexture("Texture/scoretext/s50.png", S_FIFTY_TEX );
+			ReadInTexture("Texture/scoretext/s60.png", S_SIXTY_TEX );
+			ReadInTexture("Texture/scoretext/s70.png", S_SEVENTY_TEX );
+			ReadInTexture("Texture/scoretext/s80.png", S_EIGHTY_TEX);
+			ReadInTexture("Texture/scoretext/s100.png", S_HUNDRED_TEX );
+			ReadInTexture("Texture/scoretext/s150.png", S_HUNDREDFIFTY_TEX );
+			ReadInTexture("Texture/scoretext/s180.png", S_HUNDREDEIGHTY_TEX);
+			ReadInTexture("Texture/scoretext/s200.png", S_TWEHUNDRED_TEX );
 
 			ReadInTexture("Texture/button/a.png", A_TEX);
 			ReadInTexture("Texture/button/b.png", B_TEX);
@@ -211,7 +229,7 @@ void gameMain() {
 	case FLOAMOVE:
 	{
 		floaMove();
-		int goodssort = VEGETABLE_SORT;//rand()%6;//フロア移動で決めたものを入れる
+		int goodssort = rand()%6;//フロア移動で決めたものを入れる
 		selectGoods(goodssort, g_goodsselector);
 		break;
 	}
@@ -274,7 +292,7 @@ void choseGoodsControl() {
 
 	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
-		//g_gameScene = PUSHENEMY;
+		g_gameScene = PUSHENEMY;
 	}
 	if (KeyState[DIK_A] == KeyRelease)
 	{
@@ -290,24 +308,24 @@ void choseGoodsControl() {
 	GetControl(0);
 	BottonCheck();
 
-	//if (PadState[ButtonStart] == PadRelease)
-	//{
-	//	//g_gameScene = PUSHENEMY;
-	//}
-	//if (PadState[ButtonA] == PadRelease)
-	//{
+	if (PadState[ButtonStart] == PadRelease)
+	{
+		g_gameScene = PUSHENEMY;
+	}
+	if (PadState[ButtonA] == PadRelease)
+	{
 
-	//}
-	//if (PadState[ButtonB] == PadRelease)
-	//{
-	//	g_goodsTweSelect = g_goodsselector[1];
-	//	g_gameScene = PUSHENEMY;
-	//}
-	//if (PadState[ButtonX] == PadRelease)
-	//{
-	//	g_goodsTweSelect = g_goodsselector[0];
-	//	g_gameScene = PUSHENEMY;
-	//}
+	}
+	if (PadState[ButtonB] == PadRelease)
+	{
+		g_goodsTweSelect = g_goodsselector[1];
+		g_gameScene = PUSHENEMY;
+	}
+	if (PadState[ButtonX] == PadRelease)
+	{
+		g_goodsTweSelect = g_goodsselector[0];
+		g_gameScene = PUSHENEMY;
+	}
 
 }
 void choseGoodsReader() {
@@ -330,7 +348,7 @@ void choseGoodsReader() {
 	EasyCreateSquareVertex(350, 50, 600, 400, foodGoods[g_goodsselector[0]].textureID);
 	EasyCreateSquareVertex(660, 50, 910, 400, foodGoods[g_goodsselector[1]].textureID);
 
-
+	goodsScoreShow();
 	timerRender();
 	EndSetTexture();
 
@@ -469,6 +487,8 @@ void blowOffRender()
 	RECT DEBUGText = { 100 ,550,900,600 };
 	WriteWord(DebugCounter, DEBUGText, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 #endif
+
+	goodsScoreShow();
 	timerRender();
 	EndSetTexture();
 }
@@ -843,7 +863,7 @@ void pickGoodsRender() {
 	char goodsNumA[10];
 	char DebugTakeBoolA[10];
 
-	sprintf_s(goodsNumA, 10, "%d ", g_goodsTakenNum);
+	sprintf_s(goodsNumA, 10, "%d ", foodGoods[g_goodsTweSelect].haveValue);
 	RECT DEBUGGoodsA = { 100 ,200,900,600 };
 	WriteWord(goodsNumA, DEBUGGoodsA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 
@@ -889,6 +909,8 @@ void pickGoodsRender() {
 	WriteWord(DebugTakeBoolA, DEBUGTextA, DT_LEFT, 0xfff0f00f, DEBUG_FONT);
 
 #endif
+
+	goodsScoreShow();
 	timerRender();
 	EndSetTexture();
 }
@@ -1000,7 +1022,7 @@ void rushButtonCheck(int rushInput, int rushShow)
 {
 	if (rushInput == rushShow) 
 	{
-		g_goodsTakenNum++;
+		foodGoods[g_goodsTweSelect].haveValue++;
 
 	}
 	else g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
@@ -1310,4 +1332,151 @@ void testScene()
 		WriteWord(test, DEBUGText, DT_LEFT, 0xffff0000, DEBUG_FONT);
 	}
 	EndSetTexture();
+}
+
+void goodsScoreShow()
+{
+	EasyCreateSquareVertex(10, 0, 1260, 90, FRAME_TEX);
+	int showPrice;
+	switch (g_gameScene)
+	{
+	case FLOAMOVE:
+		break;
+	case CHOSEGOODS:
+		break;
+	case PUSHENEMY:
+		EasyCreateSquareVertex(310, 0, 400, 90, foodGoods[g_goodsTweSelect].textureID);
+		switch (foodGoods[g_goodsTweSelect].nominalCost)
+		{
+		case 300:
+			showPrice = THREEHANDRED_TEX;
+			break;
+		case 250:
+			showPrice = TWEHANDREDFIFTY_TEX;
+			break;
+		case 200:
+			showPrice = TWEHANDRED_TEX;
+			break;
+		case 150:
+			showPrice = HUNDREDFIFTY_TEX;
+			break;
+		case 100:
+			showPrice = HUNDRED_TEX;
+			break;
+		case 65:
+			showPrice = SIXTYFIVE_TEX;
+			break;
+		case 60:
+			showPrice = SIXTY_TEX;
+			break;
+		case 50:
+			showPrice = FIFTY_TEX;
+			break;
+		}
+		EasyCreateSquareVertex(450, 10, 600, 80, showPrice);
+
+		switch (foodGoods[g_goodsTweSelect].selePrice)
+		{
+		case 200:
+			showPrice = S_TWEHUNDRED_TEX;
+			break;
+		case 180:
+			showPrice = S_HUNDREDEIGHTY_TEX;
+			break;
+		case 150:
+			showPrice = S_HUNDREDFIFTY_TEX;
+			break;
+		case 100:
+			showPrice = S_HUNDRED_TEX;
+			break;
+		case 80:
+			showPrice = S_EIGHTY_TEX;
+			break;
+		case 70:
+			showPrice = S_SEVENTY_TEX;
+			break;
+		case 60:
+			showPrice = S_SIXTY_TEX;
+			break;
+		case 50:
+			showPrice = S_FIFTY_TEX;
+			break;
+		case 40:
+			showPrice = S_FOURTY_TEX;
+			break;
+		case 30:
+			showPrice = S_THRTY_TEX;
+			break;
+		}
+		EasyCreateSquareVertex(650, 10, 800, 80, showPrice);
+
+		break;
+	case PICKGOODS:
+		EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[g_goodsTweSelect].textureID);
+		switch (foodGoods[g_goodsTweSelect].nominalCost)
+		{
+		case 300:
+			showPrice = THREEHANDRED_TEX;
+			break;
+		case 250:
+			showPrice = TWEHANDREDFIFTY_TEX;
+			break;
+		case 200:
+			showPrice = TWEHANDRED_TEX;
+			break;
+		case 150:
+			showPrice = HUNDREDFIFTY_TEX;
+			break;
+		case 100:
+			showPrice = HUNDRED_TEX;
+			break;
+		case 65:
+			showPrice = SIXTYFIVE_TEX;
+			break;
+		case 60:
+			showPrice = SIXTY_TEX;
+			break;
+		case 50:
+			showPrice = FIFTY_TEX;
+			break;
+		}
+		EasyCreateSquareVertex(450, 10, 600, 80, showPrice);
+
+		switch (foodGoods[g_goodsTweSelect].selePrice)
+		{
+		case 200:
+			showPrice = S_TWEHUNDRED_TEX;
+			break;
+		case 180:
+			showPrice = S_HUNDREDEIGHTY_TEX;
+			break;
+		case 150:
+			showPrice = S_HUNDREDFIFTY_TEX;
+			break;
+		case 100:
+			showPrice = S_HUNDRED_TEX;
+			break;
+		case 80:
+			showPrice = S_EIGHTY_TEX;
+			break;
+		case 70:
+			showPrice = S_SEVENTY_TEX;
+			break;
+		case 60:
+			showPrice = S_SIXTY_TEX;
+			break;
+		case 50:
+			showPrice = S_FIFTY_TEX;
+			break;
+		case 40:
+			showPrice = S_FOURTY_TEX;
+			break;
+		case 30:
+			showPrice = S_THRTY_TEX;
+			break;
+		}
+		EasyCreateSquareVertex(650, 10, 800, 80, showPrice);
+
+		break;
+	}
 }
