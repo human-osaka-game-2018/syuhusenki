@@ -50,7 +50,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);
 	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
-	SetUpFont(125, 100, DEFAULT_CHARSET, NULL, RUSH_FONT);
+	SetUpFont(70, 50, DEFAULT_CHARSET, NULL, HAVEGOODS_FONT);
 
 	soundLoad();
 	g_SoundSuccess = soundsManager.Start("LOAD", false) && g_SoundSuccess;

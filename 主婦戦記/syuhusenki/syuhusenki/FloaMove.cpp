@@ -257,6 +257,6 @@ VOID floaMoveRenderSta(VOID)
 	{
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, PAUSE_TEX);
 	}
-
+	goodsScoreShow();
 	timerRender();
 }

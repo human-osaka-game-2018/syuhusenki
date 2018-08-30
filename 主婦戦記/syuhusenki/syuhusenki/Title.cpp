@@ -55,7 +55,6 @@ VOID titleControl(VOID)
 			soundsManager.SetVolume("SELECT_BGM", 25);
 			soundsManager.Start("SELECT_BGM", true);
 			soundsManager.Start("GREETING", false);
-			g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
 			BGM = 0;
 			g_scene = SCENE_SERECTCHARANDSTAGE;
 			g_inCount++;

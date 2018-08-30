@@ -19,6 +19,7 @@
 #define WIDTH 1280
 #define HEIGHT 720
 #define RED 0xFFFF0000
+#define BLACK 0xff000000
 #define HARFCLEAR 0x8a000000
 
 //ゲームパッドの状態
