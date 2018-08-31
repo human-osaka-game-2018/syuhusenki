@@ -107,6 +107,8 @@ unsigned int gameRoop() {
 		}
 		break;
 	case SCENE_RESULT:
+		g_timerCount = 0;
+		g_isTimeUp = false;
 		result();
 		break;
 	}
@@ -121,61 +123,29 @@ unsigned int gameRoop() {
 void control(void) {
 	gamePad();
 	
+	static DWORD SyncOld = timeGetTime();
+	DWORD SyncNow = timeGetTime();
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
-
+	if (SyncNow - SyncOld > 4000)
+	{
+		g_scene = SCENE_TITLE;
+	}
 	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
-		switch (g_scene) {
-		case SCENE_TEAMLOGO:
 			g_scene = SCENE_TITLE;
-			break;
-		case SCENE_TITLE:
-			g_scene = SCENE_SERECTCHARANDSTAGE;
-			break;
-		case SCENE_SERECTCHARANDSTAGE:
-			g_scene = SCENE_MAIN;
-			break;
-		case SCENE_MAIN:
-			//g_scene = SCENE_RESULT;
-			break;
-		case SCENE_RESULT:
-			g_scene = SCENE_TITLE;
-			break;
-		}
 	}
 }
 
 void render(void) {
+	CUSTOMVERTEX teamlogo[4];
+	CENTRAL_STATE logo{ 640,320,400,400 };
+	
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BLANK);
 
-
-	switch (g_scene) {
-	case SCENE_TEAMLOGO:
-		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, TEAMLOGO_TEX);
-		break;
-	case SCENE_TITLE:
-		//WriteWord("主婦戦記", testWord, DT_CENTER, RED, FONT);
-		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TITLE_TEX);
-
-		break;
-	case SCENE_SERECTCHARANDSTAGE:
-		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
-
-		WriteWord("キャラ&ステージ\n選択", testWord, DT_CENTER, RED, HOGE_FONT);
-		break;
-	case SCENE_MAIN:
-		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
-
-		WriteWord("メインゲーム", testWord, DT_CENTER, RED, HOGE_FONT);
-		break;
-	case SCENE_RESULT:
-		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, YASUKO_TEX);
-
-		WriteWord("リザルト", testWord, DT_CENTER, RED, HOGE_FONT);
-		break;
-	}
+	CreateSquareVertex(teamlogo, logo);
+	SetUpTexture(teamlogo, TEAMLOGO_TEX);
 
 	EndSetTexture();
 
@@ -184,25 +154,9 @@ void gamePad() {
 	//XInputデバイス操作
 	GetControl(0);
 	BottonCheck();
-	if (PadState[ButtonA] == PadRelease) {
-		switch (g_scene) {
-		case SCENE_TEAMLOGO:
+	if (PadState[ButtonA] == PadRelease) 
+	{
 			g_scene = SCENE_TITLE;
-			break;
-		case SCENE_TITLE:
-			g_scene = SCENE_SERECTCHARANDSTAGE;
-			break;
-		case SCENE_SERECTCHARANDSTAGE:
-			g_scene = SCENE_MAIN;
-			break;
-		case SCENE_MAIN:
-			g_scene = SCENE_RESULT;
-			break;
-		case SCENE_RESULT:
-			g_scene = SCENE_TITLE;
-			break;
-		}
-
 	}
 
 }
@@ -250,6 +204,7 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/money.mp3", "COIN3");
 	soundsManager.AddFile("Sound/money.mp3", "COIN4");
 	soundsManager.AddFile("Sound/money.mp3", "COIN5");
+	soundsManager.AddFile("Sound/money.mp3", "COIN6");
 
 }
 

@@ -70,7 +70,10 @@ void result()
 			nomalSum += addPrice(i, 0);
 			saleSale += addPrice(i, 1);
 		}
-
+		for (int i = 0; i < 10; i++)
+		{
+			apperText[i] = false;
+		}
 		g_SoundSuccess = soundsManager.Start("LOAD", false) && g_SoundSuccess;
 
 		isFirst = false;
@@ -199,23 +202,7 @@ void resultRenderOne(void)
 	SetUpTexture(nomalTResultTex, RESULT_NOMAL_TEX);
 	SetUpTexture(comboTResultTex, RESULT_COMBO_TEX);
 
-	switch (foodCombo[succeedCombo].comboBonus)
-	{
-	case RARE1:
-		SetUpTexture(comboStarResultTex, RESULT_STAR1_TEX);
-		SetUpTexture(comboTextResultTex, RESULT_COMBOTEXT1_TEX);
-		break;
-	case RARE2:
-		SetUpTexture(comboStarResultTex, RESULT_STAR2_TEX);
-		SetUpTexture(comboTextResultTex, RESULT_COMBOTEXT2_TEX);
-		break;
-	case RARE3:
-		SetUpTexture(comboStarResultTex, RESULT_STAR3_TEX);
-		SetUpTexture(comboTextResultTex, RESULT_COMBOTEXT3_TEX);
-		break;
-	}
 
-	SetUpTexture(resultComboTex, foodCombo[succeedCombo].textureID);
 
 	char resulttantValue[32];
 	if (apperText[0]) {
@@ -264,9 +251,27 @@ void resultRenderOne(void)
 		RECT resultTotal{ 140,525,1140,700 };
 		WriteWord(resulttantValue, resultTotal, DT_CENTER, BLACK, SCORE_FONT);
 	}
+	if (apperText[5]) {
 
+		SetUpTexture(resultComboTex, foodCombo[succeedCombo].textureID);
 
+		switch (foodCombo[succeedCombo].comboBonus)
+		{
+		case RARE1:
+			SetUpTexture(comboStarResultTex, RESULT_STAR1_TEX);
+			SetUpTexture(comboTextResultTex, RESULT_COMBOTEXT1_TEX);
+			break;
+		case RARE2:
+			SetUpTexture(comboStarResultTex, RESULT_STAR2_TEX);
+			SetUpTexture(comboTextResultTex, RESULT_COMBOTEXT2_TEX);
+			break;
+		case RARE3:
+			SetUpTexture(comboStarResultTex, RESULT_STAR3_TEX);
+			SetUpTexture(comboTextResultTex, RESULT_COMBOTEXT3_TEX);
+			break;
+		}
 
+	}
 }
 
 void resultRenderTwo(void)
@@ -337,6 +342,10 @@ void apperResult(void)
 	if (resultCounter == 150) {
 		apperText[4] = true;
 		soundsManager.Start("COIN5", false);
+	}
+	if (resultCounter == 180 && comboSucceceCheck()) {
+		apperText[5] = true;
+		soundsManager.Start("COIN6", false);
 	}
 
 }

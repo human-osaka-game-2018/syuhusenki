@@ -27,7 +27,7 @@ int g_gameScene = FLOAMOVE;
 int g_selectFloa = FOOD;
 //int g_selectFloa = CLOTH;
 
-
+int mobTexNum;
 static bool g_isBlowOff = false;
 static bool g_isFirst = true;
 static int g_effectCount = 0;
@@ -380,6 +380,7 @@ void choseGoodsReader() {
 	EndSetTexture();
 
 }
+int turn = 1;
 
 void blowOff() {
 	switch (g_selectFloa) {
@@ -442,6 +443,22 @@ void blowOffControl()
 			g_gameScene = PICKGOODS;
 		}
 	}
+	CheckKeyState(DIK_1);
+	if (KeyState[DIK_1] == KeyRelease)
+	{
+		turn = 1;
+	}
+	CheckKeyState(DIK_2);
+	if (KeyState[DIK_2] == KeyRelease)
+	{
+		turn = 2;
+	}
+	CheckKeyState(DIK_3);
+	if (KeyState[DIK_3] == KeyRelease)
+	{
+		turn = 3;
+	}
+
 }
 void blowOffRender() 
 {
@@ -455,7 +472,18 @@ void blowOffRender()
 
 	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
 	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
-
+	switch (turn)
+	{
+	case 1:
+		mobTexNum = ISOKO_TEX;
+		break;
+	case 2:
+		mobTexNum = MOB_TEX;
+		break;
+	case 3:
+		mobTexNum = MITUKO_TEX;
+		break;
+	}
 	for (int i = 0; i < 5; i++) {
 		CreateSquareVertex(mobFloa, mobCentralBlowOff[i]);
 		if(g_isBlowOff){
@@ -473,7 +501,7 @@ void blowOffRender()
 			}
 			RevolveZ(mobFloa, mobRad, mobCentralBlowOff[i]);
 		}
-		SetUpTexture(mobFloa, MOB_TEX);
+		SetUpTexture(mobFloa, mobTexNum);
 	}
 	if ((g_effectCount > 20) && g_isBlowOff) {
 		SetUpTexture(effectExplosion, EXPLOSION_TEX);
