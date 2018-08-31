@@ -61,6 +61,8 @@ struct COMBO_OK {
 	bool three;
 };
 COMBO_OK checkOk{false,false,false};
+int selectedGoods[3];
+
 void comboCheck(int goodsId1, int goodsId2, int goodsId3 )
 {
 	if (foodGoods[goodsId1].haveValue)
@@ -280,7 +282,7 @@ void comboCheck(int goodsId1, int goodsId2, int goodsId3 )
 
 	}
 }
-int comboSucceceCheck()
+int comboSucceceCheck(void)
 {
 	for (int i = 0; i < COMBOMAX; i++) 
 	{

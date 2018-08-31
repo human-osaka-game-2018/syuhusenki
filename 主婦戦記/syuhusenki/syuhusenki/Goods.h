@@ -90,8 +90,9 @@ struct TIMESALEPARAMETER
 extern GOODSPARAMETER foodGoods[GOODS_MAX];
 extern COMBOPARAMETER foodCombo[COMBOMAX];
 extern TIMESALEPARAMETER popSales[3];
+extern int selectedGoods[3];
 
-int comboSucceceCheck();
+int comboSucceceCheck(void);
 void comboCheck(int goodsId1, int goodsId2, int goodsId3);
 void selectGoods(TIMESALEPARAMETER* popSales);
 #endif

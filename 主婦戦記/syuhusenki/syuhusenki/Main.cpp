@@ -82,13 +82,13 @@ unsigned int gameRoop() {
 		control();
 		render();
 		//¤•iî•ñ‚Ì‰¼“ü‚ê
-		selectedGoods[0] = ICE;
-		selectedGoods[1] = ORANGE;
-		selectedGoods[2] = APPLE;
-		for (int i = 0; i < 3; i++)
-		{
-			foodGoods[selectedGoods[i]].haveValue = 100;
-		}
+		//selectedGoods[0] = ICE;
+		//selectedGoods[1] = ORANGE;
+		//selectedGoods[2] = APPLE;
+		//for (int i = 0; i < 3; i++)
+		//{
+		//	foodGoods[selectedGoods[i]].haveValue = 100;
+		//}
 		break;
 	case SCENE_TITLE:
 		titleControl();
@@ -103,12 +103,25 @@ unsigned int gameRoop() {
 		gameMain();
 		if (g_isTimeUp)
 		{
-			g_scene = SCENE_RESULT;
+			g_isTimeUp = false;
+			g_timerCount = 0;
+			g_gameScene = FLOAMOVE;
+			switch (turn)
+			{
+			case 0:
+				turn = 1;
+				break;
+			case 1:
+				turn = 2;
+				break;
+			case 2:
+				turn = 0;
+				g_scene = SCENE_RESULT;
+				break;
+			}
 		}
 		break;
 	case SCENE_RESULT:
-		g_timerCount = 0;
-		g_isTimeUp = false;
 		result();
 		break;
 	}

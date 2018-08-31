@@ -19,7 +19,6 @@ enum MOBDIRECTION {
 
 void testScene();
 
-int g_goodsTweSelect;
 int g_gameScene = FLOAMOVE;
 //int g_gameScene = CHOSEGOODS;
 //int g_gameScene = PUSHENEMY;
@@ -27,6 +26,7 @@ int g_gameScene = FLOAMOVE;
 int g_selectFloa = FOOD;
 //int g_selectFloa = CLOTH;
 
+int turn = 0;
 int mobTexNum;
 static bool g_isBlowOff = false;
 static bool g_isFirst = true;
@@ -230,6 +230,12 @@ void gameMain() {
 	{
 	case FLOAMOVE:
 	{
+		for (int i = 0; i < 5; i++)
+		{
+			comandInput[i] = 10;
+		}
+		g_isBlowOff = false;
+
 		floaMove();
 		
 		CheckKeyState(DIK_0);
@@ -323,12 +329,12 @@ void choseGoodsControl() {
 	}
 	if (KeyState[DIK_A] == KeyRelease)
 	{
-		g_goodsTweSelect = popSales[salesChoice].merchandise[0];
+		selectedGoods[turn] = popSales[salesChoice].merchandise[0];
 		g_gameScene = PUSHENEMY;
 	}
 	if (KeyState[DIK_D] == KeyRelease)
 	{
-		g_goodsTweSelect = popSales[salesChoice].merchandise[1];
+		selectedGoods[turn] = popSales[salesChoice].merchandise[1];
 		g_gameScene = PUSHENEMY;
 	}
 
@@ -345,12 +351,12 @@ void choseGoodsControl() {
 	}
 	if (PadState[ButtonB] == PadRelease)
 	{
-		g_goodsTweSelect = popSales[salesChoice].merchandise[1];
+		selectedGoods[turn] = popSales[salesChoice].merchandise[1];
 		g_gameScene = PUSHENEMY;
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
-		g_goodsTweSelect = popSales[salesChoice].merchandise[0];
+		selectedGoods[turn] = popSales[salesChoice].merchandise[0];
 		g_gameScene = PUSHENEMY;
 	}
 
@@ -382,7 +388,6 @@ void choseGoodsReader() {
 	EndSetTexture();
 
 }
-int turn = 0;
 
 void blowOff() {
 	switch (g_selectFloa) {
@@ -920,7 +925,7 @@ void pickGoodsRender() {
 	char goodsNumA[10];
 	char DebugTakeBoolA[10];
 
-	sprintf_s(goodsNumA, 10, "%d ", foodGoods[g_goodsTweSelect].haveValue);
+	sprintf_s(goodsNumA, 10, "%d ", foodGoods[selectedGoods[turn]].haveValue);
 	RECT DEBUGGoodsA = { 100 ,200,900,600 };
 	WriteWord(goodsNumA, DEBUGGoodsA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 
@@ -1079,7 +1084,7 @@ void rushButtonCheck(int rushInput, int rushShow)
 {
 	if (rushInput == rushShow) 
 	{
-		foodGoods[g_goodsTweSelect].haveValue++;
+		foodGoods[selectedGoods[turn]].haveValue++;
 
 	}
 	else g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
@@ -1419,12 +1424,12 @@ void goodsScoreShow()
 		break;
 	case PUSHENEMY:
 	{
-		EasyCreateSquareVertex(310, 0, 400, 90, foodGoods[g_goodsTweSelect].textureID);
-		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, g_goodsTweSelect, 0));
+		EasyCreateSquareVertex(310, 0, 400, 90, foodGoods[selectedGoods[turn]].textureID);
+		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[turn], 0));
 
-		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, g_goodsTweSelect, 1));
+		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[turn], 1));
 
-		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[g_goodsTweSelect].haveValue);
+		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[turn]].haveValue);
 		RECT GoodsNUM = { 900 ,10,1100,80 };
 		WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
 
@@ -1432,11 +1437,11 @@ void goodsScoreShow()
 	}
 	case PICKGOODS:
 	{
-		EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[g_goodsTweSelect].textureID);
-		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, g_goodsTweSelect, 0));
+		EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[selectedGoods[turn]].textureID);
+		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[turn], 0));
 
-		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, g_goodsTweSelect, 1));
-		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[g_goodsTweSelect].haveValue);
+		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[turn], 1));
+		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[turn]].haveValue);
 		RECT GoodsNUM = { 900 ,10,1100,80 };
 		WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
 

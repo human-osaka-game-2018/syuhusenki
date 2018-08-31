@@ -13,7 +13,6 @@ enum RESULTSCENE
 static CENTRAL_STATE cursorResult{ 100,490,25,25 };
 static int succeedCombo;
 static bool apperText[10];
-int selectedGoods[3];
 static int resultPage;
 static int nomalSum = 0;
 static int saleSale = 0;
