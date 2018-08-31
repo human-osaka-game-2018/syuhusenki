@@ -136,7 +136,7 @@ void gameMain() {
 			ReadInTexture("Texture/kariStart.png", START_TEX);
 			ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
 			ReadInTexture("Texture/end.png", TIMEUP_TEX);
-			ReadInTexture("Texture/karistage.png", FLOAMOVE_BG_TEX);
+			ReadInTexture("Texture/stage.png", FLOAMOVE_BG_TEX);
 
 			ReadInTexture("Texture/scoretext/50.png", FIFTY_TEX );
 			ReadInTexture("Texture/scoretext/60.png", SIXTY_TEX );
@@ -372,15 +372,17 @@ void choseGoodsReader() {
 		SetUpTexture(mobFloa, MOB_TEX);
 	}
 	SetUpTexture(playerHit, texturePC);
-	EasyCreateSquareVertex(350, 50, 600, 400, foodGoods[popSales[salesChoice].merchandise[0]].textureID);
-	EasyCreateSquareVertex(660, 50, 910, 400, foodGoods[popSales[salesChoice].merchandise[1]].textureID);
+	EasyCreateSquareVertex(350, 150, 600, 400, foodGoods[popSales[salesChoice].merchandise[0]].textureID);
+	EasyCreateSquareVertex(660, 150, 910, 400, foodGoods[popSales[salesChoice].merchandise[1]].textureID);
+	EasyCreateSquareVertex(350, 350, 600, 500, X_TEX);
+	EasyCreateSquareVertex(660, 350, 910, 500, B_TEX);
 
 	goodsScoreShow();
 	timerRender();
 	EndSetTexture();
 
 }
-int turn = 1;
+int turn = 0;
 
 void blowOff() {
 	switch (g_selectFloa) {
@@ -446,17 +448,17 @@ void blowOffControl()
 	CheckKeyState(DIK_1);
 	if (KeyState[DIK_1] == KeyRelease)
 	{
-		turn = 1;
+		turn = 0;
 	}
 	CheckKeyState(DIK_2);
 	if (KeyState[DIK_2] == KeyRelease)
 	{
-		turn = 2;
+		turn = 1;
 	}
 	CheckKeyState(DIK_3);
 	if (KeyState[DIK_3] == KeyRelease)
 	{
-		turn = 3;
+		turn = 2;
 	}
 
 }
@@ -527,7 +529,7 @@ void blowOffRender()
 	{
 		sprintf_s(debugComandInput, 10, "%c", comandButton(comandInput[i]));
 
-		RECT DEBUGText = { 100+(i*50),500,900,600 };
+		RECT DEBUGText = { 100 + (i * 50),500,900,600 };
 		WriteWord(debugComandInput, DEBUGText, DT_LEFT, 0xff0000ff, DEBUG_FONT);
 	}	
 	for (int i = 0; i < 5; i++)
