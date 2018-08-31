@@ -31,11 +31,12 @@ enum FLOA {
 	CLOTH
 };
 
+extern bool g_isFirst;
 extern int texturePC;
 extern int g_selectFloa;
 extern int g_gameScene;
 extern SoundEffect Button;
-extern int turn;
+extern int g_turn;
 void gameMain();
 void goodsScoreShow();
 void buttonSE(SoundEffect Button, int SoundNumber);

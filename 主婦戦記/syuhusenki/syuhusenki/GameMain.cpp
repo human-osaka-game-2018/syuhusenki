@@ -26,10 +26,10 @@ int g_gameScene = FLOAMOVE;
 int g_selectFloa = FOOD;
 //int g_selectFloa = CLOTH;
 
-int turn = 0;
+int g_turn = 0;
 int mobTexNum;
 static bool g_isBlowOff = false;
-static bool g_isFirst = true;
+bool g_isFirst = true;
 static int g_effectCount = 0;
 static float mobRad = 0;//5:4 400:360
 
@@ -203,6 +203,14 @@ void gameMain() {
 			canRead = false;
 		}
 
+		for (int i = 0; i < 3; i++)
+		{
+			popSales[i].goodsSorting = rand() % 6;//ƒtƒƒAˆÚ“®‚ÅŒˆ‚ß‚½‚à‚Ì‚ð“ü‚ê‚é
+		}
+		selectGoods(&popSales[0]);
+		selectGoods(&popSales[1]);
+		selectGoods(&popSales[2]);
+
 		comandMake();
 
 		g_isBlowOff = false;
@@ -267,6 +275,19 @@ void gameMain() {
 		break;
 	}
 	case CHOSEGOODS:
+		switch (g_turn)
+		{
+		case 0:
+			mobTexNum = ISOKO_TEX;
+			break;
+		case 1:
+			mobTexNum = MOB_TEX;
+			break;
+		case 2:
+			mobTexNum = MITUKO_TEX;
+			break;
+		}
+
 		choseGoods();
 		break;
 	case PUSHENEMY:
@@ -329,12 +350,12 @@ void choseGoodsControl() {
 	}
 	if (KeyState[DIK_A] == KeyRelease)
 	{
-		selectedGoods[turn] = popSales[salesChoice].merchandise[0];
+		selectedGoods[g_turn] = popSales[salesChoice].merchandise[0];
 		g_gameScene = PUSHENEMY;
 	}
 	if (KeyState[DIK_D] == KeyRelease)
 	{
-		selectedGoods[turn] = popSales[salesChoice].merchandise[1];
+		selectedGoods[g_turn] = popSales[salesChoice].merchandise[1];
 		g_gameScene = PUSHENEMY;
 	}
 
@@ -351,12 +372,12 @@ void choseGoodsControl() {
 	}
 	if (PadState[ButtonB] == PadRelease)
 	{
-		selectedGoods[turn] = popSales[salesChoice].merchandise[1];
+		selectedGoods[g_turn] = popSales[salesChoice].merchandise[1];
 		g_gameScene = PUSHENEMY;
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
-		selectedGoods[turn] = popSales[salesChoice].merchandise[0];
+		selectedGoods[g_turn] = popSales[salesChoice].merchandise[0];
 		g_gameScene = PUSHENEMY;
 	}
 
@@ -375,7 +396,7 @@ void choseGoodsReader() {
 
 	for (int i = 0; i < 5; i++) {
 		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
-		SetUpTexture(mobFloa, MOB_TEX);
+		SetUpTexture(mobFloa, mobTexNum);
 	}
 	SetUpTexture(playerHit, texturePC);
 	EasyCreateSquareVertex(350, 150, 600, 400, foodGoods[popSales[salesChoice].merchandise[0]].textureID);
@@ -448,22 +469,8 @@ void blowOffControl()
 		effectExplosionCentral.scaleY++;
 		if (g_effectCount >= 180) {
 			g_gameScene = PICKGOODS;
+			comandCount = 0;
 		}
-	}
-	CheckKeyState(DIK_1);
-	if (KeyState[DIK_1] == KeyRelease)
-	{
-		turn = 0;
-	}
-	CheckKeyState(DIK_2);
-	if (KeyState[DIK_2] == KeyRelease)
-	{
-		turn = 1;
-	}
-	CheckKeyState(DIK_3);
-	if (KeyState[DIK_3] == KeyRelease)
-	{
-		turn = 2;
 	}
 
 }
@@ -479,18 +486,6 @@ void blowOffRender()
 
 	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
 	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
-	switch (turn)
-	{
-	case 1:
-		mobTexNum = ISOKO_TEX;
-		break;
-	case 2:
-		mobTexNum = MOB_TEX;
-		break;
-	case 3:
-		mobTexNum = MITUKO_TEX;
-		break;
-	}
 	for (int i = 0; i < 5; i++) {
 		CreateSquareVertex(mobFloa, mobCentralBlowOff[i]);
 		if(g_isBlowOff){
@@ -904,7 +899,7 @@ void pickGoodsRender() {
 			}
 			RevolveZ(mobFloa, mobRad, mobCentralBlowOff[i]);
 		}
-		SetUpTexture(mobFloa, MOB_TEX);
+		SetUpTexture(mobFloa, mobTexNum);
 	}
 
 
@@ -925,7 +920,7 @@ void pickGoodsRender() {
 	char goodsNumA[10];
 	char DebugTakeBoolA[10];
 
-	sprintf_s(goodsNumA, 10, "%d ", foodGoods[selectedGoods[turn]].haveValue);
+	sprintf_s(goodsNumA, 10, "%d ", foodGoods[selectedGoods[g_turn]].haveValue);
 	RECT DEBUGGoodsA = { 100 ,200,900,600 };
 	WriteWord(goodsNumA, DEBUGGoodsA, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 
@@ -1084,7 +1079,7 @@ void rushButtonCheck(int rushInput, int rushShow)
 {
 	if (rushInput == rushShow) 
 	{
-		foodGoods[selectedGoods[turn]].haveValue++;
+		foodGoods[selectedGoods[g_turn]].haveValue++;
 
 	}
 	else g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
@@ -1398,38 +1393,60 @@ void testScene()
 
 void goodsScoreShow()
 {
+	static int goodsInfoShowing;
+	static int goodsInfoCount = 0;
+
 	char goodsNumBuff[10];
 	EasyCreateSquareVertex(10, 0, 1260, 90, FRAME_TEX);
 	switch (g_gameScene)
 	{
 	case FLOAMOVE:
-		EasyCreateSquareVertex(100, 0, 200, 90, foodGoods[editMerchandise(salesChoice,0)].textureID);
-		EasyCreateSquareVertex(200, 10, 300, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 0));
-		EasyCreateSquareVertex(300, 10, 400, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 1));
+	
+		goodsInfoCount++;
+		if (goodsInfoCount > 60)
+		{
+			switch (goodsInfoShowing)
+			{
+			case 0:
+				goodsInfoShowing = 1;
+				break;
+			case 1:
+				goodsInfoShowing = 2;
+				break;
+			case 2:
+				goodsInfoShowing = 0;
+				break;
+			}
+			goodsInfoCount = 0;
+		}
+		EasyCreateSquareVertex(100, 10, 200, 80, foodGoods[editMerchandise(goodsInfoShowing, 0)].textureID);
+		EasyCreateSquareVertex(200, 10, 300, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 0), 0));
+		EasyCreateSquareVertex(300, 10, 400, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 0), 1));
 
-		EasyCreateSquareVertex(800, 0, 900, 90, foodGoods[editMerchandise(salesChoice, 1)].textureID);
-		EasyCreateSquareVertex(900, 10, 1000, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 0));
-		EasyCreateSquareVertex(1000, 10, 1100, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 1));
+		EasyCreateSquareVertex(800, 10, 900, 80, foodGoods[editMerchandise(goodsInfoShowing, 1)].textureID);
+		EasyCreateSquareVertex(900, 10, 1000, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 1), 0));
+		EasyCreateSquareVertex(1000, 10, 1100, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 1), 1));
 
 		break;
+	
 	case CHOSEGOODS:
-		EasyCreateSquareVertex(100, 0, 200, 90, foodGoods[editMerchandise(salesChoice, 0)].textureID);
+		EasyCreateSquareVertex(100, 10, 200, 80, foodGoods[editMerchandise(salesChoice, 0)].textureID);
 		EasyCreateSquareVertex(200, 10, 300, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 0));
 		EasyCreateSquareVertex(300, 10, 400, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 1));
 
-		EasyCreateSquareVertex(800, 0, 900, 90, foodGoods[editMerchandise(salesChoice, 1)].textureID);
+		EasyCreateSquareVertex(800, 10, 900, 80, foodGoods[editMerchandise(salesChoice, 1)].textureID);
 		EasyCreateSquareVertex(900, 10, 1000, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 0));
 		EasyCreateSquareVertex(1000, 10, 1100, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 1));
 
 		break;
 	case PUSHENEMY:
 	{
-		EasyCreateSquareVertex(310, 0, 400, 90, foodGoods[selectedGoods[turn]].textureID);
-		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[turn], 0));
+		EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[selectedGoods[g_turn]].textureID);
+		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[g_turn], 0));
 
-		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[turn], 1));
+		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[g_turn], 1));
 
-		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[turn]].haveValue);
+		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[g_turn]].haveValue);
 		RECT GoodsNUM = { 900 ,10,1100,80 };
 		WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
 
@@ -1437,11 +1454,11 @@ void goodsScoreShow()
 	}
 	case PICKGOODS:
 	{
-		EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[selectedGoods[turn]].textureID);
-		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[turn], 0));
+		EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[selectedGoods[g_turn]].textureID);
+		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[g_turn], 0));
 
-		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[turn], 1));
-		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[turn]].haveValue);
+		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[g_turn], 1));
+		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[g_turn]].haveValue);
 		RECT GoodsNUM = { 900 ,10,1100,80 };
 		WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
 
@@ -1504,7 +1521,7 @@ int priceEdit(GOODSPARAMETER foodGoods[],int goodsselector,int nomalOrSale)
 }
 	}
 
-int editMerchandise(int selesChoice,int arrayNum)
+int editMerchandise(int seleChoice,int arrayNum)
 {
-	return popSales[salesChoice].merchandise[arrayNum];
+	return popSales[seleChoice].merchandise[arrayNum];
 }

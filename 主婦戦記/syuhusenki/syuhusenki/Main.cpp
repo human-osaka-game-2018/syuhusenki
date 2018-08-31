@@ -100,26 +100,31 @@ unsigned int gameRoop() {
 		selectRender();
 		break;
 	case SCENE_MAIN:
-		gameMain();
 		if (g_isTimeUp)
 		{
+			soundsManager.Start("GONG", false);
+			g_isFirst = true;
 			g_isTimeUp = false;
 			g_timerCount = 0;
 			g_gameScene = FLOAMOVE;
-			switch (turn)
+			switch (g_turn)
 			{
+
 			case 0:
-				turn = 1;
+				g_turn = 1;
 				break;
 			case 1:
-				turn = 2;
+				g_turn = 2;
 				break;
 			case 2:
-				turn = 0;
+				g_turn = 0;
 				g_scene = SCENE_RESULT;
 				break;
 			}
+			Sleep(3000);
+
 		}
+		gameMain();
 		break;
 	case SCENE_RESULT:
 		result();

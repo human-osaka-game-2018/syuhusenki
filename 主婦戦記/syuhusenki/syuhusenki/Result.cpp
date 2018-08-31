@@ -204,7 +204,8 @@ void resultRenderOne(void)
 
 
 	char resulttantValue[32];
-	if (apperText[0]) {
+	if (apperText[0]) 
+	{
 		SetUpTexture(resultBaseTex1, foodGoods[selectedGoods[0]].textureID);
 		sprintf_s(resulttantValue, 32, "%dÅ~%d=%d", foodGoods[selectedGoods[0]].nominalCost, foodGoods[selectedGoods[0]].haveValue, addPrice(0, 0));
 		RECT resultBase1{ 160,125,600,275 };
@@ -215,7 +216,8 @@ void resultRenderOne(void)
 		RECT resultSele1{ 930,125,1240,275 };
 		WriteWord(resulttantValue, resultSele1, DT_LEFT, BLACK, RESULT_FONT);
 	}
-	if (apperText[1]) {
+	if (apperText[1]) 
+	{
 		SetUpTexture(resultBaseTex2, foodGoods[selectedGoods[1]].textureID);
 		sprintf_s(resulttantValue, 32, "%dÅ~%d=%d", foodGoods[selectedGoods[1]].nominalCost, foodGoods[selectedGoods[1]].haveValue, addPrice(1, 0));
 		RECT resultBase2{ 160,225,600,275 };
@@ -225,7 +227,8 @@ void resultRenderOne(void)
 		RECT resultSele2{ 930,225,1240,275 };
 		WriteWord(resulttantValue, resultSele2, DT_LEFT, BLACK, RESULT_FONT);
 	}
-	if (apperText[2]) {
+	if (apperText[2]) 
+	{
 		SetUpTexture(resultBaseTex3, foodGoods[selectedGoods[2]].textureID);
 		sprintf_s(resulttantValue, 32, "%dÅ~%d=%d", foodGoods[selectedGoods[2]].nominalCost, foodGoods[selectedGoods[2]].haveValue, addPrice(2,0));
 		RECT resultBase3{ 160,325,600,475};
@@ -235,7 +238,8 @@ void resultRenderOne(void)
 		RECT resultSele3{ 930,325,1240,475 };
 		WriteWord(resulttantValue, resultSele3, DT_LEFT, BLACK, RESULT_FONT);
 	}
-	if (apperText[3]) {
+	if (apperText[3]) 
+	{
 
 		sprintf_s(resulttantValue, 32, "çáåv%dâ~", nomalSum);
 		RECT resultBaseTotal{ 160,425,440,575 };
@@ -245,12 +249,14 @@ void resultRenderOne(void)
 		WriteWord(resulttantValue, resultSeleTotal, DT_RIGHT, BLACK, RESULT_FONT);
 
 	}
-	if (apperText[4]) {
+	if (apperText[4]) 
+	{
 		sprintf_s(resulttantValue, 32, "%d-%d=%d", nomalSum, saleSale, nomalSum - saleSale);
 		RECT resultTotal{ 140,525,1140,700 };
 		WriteWord(resulttantValue, resultTotal, DT_CENTER, BLACK, SCORE_FONT);
 	}
-	if (apperText[5]) {
+	if (apperText[5]) 
+	{
 
 		SetUpTexture(resultComboTex, foodCombo[succeedCombo].textureID);
 
@@ -342,7 +348,7 @@ void apperResult(void)
 		apperText[4] = true;
 		soundsManager.Start("COIN5", false);
 	}
-	if (resultCounter == 180 && comboSucceceCheck()) {
+	if ((resultCounter == 180) && (foodCombo[succeedCombo].comboSucceed)) {
 		apperText[5] = true;
 		soundsManager.Start("COIN6", false);
 	}
