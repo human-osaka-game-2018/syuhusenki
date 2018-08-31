@@ -19,7 +19,6 @@ enum MOBDIRECTION {
 
 void testScene();
 
-int g_goodsselector[2];
 int g_goodsTweSelect;
 int g_gameScene = FLOAMOVE;
 //int g_gameScene = CHOSEGOODS;
@@ -27,6 +26,7 @@ int g_gameScene = FLOAMOVE;
 //int g_gameScene = PICKGOODS;
 int g_selectFloa = FOOD;
 //int g_selectFloa = CLOTH;
+
 
 static bool g_isBlowOff = false;
 static bool g_isFirst = true;
@@ -101,7 +101,9 @@ void rushButtonCheck(int rushInput, int rushShow);
 void takeingGoods(bool take[], int size);
 void goodsMoving(CUSTOMVERTEX vertex[], float goodsScale[], bool take[], CENTRAL_STATE goodsCentral[], float deleatPosX, int arreyNum);
 void goodsRender(CUSTOMVERTEX vertex[], bool take[], int arreyNum, int texNum);
-
+int priceEdit(GOODSPARAMETER foodGoods[], int goodsselector, int nomalOrSale);
+int editMerchandise(int selesChoice, int arrayNum);
+int salesChoice;
 //void clothRush();
 //void clothRushControl();
 //void clothRushRender();
@@ -172,7 +174,7 @@ void gameMain() {
 			ReadInTexture("Texture/merchandise/shrimp.png", SHRIMP_TEX);
 			ReadInTexture("Texture/merchandise/octopus.png", OCTOPUS_TEX);
 			ReadInTexture("Texture/merchandise/squid.png", INKFISH_TEX);
-			ReadInTexture("Texture/merchandise/fish_mackerel.png", FISH_TEX);
+			ReadInTexture("Texture/merchandise/fish.png", FISH_TEX);
 
 			ReadInTexture("Texture/merchandise/carrot.png", GINESENG_TEX);
 			ReadInTexture("Texture/merchandise/onion.png", ONION_TEX);
@@ -229,8 +231,33 @@ void gameMain() {
 	case FLOAMOVE:
 	{
 		floaMove();
-		int goodssort = rand()%6;//フロア移動で決めたものを入れる
-		selectGoods(goodssort, g_goodsselector);
+		
+		CheckKeyState(DIK_0);
+		if (KeyState[DIK_0] == KeyRelease)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				popSales[i].goodsSorting = rand() % 6;//フロア移動で決めたものを入れる
+			}
+			selectGoods(&popSales[0]);
+			selectGoods(&popSales[1]);
+			selectGoods(&popSales[2]);
+		}
+		CheckKeyState(DIK_1);
+		if (KeyState[DIK_1] == KeyRelease)
+		{
+			salesChoice = 0;
+		}
+		CheckKeyState(DIK_2);
+		if (KeyState[DIK_2] == KeyRelease)
+		{
+			salesChoice = 1;
+		}
+		CheckKeyState(DIK_3);
+		if (KeyState[DIK_3] == KeyRelease)
+		{
+			salesChoice = 2;
+		}
 		break;
 	}
 	case CHOSEGOODS:
@@ -296,12 +323,12 @@ void choseGoodsControl() {
 	}
 	if (KeyState[DIK_A] == KeyRelease)
 	{
-		g_goodsTweSelect = g_goodsselector[0];
+		g_goodsTweSelect = popSales[salesChoice].merchandise[0];
 		g_gameScene = PUSHENEMY;
 	}
 	if (KeyState[DIK_D] == KeyRelease)
 	{
-		g_goodsTweSelect = g_goodsselector[1];
+		g_goodsTweSelect = popSales[salesChoice].merchandise[1];
 		g_gameScene = PUSHENEMY;
 	}
 
@@ -318,12 +345,12 @@ void choseGoodsControl() {
 	}
 	if (PadState[ButtonB] == PadRelease)
 	{
-		g_goodsTweSelect = g_goodsselector[1];
+		g_goodsTweSelect = popSales[salesChoice].merchandise[1];
 		g_gameScene = PUSHENEMY;
 	}
 	if (PadState[ButtonX] == PadRelease)
 	{
-		g_goodsTweSelect = g_goodsselector[0];
+		g_goodsTweSelect = popSales[salesChoice].merchandise[0];
 		g_gameScene = PUSHENEMY;
 	}
 
@@ -345,8 +372,8 @@ void choseGoodsReader() {
 		SetUpTexture(mobFloa, MOB_TEX);
 	}
 	SetUpTexture(playerHit, texturePC);
-	EasyCreateSquareVertex(350, 50, 600, 400, foodGoods[g_goodsselector[0]].textureID);
-	EasyCreateSquareVertex(660, 50, 910, 400, foodGoods[g_goodsselector[1]].textureID);
+	EasyCreateSquareVertex(350, 50, 600, 400, foodGoods[popSales[salesChoice].merchandise[0]].textureID);
+	EasyCreateSquareVertex(660, 50, 910, 400, foodGoods[popSales[salesChoice].merchandise[1]].textureID);
 
 	goodsScoreShow();
 	timerRender();
@@ -1338,212 +1365,37 @@ void goodsScoreShow()
 {
 	char goodsNumBuff[10];
 	EasyCreateSquareVertex(10, 0, 1260, 90, FRAME_TEX);
-	int showPrice;
 	switch (g_gameScene)
 	{
 	case FLOAMOVE:
+		EasyCreateSquareVertex(100, 0, 200, 90, foodGoods[editMerchandise(salesChoice,0)].textureID);
+		EasyCreateSquareVertex(200, 10, 300, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 0));
+		EasyCreateSquareVertex(300, 10, 400, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 1));
+
+		EasyCreateSquareVertex(800, 0, 900, 90, foodGoods[editMerchandise(salesChoice, 1)].textureID);
+		EasyCreateSquareVertex(900, 10, 1000, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 0));
+		EasyCreateSquareVertex(1000, 10, 1100, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 1));
+
 		break;
 	case CHOSEGOODS:
-		EasyCreateSquareVertex(100, 0, 200, 90, foodGoods[g_goodsselector[0]].textureID);
-		switch (foodGoods[g_goodsselector[0]].nominalCost)
-		{
-		case 300:
-			showPrice = THREEHANDRED_TEX;
-			break;
-		case 250:
-			showPrice = TWEHANDREDFIFTY_TEX;
-			break;
-		case 200:
-			showPrice = TWEHANDRED_TEX;
-			break;
-		case 150:
-			showPrice = HUNDREDFIFTY_TEX;
-			break;
-		case 100:
-			showPrice = HUNDRED_TEX;
-			break;
-		case 65:
-			showPrice = SIXTYFIVE_TEX;
-			break;
-		case 60:
-			showPrice = SIXTY_TEX;
-			break;
-		case 50:
-			showPrice = FIFTY_TEX;
-			break;
-		}
-		EasyCreateSquareVertex(200, 10, 300, 80, showPrice);
+		EasyCreateSquareVertex(100, 0, 200, 90, foodGoods[editMerchandise(salesChoice, 0)].textureID);
+		EasyCreateSquareVertex(200, 10, 300, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 0));
+		EasyCreateSquareVertex(300, 10, 400, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 1));
 
-		switch (foodGoods[g_goodsselector[0]].selePrice)
-		{
-		case 200:
-			showPrice = S_TWEHUNDRED_TEX;
-			break;
-		case 180:
-			showPrice = S_HUNDREDEIGHTY_TEX;
-			break;
-		case 150:
-			showPrice = S_HUNDREDFIFTY_TEX;
-			break;
-		case 100:
-			showPrice = S_HUNDRED_TEX;
-			break;
-		case 80:
-			showPrice = S_EIGHTY_TEX;
-			break;
-		case 70:
-			showPrice = S_SEVENTY_TEX;
-			break;
-		case 60:
-			showPrice = S_SIXTY_TEX;
-			break;
-		case 50:
-			showPrice = S_FIFTY_TEX;
-			break;
-		case 40:
-			showPrice = S_FOURTY_TEX;
-			break;
-		case 30:
-			showPrice = S_THRTY_TEX;
-			break;
-		}
-		EasyCreateSquareVertex(400, 10, 500, 80, showPrice);
-
-		EasyCreateSquareVertex(800, 0, 900, 90, foodGoods[g_goodsselector[1]].textureID);
-		switch (foodGoods[g_goodsselector[1]].nominalCost)
-		{
-		case 300:
-			showPrice = THREEHANDRED_TEX;
-			break;
-		case 250:
-			showPrice = TWEHANDREDFIFTY_TEX;
-			break;
-		case 200:
-			showPrice = TWEHANDRED_TEX;
-			break;
-		case 150:
-			showPrice = HUNDREDFIFTY_TEX;
-			break;
-		case 100:
-			showPrice = HUNDRED_TEX;
-			break;
-		case 65:
-			showPrice = SIXTYFIVE_TEX;
-			break;
-		case 60:
-			showPrice = SIXTY_TEX;
-			break;
-		case 50:
-			showPrice = FIFTY_TEX;
-			break;
-		}
-		EasyCreateSquareVertex(900, 10, 1000, 80, showPrice);
-
-		switch (foodGoods[g_goodsselector[1]].selePrice)
-		{
-		case 200:
-			showPrice = S_TWEHUNDRED_TEX;
-			break;
-		case 180:
-			showPrice = S_HUNDREDEIGHTY_TEX;
-			break;
-		case 150:
-			showPrice = S_HUNDREDFIFTY_TEX;
-			break;
-		case 100:
-			showPrice = S_HUNDRED_TEX;
-			break;
-		case 80:
-			showPrice = S_EIGHTY_TEX;
-			break;
-		case 70:
-			showPrice = S_SEVENTY_TEX;
-			break;
-		case 60:
-			showPrice = S_SIXTY_TEX;
-			break;
-		case 50:
-			showPrice = S_FIFTY_TEX;
-			break;
-		case 40:
-			showPrice = S_FOURTY_TEX;
-			break;
-		case 30:
-			showPrice = S_THRTY_TEX;
-			break;
-		}
-		EasyCreateSquareVertex(1000, 10, 1100, 80, showPrice);
+		EasyCreateSquareVertex(800, 0, 900, 90, foodGoods[editMerchandise(salesChoice, 1)].textureID);
+		EasyCreateSquareVertex(900, 10, 1000, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 0));
+		EasyCreateSquareVertex(1000, 10, 1100, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 1));
 
 		break;
 	case PUSHENEMY:
 	{
 		EasyCreateSquareVertex(310, 0, 400, 90, foodGoods[g_goodsTweSelect].textureID);
-		switch (foodGoods[g_goodsTweSelect].nominalCost)
-		{
-		case 300:
-			showPrice = THREEHANDRED_TEX;
-			break;
-		case 250:
-			showPrice = TWEHANDREDFIFTY_TEX;
-			break;
-		case 200:
-			showPrice = TWEHANDRED_TEX;
-			break;
-		case 150:
-			showPrice = HUNDREDFIFTY_TEX;
-			break;
-		case 100:
-			showPrice = HUNDRED_TEX;
-			break;
-		case 65:
-			showPrice = SIXTYFIVE_TEX;
-			break;
-		case 60:
-			showPrice = SIXTY_TEX;
-			break;
-		case 50:
-			showPrice = FIFTY_TEX;
-			break;
-		}
-		EasyCreateSquareVertex(450, 10, 600, 80, showPrice);
+		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, g_goodsTweSelect, 0));
 
-		switch (foodGoods[g_goodsTweSelect].selePrice)
-		{
-		case 200:
-			showPrice = S_TWEHUNDRED_TEX;
-			break;
-		case 180:
-			showPrice = S_HUNDREDEIGHTY_TEX;
-			break;
-		case 150:
-			showPrice = S_HUNDREDFIFTY_TEX;
-			break;
-		case 100:
-			showPrice = S_HUNDRED_TEX;
-			break;
-		case 80:
-			showPrice = S_EIGHTY_TEX;
-			break;
-		case 70:
-			showPrice = S_SEVENTY_TEX;
-			break;
-		case 60:
-			showPrice = S_SIXTY_TEX;
-			break;
-		case 50:
-			showPrice = S_FIFTY_TEX;
-			break;
-		case 40:
-			showPrice = S_FOURTY_TEX;
-			break;
-		case 30:
-			showPrice = S_THRTY_TEX;
-			break;
-		}
-		EasyCreateSquareVertex(650, 10, 800, 80, showPrice);
+		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, g_goodsTweSelect, 1));
 
 		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[g_goodsTweSelect].haveValue);
-		RECT GoodsNUM = { 900 ,10,1000,80 };
+		RECT GoodsNUM = { 900 ,10,1100,80 };
 		WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
 
 		break;
@@ -1551,74 +1403,73 @@ void goodsScoreShow()
 	case PICKGOODS:
 	{
 		EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[g_goodsTweSelect].textureID);
-		switch (foodGoods[g_goodsTweSelect].nominalCost)
-		{
-		case 300:
-			showPrice = THREEHANDRED_TEX;
-			break;
-		case 250:
-			showPrice = TWEHANDREDFIFTY_TEX;
-			break;
-		case 200:
-			showPrice = TWEHANDRED_TEX;
-			break;
-		case 150:
-			showPrice = HUNDREDFIFTY_TEX;
-			break;
-		case 100:
-			showPrice = HUNDRED_TEX;
-			break;
-		case 65:
-			showPrice = SIXTYFIVE_TEX;
-			break;
-		case 60:
-			showPrice = SIXTY_TEX;
-			break;
-		case 50:
-			showPrice = FIFTY_TEX;
-			break;
-		}
-		EasyCreateSquareVertex(450, 10, 600, 80, showPrice);
+		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, g_goodsTweSelect, 0));
 
-		switch (foodGoods[g_goodsTweSelect].selePrice)
-		{
-		case 200:
-			showPrice = S_TWEHUNDRED_TEX;
-			break;
-		case 180:
-			showPrice = S_HUNDREDEIGHTY_TEX;
-			break;
-		case 150:
-			showPrice = S_HUNDREDFIFTY_TEX;
-			break;
-		case 100:
-			showPrice = S_HUNDRED_TEX;
-			break;
-		case 80:
-			showPrice = S_EIGHTY_TEX;
-			break;
-		case 70:
-			showPrice = S_SEVENTY_TEX;
-			break;
-		case 60:
-			showPrice = S_SIXTY_TEX;
-			break;
-		case 50:
-			showPrice = S_FIFTY_TEX;
-			break;
-		case 40:
-			showPrice = S_FOURTY_TEX;
-			break;
-		case 30:
-			showPrice = S_THRTY_TEX;
-			break;
-		}
-		EasyCreateSquareVertex(650, 10, 800, 80, showPrice);
+		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, g_goodsTweSelect, 1));
 		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[g_goodsTweSelect].haveValue);
-		RECT GoodsNUM = { 900 ,10,1000,80 };
+		RECT GoodsNUM = { 900 ,10,1100,80 };
 		WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
 
 		break;
 	}
 	}
+}
+
+
+int priceEdit(GOODSPARAMETER foodGoods[],int goodsselector,int nomalOrSale)
+{
+	if (!nomalOrSale)
+	{
+		switch (foodGoods[goodsselector].nominalCost)
+		{
+		case 300:
+			return THREEHANDRED_TEX;
+		case 250:
+			return TWEHANDREDFIFTY_TEX;
+		case 200:
+			return TWEHANDRED_TEX;
+		case 150:
+			return HUNDREDFIFTY_TEX;
+		case 100:
+			return HUNDRED_TEX;
+		case 65:
+			return SIXTYFIVE_TEX;
+		case 60:
+			return SIXTY_TEX;
+		case 50:
+			return FIFTY_TEX;
+		}
+	}
+	if (nomalOrSale)
+	{
+		switch (foodGoods[goodsselector].selePrice)
+		{
+		case 200:
+			return S_TWEHUNDRED_TEX;
+		case 180:
+			return S_HUNDREDEIGHTY_TEX;
+		case 150:
+			return S_HUNDREDFIFTY_TEX;
+		case 100:
+			return S_HUNDRED_TEX;
+		case 80:
+			return S_EIGHTY_TEX;
+		case 70:
+			return S_SEVENTY_TEX;
+		case 60:
+			return S_SIXTY_TEX;
+		case 50:
+			return S_FIFTY_TEX;
+		case 40:
+			return S_FOURTY_TEX;
+		case 30:
+			return S_THRTY_TEX;
+		}
+	return BLANK;
+}
+	}
+
+int editMerchandise(int selesChoice,int arrayNum)
+{
+	return popSales[salesChoice].merchandise[arrayNum];
 }

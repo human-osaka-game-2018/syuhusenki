@@ -1,6 +1,8 @@
 #include "Goods.h"
 #include "Main.h"
 
+TIMESALEPARAMETER popSales[3];
+
 GOODSPARAMETER foodGoods[GOODS_MAX]
 {
 {BLANKGOODS,BLANK,0,0,0},
@@ -288,29 +290,29 @@ int comboSucceceCheck()
 		}
 	}
 }
-void selectGoods(int goodssort,int goodsSelector[]) 
+void selectGoods(TIMESALEPARAMETER* popSales)
 {
 	int randBuff[2];
-	switch (goodssort)
+	switch (popSales->goodsSorting)
 	{
 	case MEET_SORT:
 		randBuff[0] = rand() % 5;
 		switch (randBuff[0])
 		{
 		case 0:
-			goodsSelector[0] = BEEF;
+			popSales->merchandise[0] = BEEF;
 			break;
 		case 1:
-			goodsSelector[0] = PORK;
+			popSales->merchandise[0] = PORK;
 			break;
 		case 2:
-			goodsSelector[0] = CHICKEN;
+			popSales->merchandise[0] = CHICKEN;
 			break;
 		case 3:
-			goodsSelector[0] = VIENNESE;
+			popSales->merchandise[0] = VIENNESE;
 			break;
 		case 4:
-			goodsSelector[0] = MINCE;
+			popSales->merchandise[0] = MINCE;
 			break;
 		}
 
@@ -322,19 +324,19 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[1])
 		{
 		case 0:
-			goodsSelector[1] = BEEF;
+			popSales->merchandise[1] = BEEF;
 			break;
 		case 1:
-			goodsSelector[1] = PORK;
+			popSales->merchandise[1] = PORK;
 			break;
 		case 2:
-			goodsSelector[1] = CHICKEN;
+			popSales->merchandise[1] = CHICKEN;
 			break;
 		case 3:
-			goodsSelector[1] = VIENNESE;
+			popSales->merchandise[1] = VIENNESE;
 			break;
 		case 4:
-			goodsSelector[1] = MINCE;
+			popSales->merchandise[1] = MINCE;
 			break;
 		}
 		break;
@@ -344,19 +346,19 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[0])
 		{
 		case 0:
-			goodsSelector[0] = GINESENG;
+			popSales->merchandise[0] = GINESENG;
 			break;
 		case 1:
-			goodsSelector[0] = ONION;
+			popSales->merchandise[0] = ONION;
 			break;
 		case 2:
-			goodsSelector[0] = POTATO;
+			popSales->merchandise[0] = POTATO;
 			break;
 		case 3:
-			goodsSelector[0] = TOMATO;
+			popSales->merchandise[0] = TOMATO;
 			break;
 		case 4:
-			goodsSelector[0] = RADISH;
+			popSales->merchandise[0] = RADISH;
 			break;
 		}
 
@@ -369,19 +371,19 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[1])
 		{
 		case 0:
-			goodsSelector[1] = GINESENG;
+			popSales->merchandise[1] = GINESENG;
 			break;
 		case 1:
-			goodsSelector[1] = ONION;
+			popSales->merchandise[1] = ONION;
 			break;
 		case 2:
-			goodsSelector[1] = POTATO;
+			popSales->merchandise[1] = POTATO;
 			break;
 		case 3:
-			goodsSelector[1] = TOMATO;
+			popSales->merchandise[1] = TOMATO;
 			break;
 		case 4:
-			goodsSelector[1] = RADISH;
+			popSales->merchandise[1] = RADISH;
 			break;
 		}
 		break;
@@ -392,16 +394,16 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[0])
 		{
 		case 0:
-			goodsSelector[0] = SHRIMP;
+			popSales->merchandise[0] = SHRIMP;
 			break;
 		case 1:
-			goodsSelector[0] = OCTOPUS;
+			popSales->merchandise[0] = OCTOPUS;
 			break;
 		case 2:
-			goodsSelector[0] = INKFISH;
+			popSales->merchandise[0] = INKFISH;
 			break;
 		case 3:
-			goodsSelector[0] = FISH;
+			popSales->merchandise[0] = FISH;
 			break;
 		}
 
@@ -413,16 +415,16 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[1])
 		{
 		case 0:
-			goodsSelector[1] = SHRIMP;
+			popSales->merchandise[1] = SHRIMP;
 			break;
 		case 1:
-			goodsSelector[1] = OCTOPUS;
+			popSales->merchandise[1] = OCTOPUS;
 			break;
 		case 2:
-			goodsSelector[1] = INKFISH;
+			popSales->merchandise[1] = INKFISH;
 			break;
 		case 3:
-			goodsSelector[1] = FISH;
+			popSales->merchandise[1] = FISH;
 			break;
 		}
 		break;
@@ -433,16 +435,16 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[0])
 		{
 		case 0:
-			goodsSelector[0] = POTATOCHIPS;
+			popSales->merchandise[0] = POTATOCHIPS;
 			break;
 		case 1:
-			goodsSelector[0] = CHOCOLATE;
+			popSales->merchandise[0] = CHOCOLATE;
 			break;
 		case 2:
-			goodsSelector[0] = ICE;
+			popSales->merchandise[0] = ICE;
 			break;
 		case 3:
-			goodsSelector[0] = RICECRACKER;
+			popSales->merchandise[0] = RICECRACKER;
 			break;
 		}
 
@@ -454,16 +456,16 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[1])
 		{
 		case 0:
-			goodsSelector[1] = POTATOCHIPS;
+			popSales->merchandise[1] = POTATOCHIPS;
 			break;
 		case 1:
-			goodsSelector[1] = CHOCOLATE;
+			popSales->merchandise[1] = CHOCOLATE;
 			break;
 		case 2:
-			goodsSelector[1] = ICE;
+			popSales->merchandise[1] = ICE;
 			break;
 		case 3:
-			goodsSelector[1] = RICECRACKER;
+			popSales->merchandise[1] = RICECRACKER;
 			break;
 		}
 
@@ -475,13 +477,13 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[0])
 		{
 		case 0:
-			goodsSelector[0] = APPLE;
+			popSales->merchandise[0] = APPLE;
 			break;
 		case 1:
-			goodsSelector[0] = ORANGE;
+			popSales->merchandise[0] = ORANGE;
 			break;
 		case 2:
-			goodsSelector[0] = BANANA;
+			popSales->merchandise[0] = BANANA;
 			break;
 		}
 
@@ -493,13 +495,13 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[1])
 		{
 		case 0:
-			goodsSelector[1] = APPLE;
+			popSales->merchandise[1] = APPLE;
 			break;
 		case 1:
-			goodsSelector[1] = ORANGE;
+			popSales->merchandise[1] = ORANGE;
 			break;
 		case 2:
-			goodsSelector[1] = BANANA;
+			popSales->merchandise[1] = BANANA;
 			break;
 		}
 		break;
@@ -510,13 +512,13 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[0])
 		{
 		case 0:
-			goodsSelector[0] = TEA;
+			popSales->merchandise[0] = TEA;
 			break;
 		case 1:
-			goodsSelector[0] = JUICE;
+			popSales->merchandise[0] = JUICE;
 			break;
 		case 2:
-			goodsSelector[0] = BEER;
+			popSales->merchandise[0] = BEER;
 			break;
 		}
 
@@ -528,13 +530,13 @@ void selectGoods(int goodssort,int goodsSelector[])
 		switch (randBuff[1])
 		{
 		case 0:
-			goodsSelector[1] = TEA;
+			popSales->merchandise[1] = TEA;
 			break;
 		case 1:
-			goodsSelector[1] = JUICE;
+			popSales->merchandise[1] = JUICE;
 			break;
 		case 2:
-			goodsSelector[1] = BEER;
+			popSales->merchandise[1] = BEER;
 			break;
 		}
 		break;

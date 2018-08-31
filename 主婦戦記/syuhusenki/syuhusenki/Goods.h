@@ -81,10 +81,17 @@ struct COMBOPARAMETER
 	const int comboElement3;
 	bool comboSucceed;
 };
+
+struct TIMESALEPARAMETER
+{
+	int goodsSorting;
+	int merchandise[2];
+};
 extern GOODSPARAMETER foodGoods[GOODS_MAX];
 extern COMBOPARAMETER foodCombo[COMBOMAX];
+extern TIMESALEPARAMETER popSales[3];
 
 int comboSucceceCheck();
 void comboCheck(int goodsId1, int goodsId2, int goodsId3);
-void selectGoods(int goodssort, int goodsSelector[]);
+void selectGoods(TIMESALEPARAMETER* popSales);
 #endif
