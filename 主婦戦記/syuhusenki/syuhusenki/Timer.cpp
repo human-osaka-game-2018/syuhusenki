@@ -28,32 +28,31 @@ VOID timerControl(VOID)
 
 	if ((Limit_frame + THREE_SECOND) - g_timerCount == DEADLINE_SECOND)
 	{
-		soundsManager.Stop("FOOD");
-		soundsManager.SetVolume("HURRY_UP",10);
+		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.SetVolume("HURRY_UP",10) && g_SoundSuccess;
 
-		soundsManager.Start("TIME_LIMIT", false);
+		g_SoundSuccess = soundsManager.Start("TIME_LIMIT", false) && g_SoundSuccess;
 
 		g_timeDeadline = true;
 	}
 	if ((Limit_frame + THREE_SECOND) - g_timerCount < ONE_SECOND)
 	{
-		soundsManager.Stop("TIME_LIMIT");
+		g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
 
 	}
 	if ((Limit_frame + THREE_SECOND) - g_timerCount < HURRY_TIME)
 	{
-		soundsManager.Stop("FOOD");
-		soundsManager.Start("HURRY_UP", true);
+		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.Start("HURRY_UP", true) && g_SoundSuccess;
 	}
 	if (g_timerCount == THREE_SECOND + Limit_frame)
 	{
-		soundsManager.Stop("FOOD");
-		soundsManager.Stop("HURRY_UP");
-		soundsManager.SetVolume("HURRY_UP", 100);
+		g_timerCount = 0;
+		g_SoundSuccess = soundsManager.Stop("HURRY_UP") && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.SetVolume("HURRY_UP", 100) && g_SoundSuccess;
 
-		soundsManager.Stop("FOOD");
 
-		soundsManager.Stop("TIME_LIMIT");
+		g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
 
 		g_timeDeadline = false;
 		g_isTimeUp = true;

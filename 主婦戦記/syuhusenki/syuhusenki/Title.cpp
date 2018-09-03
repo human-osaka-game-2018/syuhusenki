@@ -14,8 +14,8 @@ VOID titleControl(VOID)
 
 	for (BGM; BGM < 1; BGM++)
 	{
-		soundsManager.SetVolume("OP_BGM", 50);
-		soundsManager.Start("OP_BGM", true);
+		g_SoundSuccess = soundsManager.SetVolume("OP_BGM", 50) && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.Start("OP_BGM", true) && g_SoundSuccess;
 	}
 
 	if (g_Xinput.Gamepad.wButtons == 0 && GetAnalogLValue(ANALOG_X) <= 6000 && GetAnalogLValue(ANALOG_X) >= -6000)
@@ -35,14 +35,14 @@ VOID titleControl(VOID)
 
 	if (InputKEY(DIK_A) || PadState[ButtonLEFT] == PadOn && !(g_inCount) || GetAnalogLValue(ANALOG_X) <= -6000 && !(g_inCount))
 	{
-		soundsManager.Start("CURSOR", false);
+		g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 		g_selectArrowSta.x = ARROWRIGHT;
 		g_inCount++;
 	}
 
 	if (InputKEY(DIK_D) || PadState[ButtonRIGHT] == PadOn && !(g_inCount) || GetAnalogLValue(ANALOG_X) >= 6000 && !(g_inCount))
 	{
-		soundsManager.Start("CURSOR", false);
+		g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 		g_selectArrowSta.x = ARROWLEFT;
 		g_inCount++;
 	}
@@ -51,9 +51,9 @@ VOID titleControl(VOID)
 
 	if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT &&(!entry[0]))
 	{
-		soundsManager.Start("GREETING", false);
-		soundsManager.Start("BUTTON1", false);
-		soundsManager.Stop("OP_BGM");
+		g_SoundSuccess = soundsManager.Start("GREETING", false) && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.Start("BUTTON1", false) && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.Stop("OP_BGM") && g_SoundSuccess;
 		BGM = 0;
 		entry[0] = true;
 		//g_scene = SCENE_SERECTCHARANDSTAGE;
@@ -63,7 +63,7 @@ VOID titleControl(VOID)
 
 	if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadOn && g_selectArrowSta.x == ARROWLEFT)
 	{
-		soundsManager.Start("BOW", false);
+		g_SoundSuccess = soundsManager.Start("BOW", false) && g_SoundSuccess;
 		entry[1] = true;
 	}
 

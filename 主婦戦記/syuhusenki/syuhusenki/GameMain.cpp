@@ -320,11 +320,6 @@ void gameMain() {
 			comandInput[i] = 10;
 		}
 		break;
-#ifdef _DEBUG
-	case TESTSCENE:
-		testScene();
-		break;
-#endif
 	}
 }
 
@@ -891,8 +886,14 @@ void madamBlowOff() {
 //è§ïiéÊìæèÍñ 
 
 void pickGoods() {
+	static bool canCutin = true;
 	switch (g_selectFloa) {
 	case FOOD:
+		if (canCutin)
+		{
+			g_SoundSuccess = soundsManager.Start("CUTIN", false) && g_SoundSuccess;
+			canCutin = false;
+		}
 		pickGoodsControl();
 		pickGoodsRender();
 		break;
@@ -1040,6 +1041,16 @@ void pickGoodsDeviseControl(int* rushInput) {
 	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
 		g_isFirst = true;
+		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.Stop("HURRY_UP") && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.SetVolume("HURRY_UP", 100) && g_SoundSuccess;
+
+		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+
+		g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
+
+		g_timeDeadline = false;
+
 		g_scene = SCENE_RESULT;
 		g_gameScene = FLOAMOVE;
 	}
@@ -1088,6 +1099,16 @@ void pickGoodsDeviseControl(int* rushInput) {
 	if (PadState[ButtonStart] == PadRelease)
 	{
 		g_isFirst = true;
+		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.Stop("HURRY_UP") && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.SetVolume("HURRY_UP", 100) && g_SoundSuccess;
+
+		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+
+		g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
+
+		g_timeDeadline = false;
+
 		g_scene = SCENE_RESULT;
 		g_gameScene = FLOAMOVE;
 	}

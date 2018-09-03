@@ -25,10 +25,12 @@ void apperResult(void);
 
 int addPrice(int num, int nomalOrSale);
 
+static bool isFirst = true;
 
 void result() 
 {
-	static bool isFirst = true;
+	static DWORD SyncOld = timeGetTime();
+	DWORD SyncNow = timeGetTime();
 
 	if (isFirst) {
 		setNowLoading();
@@ -76,19 +78,48 @@ void result()
 		g_SoundSuccess = soundsManager.Start("LOAD", false) && g_SoundSuccess;
 
 		isFirst = false;
+		g_timerCount = 0;
+
 	}
+
 	resultControl();
 	BeginSetTexture();
+	static bool canSound = true;
 	switch (resultPage)
 	{
 	case PAGE1:
 		resultRenderOne();
 		break;
 	case PAGE2:
+	{
+		static DWORD SyncOld = timeGetTime();
+		DWORD SyncNow = timeGetTime();
+
 		resultRenderOne();
-		resultRenderTwo();
+		if (SyncNow - SyncOld > 3000) 
+		{
+			resultRenderTwo();
+			if (canSound)
+			{
+				canSound = false;
+				if ((nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) < LOW_SCORE)
+				{
+					g_SoundSuccess = soundsManager.Start("LOW_SCORE", false) && g_SoundSuccess;
+				}
+				if (LOW_SCORE <= (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) <= HIGH_SCORE)
+				{
+
+				}
+				if (HIGH_SCORE < (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus))
+				{
+
+				}
+			}
+		}
+	}
 		break;
 	case PAGE3:
+		canSound = true;
 		resultRenderOne();
 		resultRenderTwo();
 		resultRenderThree();
@@ -113,11 +144,21 @@ void resultControl(void)
 		switch (resultPage)
 		{
 		case PAGE1:
+			g_SoundSuccess = soundsManager.Start("DRUM", false) && g_SoundSuccess;
 			resultPage = PAGE2;
 			break;
 		case PAGE2:
-			resultPage = PAGE3;
+		{
+			static DWORD SyncOld = timeGetTime();
+			DWORD SyncNow = timeGetTime();
+
+			resultRenderOne();
+			if (SyncNow - SyncOld > 3000)
+			{
+				resultPage = PAGE3;
+			}
 			break;
+		}
 		case PAGE3:
 			resultPage = PAGE1;
 			if (cursorResult.y < 500) {
@@ -132,50 +173,51 @@ void resultControl(void)
 
 	if (KeyState[DIK_SPACE] == KeyRelease)
 	{
+		isFirst = true;
 		g_scene = SCENE_TITLE;
 	}
 #endif
 	if (resultPage == PAGE3) {
 		if (KeyState[DIK_W] == KeyRelease)
 		{
-			soundsManager.Stop("CURSOR");
-			soundsManager.Start("CURSOR", false);
+			g_SoundSuccess = soundsManager.Stop("CURSOR") && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 			cursorResult.y = 490;
 		}
 		if (KeyState[DIK_S] == KeyRelease)
 		{
-			soundsManager.Stop("CURSOR");
-			soundsManager.Start("CURSOR", false);
+			g_SoundSuccess = soundsManager.Stop("CURSOR") && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 			cursorResult.y = 560;
 
 		}
 		if (PadState[ButtonUP] == PadRelease)
 		{
-			soundsManager.Stop("CURSOR");
-			soundsManager.Start("CURSOR", false);
+			g_SoundSuccess = soundsManager.Stop("CURSOR") && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 			cursorResult.y = 490;
 
 		}
 
 		if (PadState[ButtonDOWN] == PadRelease)
 		{
-			soundsManager.Stop("CURSOR");
-			soundsManager.Start("CURSOR", false);
+			g_SoundSuccess = soundsManager.Stop("CURSOR") && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 			cursorResult.y = 560;
 
 		}
 		if (!GetAnalogL(ANALOGDOWN))
 		{
-			soundsManager.Stop("CURSOR");
-			soundsManager.Start("CURSOR", false);
+			g_SoundSuccess = soundsManager.Stop("CURSOR") && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 			cursorResult.y = 490;
 
 		}
 
 		if (!GetAnalogL(ANALOGUP))
 		{
-			soundsManager.Stop("CURSOR");
-			soundsManager.Start("CURSOR", false);
+			g_SoundSuccess = soundsManager.Stop("CURSOR") && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 			cursorResult.y = 560;
 
 		}
@@ -192,6 +234,7 @@ void resultControl(void)
 			break;
 		case PAGE3:
 			resultPage = PAGE1;
+			isFirst = true;
 			if (cursorResult.y < 500) {
 				g_gameScene = FLOAMOVE;
 				g_scene = SCENE_MAIN;
@@ -381,27 +424,27 @@ void apperResult(void)
 	resultCounter++;
 	if (resultCounter == 30) {
 		apperText[0] = true;
-		soundsManager.Start("COIN1", false);
+		g_SoundSuccess = soundsManager.Start("COIN1", false) && g_SoundSuccess;
 	}
 	if (resultCounter == 60) {
 		apperText[1] = true;
-		soundsManager.Start("COIN2", false);
+		g_SoundSuccess = soundsManager.Start("COIN2", false) && g_SoundSuccess;
 	}
 	if (resultCounter == 90) {
 		apperText[2] = true;
-		soundsManager.Start("COIN3", false);
+		g_SoundSuccess = soundsManager.Start("COIN3", false) && g_SoundSuccess;
 	}
 	if (resultCounter == 120) {
 		apperText[3] = true;
-		soundsManager.Start("COIN4", false);
+		g_SoundSuccess = soundsManager.Start("COIN4", false) && g_SoundSuccess;
 	}
 	if (resultCounter == 150) {
 		apperText[4] = true;
-		soundsManager.Start("COIN5", false);
+		g_SoundSuccess = soundsManager.Start("CASHER", false) && g_SoundSuccess;
 	}
 	if ((resultCounter == 180) && (foodCombo[succeedCombo].comboSucceed)) {
 		apperText[5] = true;
-		soundsManager.Start("COIN6", false);
+		g_SoundSuccess = soundsManager.Start("WIN", false) && g_SoundSuccess;
 	}
 
 }
