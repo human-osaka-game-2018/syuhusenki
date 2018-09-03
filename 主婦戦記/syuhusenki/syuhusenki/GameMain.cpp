@@ -343,11 +343,13 @@ void choseGoodsControl() {
 	CheckKeyState(DIK_NUMPADENTER);
 	CheckKeyState(DIK_A);
 	CheckKeyState(DIK_D);
+#ifdef _DEBUG
 
 	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
 		g_gameScene = PUSHENEMY;
 	}
+#endif
 	if (KeyState[DIK_A] == KeyRelease)
 	{
 		selectedGoods[g_turn] = popSales[salesChoice].merchandise[0];
@@ -361,11 +363,13 @@ void choseGoodsControl() {
 
 	GetControl(0);
 	BottonCheck();
+#ifdef _DEBUG
 
 	if (PadState[ButtonStart] == PadRelease)
 	{
 		g_gameScene = PUSHENEMY;
 	}
+#endif
 	if (PadState[ButtonA] == PadRelease)
 	{
 
@@ -409,7 +413,7 @@ void choseGoodsReader() {
 	EndSetTexture();
 
 }
-
+static bool soundOnce = false;
 void blowOff() {
 	switch (g_selectFloa) {
 	case FOOD:
@@ -432,13 +436,15 @@ void blowOffControl()
 	{
 		blowOffDeviseControl(&comandCount,comandInput);
 		checkedComand = comandCheck(comandPresentment, comandInput, comandCount);
-		if (1 == checkedComand)
+		if (1 == checkedComand&& soundOnce)
 		{
+			soundOnce = false;
 			g_SoundSuccess = soundsManager.Start("SUCCESS", false) && g_SoundSuccess;
 			checkedComand = 2;
 		}
-		if (!checkedComand)
+		if (!checkedComand&&soundOnce)
 		{
+			soundOnce = false;
 			checkedComand = 2;
 			g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
 			if (comandButton) {
@@ -629,15 +635,17 @@ void blowOffDeviseControl(int* i,int comand[])
 	CheckKeyState(DIK_Y);
 	CheckKeyState(DIK_R);
 	CheckKeyState(DIK_L);
+#ifdef _DEBUG
 
 	if (KeyState[DIK_RETURN] == KeyRelease ||KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
 		g_gameScene = PICKGOODS;
 
 	}
-
+#endif
 	if (KeyState[DIK_A] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonA;
 		*i += 1;
 
@@ -645,30 +653,35 @@ void blowOffDeviseControl(int* i,int comand[])
 	}
 	if (KeyState[DIK_B] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonB;
 		*i += 1;
 		buttonSE(Button, 3);
 	}
 	if (KeyState[DIK_X] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonX;
 		*i += 1;
 		buttonSE(Button, 3);
 	}
 	if (KeyState[DIK_Y] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonY;
 		*i += 1;
 		buttonSE(Button, 3);
 	}
 	if (KeyState[DIK_R] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonRB;
 		*i += 1;
 		buttonSE(Button, 3);
 	}
 	if (KeyState[DIK_L] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonLB;
 		*i += 1;
 		buttonSE(Button, 3);
@@ -676,43 +689,51 @@ void blowOffDeviseControl(int* i,int comand[])
 	//XInputデバイス操作
 	GetControl(0);
 	BottonCheck();
+#ifdef _DEBUG
+
 	if (PadState[ButtonStart] == KeyRelease)
 	{
 		g_gameScene = PICKGOODS;
 	}
-
+#endif
 	if (PadState[ButtonA] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonA;
 		*i+=1;
 		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonB] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonB;
 		*i+=1;
 		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonX] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonX;
 		*i+=1;
 		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonY] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonY;
 		*i+=1;
 		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonRB] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonRB;
 		*i+=1;
 		buttonSE(Button, 3);
 	}
 	if (PadState[ButtonLB] == KeyRelease)
 	{
+		soundOnce = true;
 		comand[*i] = ButtonLB;
 		*i+=1;
 		buttonSE(Button, 3);
@@ -983,6 +1004,7 @@ void pickGoodsDeviseControl(int* rushInput) {
 	CheckKeyState(DIK_Y);
 	CheckKeyState(DIK_R);
 	CheckKeyState(DIK_L);
+#ifdef _DEBUG
 
 	if (KeyState[DIK_RETURN] == KeyRelease|| KeyState[DIK_NUMPADENTER] == KeyRelease)
 	{
@@ -990,6 +1012,7 @@ void pickGoodsDeviseControl(int* rushInput) {
 		g_scene = SCENE_RESULT;
 		g_gameScene = FLOAMOVE;
 	}
+#endif
 	if (KeyState[DIK_A] == KeyRelease)
 	{
 		*rushInput = ButtonA;
@@ -1030,13 +1053,14 @@ void pickGoodsDeviseControl(int* rushInput) {
 	//XInputデバイス操作
 	GetControl(0);
 	BottonCheck();
-
+#ifdef _DEBUG
 	if (PadState[ButtonStart] == PadRelease)
 	{
 		g_isFirst = true;
 		g_scene = SCENE_RESULT;
 		g_gameScene = FLOAMOVE;
 	}
+#endif
 	if (PadState[ButtonA] == PadRelease)
 	{
 		*rushInput = ButtonA;

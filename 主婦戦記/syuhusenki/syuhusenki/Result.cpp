@@ -99,6 +99,8 @@ void result()
 void resultControl(void)
 {
 	apperResult();
+	GetControl(0);
+	BottonCheck();
 
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
@@ -126,10 +128,13 @@ void resultControl(void)
 			break;
 		}
 	}
+#ifdef _DEBUG
+
 	if (KeyState[DIK_SPACE] == KeyRelease)
 	{
 		g_scene = SCENE_TITLE;
 	}
+#endif
 	if (resultPage == PAGE3) {
 		if (KeyState[DIK_W] == KeyRelease)
 		{
@@ -144,12 +149,58 @@ void resultControl(void)
 			cursorResult.y = 560;
 
 		}
+		if (PadState[ButtonUP] == PadRelease)
+		{
+			soundsManager.Stop("CURSOR");
+			soundsManager.Start("CURSOR", false);
+			cursorResult.y = 490;
+
+		}
+
+		if (PadState[ButtonDOWN] == PadRelease)
+		{
+			soundsManager.Stop("CURSOR");
+			soundsManager.Start("CURSOR", false);
+			cursorResult.y = 560;
+
+		}
+		if (!GetAnalogL(ANALOGDOWN))
+		{
+			soundsManager.Stop("CURSOR");
+			soundsManager.Start("CURSOR", false);
+			cursorResult.y = 490;
+
+		}
+
+		if (!GetAnalogL(ANALOGUP))
+		{
+			soundsManager.Stop("CURSOR");
+			soundsManager.Start("CURSOR", false);
+			cursorResult.y = 560;
+
+		}
+
 	}
-	GetControl(0);
-	BottonCheck();
 	if (PadState[ButtonA] == PadRelease) {
-		g_scene = SCENE_TITLE;
+		switch (resultPage)
+		{
+		case PAGE1:
+			resultPage = PAGE2;
+			break;
+		case PAGE2:
+			resultPage = PAGE3;
+			break;
+		case PAGE3:
+			resultPage = PAGE1;
+			if (cursorResult.y < 500) {
+				g_gameScene = FLOAMOVE;
+				g_scene = SCENE_MAIN;
+			}
+			else g_scene = SCENE_TITLE;
+			break;
+		}
 	}
+
 }
 
 void resultRenderOne(void)
