@@ -1398,72 +1398,83 @@ void goodsScoreShow()
 
 	char goodsNumBuff[10];
 	EasyCreateSquareVertex(10, 0, 1260, 90, FRAME_TEX);
-	switch (g_gameScene)
+	if (!g_timeDeadline) 
 	{
-	case FLOAMOVE:
-	
-		goodsInfoCount++;
-		if (goodsInfoCount > 60)
+		switch (g_gameScene)
 		{
-			switch (goodsInfoShowing)
+		case FLOAMOVE:
+
+			goodsInfoCount++;
+			if (goodsInfoCount > 60)
 			{
-			case 0:
-				goodsInfoShowing = 1;
-				break;
-			case 1:
-				goodsInfoShowing = 2;
-				break;
-			case 2:
-				goodsInfoShowing = 0;
-				break;
+				switch (goodsInfoShowing)
+				{
+				case 0:
+					goodsInfoShowing = 1;
+					break;
+				case 1:
+					goodsInfoShowing = 2;
+					break;
+				case 2:
+					goodsInfoShowing = 0;
+					break;
+				}
+				goodsInfoCount = 0;
 			}
-			goodsInfoCount = 0;
+			EasyCreateSquareVertex(100, 10, 200, 80, foodGoods[editMerchandise(goodsInfoShowing, 0)].textureID);
+			EasyCreateSquareVertex(200, 10, 300, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 0), 0));
+			EasyCreateSquareVertex(300, 10, 400, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 0), 1));
+
+			EasyCreateSquareVertex(800, 10, 900, 80, foodGoods[editMerchandise(goodsInfoShowing, 1)].textureID);
+			EasyCreateSquareVertex(900, 10, 1000, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 1), 0));
+			EasyCreateSquareVertex(1000, 10, 1100, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 1), 1));
+
+			break;
+
+		case CHOSEGOODS:
+			EasyCreateSquareVertex(100, 10, 200, 80, foodGoods[editMerchandise(salesChoice, 0)].textureID);
+			EasyCreateSquareVertex(200, 10, 300, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 0), 0));
+			EasyCreateSquareVertex(300, 10, 400, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 0), 1));
+
+			EasyCreateSquareVertex(800, 10, 900, 80, foodGoods[editMerchandise(salesChoice, 1)].textureID);
+			EasyCreateSquareVertex(900, 10, 1000, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 0));
+			EasyCreateSquareVertex(1000, 10, 1100, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 1));
+
+			break;
+		case PUSHENEMY:
+		{
+			EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[selectedGoods[g_turn]].textureID);
+			EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[g_turn], 0));
+
+			EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[g_turn], 1));
+
+			sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[g_turn]].haveValue);
+			RECT GoodsNUM = { 900 ,10,1100,80 };
+			WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
+
+			break;
 		}
-		EasyCreateSquareVertex(100, 10, 200, 80, foodGoods[editMerchandise(goodsInfoShowing, 0)].textureID);
-		EasyCreateSquareVertex(200, 10, 300, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 0), 0));
-		EasyCreateSquareVertex(300, 10, 400, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 0), 1));
+		case PICKGOODS:
+		{
+			EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[selectedGoods[g_turn]].textureID);
+			EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[g_turn], 0));
 
-		EasyCreateSquareVertex(800, 10, 900, 80, foodGoods[editMerchandise(goodsInfoShowing, 1)].textureID);
-		EasyCreateSquareVertex(900, 10, 1000, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 1), 0));
-		EasyCreateSquareVertex(1000, 10, 1100, 80, priceEdit(foodGoods, editMerchandise(goodsInfoShowing, 1), 1));
+			EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[g_turn], 1));
+			sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[g_turn]].haveValue);
+			RECT GoodsNUM = { 900 ,10,1100,80 };
+			WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
 
-		break;
-	
-	case CHOSEGOODS:
-		EasyCreateSquareVertex(100, 10, 200, 80, foodGoods[editMerchandise(salesChoice, 0)].textureID);
-		EasyCreateSquareVertex(200, 10, 300, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 0));
-		EasyCreateSquareVertex(300, 10, 400, 80, priceEdit(foodGoods, editMerchandise(salesChoice,0), 1));
-
-		EasyCreateSquareVertex(800, 10, 900, 80, foodGoods[editMerchandise(salesChoice, 1)].textureID);
-		EasyCreateSquareVertex(900, 10, 1000, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 0));
-		EasyCreateSquareVertex(1000, 10, 1100, 80, priceEdit(foodGoods, editMerchandise(salesChoice, 1), 1));
-
-		break;
-	case PUSHENEMY:
-	{
-		EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[selectedGoods[g_turn]].textureID);
-		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[g_turn], 0));
-
-		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[g_turn], 1));
-
-		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[g_turn]].haveValue);
-		RECT GoodsNUM = { 900 ,10,1100,80 };
-		WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
-
-		break;
+			break;
+		}
+		}
 	}
-	case PICKGOODS:
+	if (g_timeDeadline)
 	{
-		EasyCreateSquareVertex(310, 10, 400, 80, foodGoods[selectedGoods[g_turn]].textureID);
-		EasyCreateSquareVertex(450, 10, 600, 80, priceEdit(foodGoods, selectedGoods[g_turn], 0));
+		char timeText[10];
+		sprintf_s(timeText, 10, "%d ", timeShow() + 1);
+		RECT timeLimit = { 200 ,10,1000,80 };
+		WriteWord(timeText, timeLimit, DT_CENTER, RED, HAVEGOODS_FONT);
 
-		EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[g_turn], 1));
-		sprintf_s(goodsNumBuff, 10, "%d ", foodGoods[selectedGoods[g_turn]].haveValue);
-		RECT GoodsNUM = { 900 ,10,1100,80 };
-		WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
-
-		break;
-	}
 	}
 }
 

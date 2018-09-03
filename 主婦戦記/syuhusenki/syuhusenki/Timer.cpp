@@ -3,14 +3,15 @@
 #include "GameMain.h"
 
 #define PI 3.14159265358979
-#define LIMIT_TIME 90//秒
+#define LIMIT_TIME 10//秒
 #define Limit_frame (LIMIT_TIME*60)
-
+#define DEADLINE_SECOND 300
 
 CENTRAL_STATE g_timerSta = { 1210.f, 50.f, 50.f, 50.f };
 CENTRAL_STATE g_timeUpSta = { 520.f, 350.f, 260.f, 100.f };
-
+bool g_timeDeadline = false;
 int g_timerCount = 0;
+
 //タイマー制御処理
 VOID timerControl(VOID)
 {
@@ -24,10 +25,20 @@ VOID timerControl(VOID)
 		g_isGameStart = true;
 	}
 
+	if ((Limit_frame + THREE_SECOND) - g_timerCount < DEADLINE_SECOND)
+	{
+		soundsManager.Stop("FOOD");
+
+		soundsManager.Start("TIME_LIMIT", true);
+
+		g_timeDeadline = true;
+	}
 	if (g_timerCount == THREE_SECOND + Limit_frame)
 	{
-		soundsManager.SetVolume("FOOD", 25);
 		soundsManager.Stop("FOOD");
+		soundsManager.Stop("TIME_LIMIT");
+
+		g_timeDeadline = false;
 		g_isTimeUp = true;
 	}
 }
@@ -77,4 +88,9 @@ VOID timerRender(VOID)
 		SetUpTexture(timeUp, TIMEUP_TEX);
 		
 	}
+}
+
+int timeShow()
+{
+	return ((Limit_frame + THREE_SECOND) - g_timerCount) / 60;
 }

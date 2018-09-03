@@ -191,6 +191,7 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/correct answer.mp3", "SUCCESS");
 	soundsManager.AddFile("Sound/mistake.mp3", "MISS");
 	soundsManager.AddFile("Sound/explosion.mp3", "ATTACK");
+	soundsManager.AddFile("Sound/timer.mp3", "TIME_LIMIT");
 
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK1");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK2");
