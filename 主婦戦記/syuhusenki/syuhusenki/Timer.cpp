@@ -3,9 +3,10 @@
 #include "GameMain.h"
 
 #define PI 3.14159265358979
-#define LIMIT_TIME 10//秒
+#define LIMIT_TIME 60//秒
 #define Limit_frame (LIMIT_TIME*60)
 #define DEADLINE_SECOND 300
+#define HURRY_TIME (20*60)
 
 CENTRAL_STATE g_timerSta = { 1210.f, 50.f, 50.f, 50.f };
 CENTRAL_STATE g_timeUpSta = { 520.f, 350.f, 260.f, 100.f };
@@ -25,17 +26,33 @@ VOID timerControl(VOID)
 		g_isGameStart = true;
 	}
 
-	if ((Limit_frame + THREE_SECOND) - g_timerCount < DEADLINE_SECOND)
+	if ((Limit_frame + THREE_SECOND) - g_timerCount == DEADLINE_SECOND)
 	{
 		soundsManager.Stop("FOOD");
+		soundsManager.SetVolume("HURRY_UP",10);
 
-		soundsManager.Start("TIME_LIMIT", true);
+		soundsManager.Start("TIME_LIMIT", false);
 
 		g_timeDeadline = true;
+	}
+	if ((Limit_frame + THREE_SECOND) - g_timerCount < ONE_SECOND)
+	{
+		soundsManager.Stop("TIME_LIMIT");
+
+	}
+	if ((Limit_frame + THREE_SECOND) - g_timerCount < HURRY_TIME)
+	{
+		soundsManager.Stop("FOOD");
+		soundsManager.Start("HURRY_UP", true);
 	}
 	if (g_timerCount == THREE_SECOND + Limit_frame)
 	{
 		soundsManager.Stop("FOOD");
+		soundsManager.Stop("HURRY_UP");
+		soundsManager.SetVolume("HURRY_UP", 100);
+
+		soundsManager.Stop("FOOD");
+
 		soundsManager.Stop("TIME_LIMIT");
 
 		g_timeDeadline = false;
@@ -82,7 +99,7 @@ VOID timerRender(VOID)
 		timerRotation -= ((360.f / Limit_frame) / 180.f)*PI;
 	}
 
-	if (g_isTimeUp && g_turn == 2)
+	if (g_isTimeUp /*&& g_turn == 2*/)
 	{
 		//タイムアップのテクスチャの描画
 		SetUpTexture(timeUp, TIMEUP_TEX);

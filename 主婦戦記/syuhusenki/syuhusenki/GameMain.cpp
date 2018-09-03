@@ -133,7 +133,7 @@ void gameMain() {
 			ReadInTexture("Texture/startCount3.png", STARTCOUNT_3_TEX);
 			ReadInTexture("Texture/startCount2.png", STARTCOUNT_2_TEX);
 			ReadInTexture("Texture/startCount1.png", STARTCOUNT_1_TEX);
-			ReadInTexture("Texture/kariStart.png", START_TEX);
+			ReadInTexture("Texture/salerogo.png", START_TEX);
 			ReadInTexture("Texture/pauseMenu.png", PAUSE_TEX);
 			ReadInTexture("Texture/end.png", TIMEUP_TEX);
 			ReadInTexture("Texture/stage.png", FLOAMOVE_BG_TEX);
@@ -156,6 +156,12 @@ void gameMain() {
 			ReadInTexture("Texture/scoretext/s150.png", S_HUNDREDFIFTY_TEX );
 			ReadInTexture("Texture/scoretext/s180.png", S_HUNDREDEIGHTY_TEX);
 			ReadInTexture("Texture/scoretext/s200.png", S_TWEHUNDRED_TEX );
+
+			ReadInTexture("Texture/scoretext/t1.png", T_1);
+			ReadInTexture("Texture/scoretext/t2.png", T_2);
+			ReadInTexture("Texture/scoretext/t3.png", T_3);
+			ReadInTexture("Texture/scoretext/t4.png", T_4);
+			ReadInTexture("Texture/scoretext/t5.png", T_5);
 
 			ReadInTexture("Texture/button/a.png", A_TEX);
 			ReadInTexture("Texture/button/b.png", B_TEX);
@@ -331,8 +337,10 @@ void floaMove() {
 }
 
 void choseGoods() {
-
-	choseGoodsControl();
+	if (g_isGameStart)
+	{
+		choseGoodsControl();
+	}
 	choseGoodsReader();
 }
 void choseGoodsControl() {
@@ -419,7 +427,13 @@ void blowOff() {
 	case FOOD:
 	blowOffControl();
 	blowOffRender();
-	rushButtonShow = rand() % 6;
+	if (g_turn == 0)
+	{
+		rushButtonShow = rand() % 4;
+	}
+	else {
+		rushButtonShow = rand() % 6;
+	}
 	break;
 	case CLOTH:
 		g_gameScene = PICKGOODS;
@@ -434,7 +448,10 @@ void blowOffControl()
 
 	if (comandCount < 5) 
 	{
-		blowOffDeviseControl(&comandCount,comandInput);
+		if (g_isGameStart)
+		{
+			blowOffDeviseControl(&comandCount, comandInput);
+		}
 		checkedComand = comandCheck(comandPresentment, comandInput, comandCount);
 		if (1 == checkedComand&& soundOnce)
 		{
@@ -576,11 +593,22 @@ int comandCheck(int comand[], int inputComand[],int count)
 }
 void comandMake() {
 	srand((unsigned int)time(NULL));
-	comandPresentment[0] = rand() % 6;
-	comandPresentment[1]= rand() % 6;
-	comandPresentment[2]= rand() % 6;
-	comandPresentment[3]= rand() % 6;
-	comandPresentment[4]= rand() % 6;
+	if (g_turn == 0)
+	{
+		comandPresentment[0] = rand() % 4;
+		comandPresentment[1] = rand() % 4;
+		comandPresentment[2] = rand() % 4;
+		comandPresentment[3] = rand() % 4;
+		comandPresentment[4] = rand() % 4;
+
+	}
+	else {
+		comandPresentment[0] = rand() % 6;
+		comandPresentment[1] = rand() % 6;
+		comandPresentment[2] = rand() % 6;
+		comandPresentment[3] = rand() % 6;
+		comandPresentment[4] = rand() % 6;
+	}
 }
 
 char comandButton(int comand)
@@ -884,7 +912,10 @@ void pickGoodsControl() {
 		g_isBlowOff = false;
 		g_gameScene = PUSHENEMY;
 	}
-	pickGoodsDeviseControl(&rushInput);
+	if (g_isGameStart)
+	{
+		pickGoodsDeviseControl(&rushInput);
+	}
 	if (g_isBlowOff) {
 		madamBlowOff();
 	}
@@ -1494,10 +1525,47 @@ void goodsScoreShow()
 	}
 	if (g_timeDeadline)
 	{
-		char timeText[10];
-		sprintf_s(timeText, 10, "%d ", timeShow() + 1);
-		RECT timeLimit = { 200 ,10,1000,80 };
-		WriteWord(timeText, timeLimit, DT_CENTER, RED, HAVEGOODS_FONT);
+		float scaleTimmer = 0;
+		float posYTimmer = 0;
+		int timmerTexture = 0;
+
+		switch (timeShow())
+		{
+		case 0:
+			posYTimmer = 200;
+			scaleTimmer = 200;
+			timmerTexture = T_1;
+			break;
+		case 1:
+			posYTimmer = 200;
+			scaleTimmer = 150;
+			timmerTexture = T_2;
+			break;
+		case 2:
+			posYTimmer = 150;
+			scaleTimmer = 100;
+			timmerTexture = T_3;
+			break;
+		case 3:
+			posYTimmer = 100;
+			scaleTimmer = 75;
+			timmerTexture = T_4;
+			break;
+		case 4:
+			posYTimmer = 50;
+			scaleTimmer = 40;
+			timmerTexture = T_5;
+			break;
+		}
+		CUSTOMVERTEX timeLimitShow[4];
+		CENTRAL_STATE timeLimitShowCentral = { 640,posYTimmer,scaleTimmer,scaleTimmer };
+		CreateSquareVertex(timeLimitShow, timeLimitShowCentral);
+		SetUpTexture(timeLimitShow, timmerTexture);
+
+		//char timeText[10];
+		//sprintf_s(timeText, 10, "%d ", timeShow() + 1);
+		//RECT timeLimit = { 200 ,10,1000,80 };
+		//WriteWord(timeText, timeLimit, DT_CENTER, RED, HAVEGOODS_FONT);
 
 	}
 }

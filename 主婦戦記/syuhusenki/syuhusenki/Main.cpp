@@ -65,6 +65,12 @@ unsigned int gameRoop() {
 	CheckKeyState(DIK_F4);
 	if (KeyState[DIK_F4] == KeyRelease)
 	{
+		selectedGoods[0] = POTATO;
+		selectedGoods[1] = BEEF;
+		selectedGoods[2] = ONION;
+		for (int i = 0; i < 3; i++) {
+			foodGoods[selectedGoods[i]].haveValue = 100;
+		}
 		g_scene = SCENE_RESULT;
 		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
 	}
@@ -192,6 +198,7 @@ void soundLoad() {
 	soundsManager.AddFile("Sound/mistake.mp3", "MISS");
 	soundsManager.AddFile("Sound/explosion.mp3", "ATTACK");
 	soundsManager.AddFile("Sound/timer.mp3", "TIME_LIMIT");
+	soundsManager.AddFile("Sound/salebgm.mp3", "HURRY_UP");
 
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK1");
 	soundsManager.AddFile("Sound/shopping.mp3", "PICK2");

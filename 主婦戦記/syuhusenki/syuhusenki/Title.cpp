@@ -11,9 +11,10 @@ VOID titleControl(VOID)
 	GetControl(0);
 	BottonCheck();
 	static bool entry[2] = { false,false };
+
 	for (BGM; BGM < 1; BGM++)
 	{
-		//soundsManager.SetVolume("OP_BGM", 25);
+		soundsManager.SetVolume("OP_BGM", 50);
 		soundsManager.Start("OP_BGM", true);
 	}
 
@@ -48,7 +49,7 @@ VOID titleControl(VOID)
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
 
-	if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT)
+	if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT &&(!entry[0]))
 	{
 		soundsManager.Start("GREETING", false);
 		soundsManager.Start("BUTTON1", false);
@@ -71,9 +72,9 @@ VOID titleControl(VOID)
 		sceneSuccession++;
 		if ((sceneSuccession >= 70) && entry[0])
 		{
-			soundsManager.SetVolume("SELECT_BGM", 25);
-			soundsManager.Start("SELECT_BGM", true);
-			g_scene = SCENE_SERECTCHARANDSTAGE;
+			//soundsManager.SetVolume("SELECT_BGM", 25);
+			//soundsManager.Start("SELECT_BGM", true);
+			g_scene = SCENE_MAIN;
 			sceneSuccession = 0;
 			entry[0] = false;
 		}
