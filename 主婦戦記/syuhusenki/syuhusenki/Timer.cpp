@@ -24,6 +24,8 @@ VOID timerControl(VOID)
 	if (g_timerCount == THREE_SECOND)
 	{
 		g_isGameStart = true;
+		soundsManager.Start("WHISYLE", false);
+
 	}
 
 	if ((Limit_frame + THREE_SECOND) - g_timerCount == DEADLINE_SECOND)

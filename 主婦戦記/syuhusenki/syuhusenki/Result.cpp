@@ -149,14 +149,7 @@ void resultControl(void)
 			break;
 		case PAGE2:
 		{
-			static DWORD SyncOld = timeGetTime();
-			DWORD SyncNow = timeGetTime();
-
-			resultRenderOne();
-			if (SyncNow - SyncOld > 3000)
-			{
-				resultPage = PAGE3;
-			}
+			resultPage = PAGE3;
 			break;
 		}
 		case PAGE3:
@@ -227,14 +220,16 @@ void resultControl(void)
 		switch (resultPage)
 		{
 		case PAGE1:
+			g_SoundSuccess = soundsManager.Start("DRUM", false) && g_SoundSuccess;
 			resultPage = PAGE2;
 			break;
 		case PAGE2:
+		{
 			resultPage = PAGE3;
 			break;
+		}
 		case PAGE3:
 			resultPage = PAGE1;
-			isFirst = true;
 			if (cursorResult.y < 500) {
 				g_gameScene = FLOAMOVE;
 				g_scene = SCENE_MAIN;

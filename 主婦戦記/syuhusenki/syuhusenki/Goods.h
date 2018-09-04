@@ -1,6 +1,8 @@
 #ifndef GOODS_H
 #define GOODS_H
 
+#include "Main.h"
+
 #define RARE1 100
 #define RARE2 300
 #define RARE3 500
@@ -60,7 +62,8 @@ enum GOODSSORTING
 	SEAFOOD_SORT,
 	SWEET_SORT,
 	FRUIT_SORT,
-	DRINK_SORT
+	DRINK_SORT,
+	SORT_MAX
 };
 struct GOODSPARAMETER 
 {
@@ -83,17 +86,19 @@ struct COMBOPARAMETER
 	bool comboSucceed;
 };
 
-struct TIMESALEPARAMETER
-{
+struct SALESMAN {
+	CENTRAL_STATE popPositionCentral;
+	int popPosition;
 	int goodsSorting;
 	int merchandise[2];
 };
+
 extern GOODSPARAMETER foodGoods[GOODS_MAX];
 extern COMBOPARAMETER foodCombo[COMBOMAX];
-extern TIMESALEPARAMETER popSales[3];
+extern SALESMAN popSales[3];
 extern int selectedGoods[3];
 
 int comboSucceceCheck(void);
 void comboCheck(int goodsId1, int goodsId2, int goodsId3);
-void selectGoods(TIMESALEPARAMETER* popSales);
+void selectGoods(SALESMAN* popSales);
 #endif

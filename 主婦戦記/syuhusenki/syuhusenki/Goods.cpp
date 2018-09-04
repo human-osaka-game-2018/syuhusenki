@@ -1,7 +1,6 @@
 #include "Goods.h"
-#include "Main.h"
 
-TIMESALEPARAMETER popSales[3];
+SALESMAN popSales[3];
 
 GOODSPARAMETER foodGoods[GOODS_MAX]
 {
@@ -296,7 +295,7 @@ int comboSucceceCheck(void)
 	}
 	return BLANK_COMBO;
 }
-void selectGoods(TIMESALEPARAMETER* popSales)
+void selectGoods(SALESMAN* popSales)
 {
 	int randBuff[2];
 	switch (popSales->goodsSorting)

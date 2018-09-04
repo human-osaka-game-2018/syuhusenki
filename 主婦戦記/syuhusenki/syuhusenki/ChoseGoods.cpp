@@ -21,8 +21,8 @@ void choseGoodsControl() {
 
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
-	CheckKeyState(DIK_A);
-	CheckKeyState(DIK_D);
+	CheckKeyState(DIK_Q);
+	CheckKeyState(DIK_E);
 #ifdef _DEBUG
 
 	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
@@ -30,12 +30,12 @@ void choseGoodsControl() {
 		g_gameScene = PUSHENEMY;
 	}
 #endif
-	if (KeyState[DIK_A] == KeyRelease)
+	if (KeyState[DIK_Q] == KeyRelease)
 	{
 		selectedGoods[g_turn] = popSales[salesChoice].merchandise[0];
 		g_gameScene = PUSHENEMY;
 	}
-	if (KeyState[DIK_D] == KeyRelease)
+	if (KeyState[DIK_E] == KeyRelease)
 	{
 		selectedGoods[g_turn] = popSales[salesChoice].merchandise[1];
 		g_gameScene = PUSHENEMY;

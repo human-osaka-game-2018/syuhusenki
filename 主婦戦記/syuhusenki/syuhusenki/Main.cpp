@@ -15,7 +15,6 @@ unsigned int gameRoop();
 void soundLoad();
 int g_scene = SCENE_TEAMLOGO;
 //int g_scene = SCENE_MAIN;
-//int g_scene = SCENE_SERECTCHARANDSTAGE;
 void render(void);//‰¼
 void control(void);//‰¼
 void gamePad(void);
@@ -111,12 +110,12 @@ unsigned int gameRoop() {
 		break;
 	case SCENE_SERECTCHARANDSTAGE:
 
-		selectControl();
-		selectRender();
-		for (int i = 0; i < 3; i++)
-		{
-			selectedGoods[i] = BLANKGOODS;
-		}
+		//selectControl();
+		//selectRender();
+		//for (int i = 0; i < 3; i++)
+		//{
+		//	selectedGoods[i] = BLANKGOODS;
+		//}
 		break;
 	case SCENE_MAIN:
 		if (g_isTimeUp)
