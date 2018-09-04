@@ -1,0 +1,95 @@
+#include "Main.h"
+#include "FloaMove.h"
+#include "GameMain.h"
+#include "Goods.h"
+#include "Timer.h"
+#include "ChoseGoods.h"
+
+
+int salesChoice;
+
+void choseGoods() {
+	if (g_isGameStart)
+	{
+		choseGoodsControl();
+	}
+	choseGoodsReader();
+}
+void choseGoodsControl() {
+
+	timerControl();
+
+	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_NUMPADENTER);
+	CheckKeyState(DIK_A);
+	CheckKeyState(DIK_D);
+#ifdef _DEBUG
+
+	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
+	{
+		g_gameScene = PUSHENEMY;
+	}
+#endif
+	if (KeyState[DIK_A] == KeyRelease)
+	{
+		selectedGoods[g_turn] = popSales[salesChoice].merchandise[0];
+		g_gameScene = PUSHENEMY;
+	}
+	if (KeyState[DIK_D] == KeyRelease)
+	{
+		selectedGoods[g_turn] = popSales[salesChoice].merchandise[1];
+		g_gameScene = PUSHENEMY;
+	}
+
+	GetControl(0);
+	BottonCheck();
+#ifdef _DEBUG
+
+	if (PadState[ButtonStart] == PadRelease)
+	{
+		g_gameScene = PUSHENEMY;
+	}
+#endif
+	if (PadState[ButtonA] == PadRelease)
+	{
+
+	}
+	if (PadState[ButtonB] == PadRelease)
+	{
+		selectedGoods[g_turn] = popSales[salesChoice].merchandise[1];
+		g_gameScene = PUSHENEMY;
+	}
+	if (PadState[ButtonX] == PadRelease)
+	{
+		selectedGoods[g_turn] = popSales[salesChoice].merchandise[0];
+		g_gameScene = PUSHENEMY;
+	}
+
+}
+void choseGoodsReader() {
+
+	BeginSetTexture();
+	CreateSquareVertex(playerHit, playerCentralHit);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);
+
+	EasyCreateSquareVertexColor(0, 0, WIDTH, HEIGHT, HARFCLEAR, BLANK);
+
+	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
+	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
+
+
+	for (int i = 0; i < 5; i++) {
+		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
+		SetUpTexture(mobFloa, mobTexNum);
+	}
+	SetUpTexture(playerHit, texturePC);
+	EasyCreateSquareVertex(350, 150, 600, 400, foodGoods[popSales[salesChoice].merchandise[0]].textureID);
+	EasyCreateSquareVertex(660, 150, 910, 400, foodGoods[popSales[salesChoice].merchandise[1]].textureID);
+	EasyCreateSquareVertex(350, 350, 600, 500, X_TEX);
+	EasyCreateSquareVertex(660, 350, 910, 500, B_TEX);
+
+	goodsScoreShow();
+	timerRender();
+	EndSetTexture();
+
+}

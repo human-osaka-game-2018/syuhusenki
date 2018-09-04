@@ -21,22 +21,34 @@ enum GAMESCENE {
 	CHOSEGOODS,
 	PUSHENEMY,
 	PICKGOODS,
-#ifdef _DEBUG
-	TESTSCENE,
-#endif
 };
 
-enum FLOA {
-	FOOD,
-	CLOTH
-};
+
+extern int comandInput[5];
+extern int comandPresentment[5];
+extern int comandCount;
+extern int checkedComand;
+extern int rushButtonShow;
 
 extern bool g_isFirst;
 extern int texturePC;
-extern int g_selectFloa;
 extern int g_gameScene;
-extern SoundEffect Button;
+extern int g_effectCount;
 extern int g_turn;
+extern float mobRad;
+extern int mobTexNum;
+
+extern CUSTOMVERTEX playerHit[4];
+extern CENTRAL_STATE playerCentralHit;
+//ƒ‚ƒu‚Ì‰æ‘œ’¸“_
+extern CUSTOMVERTEX mobFloa[4];
+extern CENTRAL_STATE mobCentralFloa;
+extern CENTRAL_STATE mobCentralBlowOff[5];
+
+extern SoundEffect Button;
+extern SoundEffect Button;
+extern SoundEffect Pick;
+
 void gameMain();
 void goodsScoreShow();
 void buttonSE(SoundEffect Button, int SoundNumber);

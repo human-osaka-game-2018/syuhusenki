@@ -46,7 +46,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	ReadInTexture("Texture/Isoko.png",ISOKO_TEX);
 	ReadInTexture("Texture/selectFrame.png",SELECTFRAME_TEX);
 	ReadInTexture("Texture/lastCheck.png",SELECTLASTCHECK_TEX);
-	ReadInTexture("Texture/arrow.png", TITLEICON_TEX);
+	ReadInTexture("Texture/UI/arrow.png", TITLEICON_TEX);
 	ReadInTexture("Texture/calculation2", RESULT_BG_TEX);
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);

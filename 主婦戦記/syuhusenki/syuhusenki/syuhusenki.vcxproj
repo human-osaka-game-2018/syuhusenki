@@ -19,21 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BlowOff.cpp" />
+    <ClCompile Include="ChoseGoods.cpp" />
     <ClCompile Include="FloaMove.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Goods.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PickGoods.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlowOff.h" />
+    <ClInclude Include="ChoseGoods.h" />
     <ClInclude Include="DirectX_LIB\DirectX_LIB\TrialEnums.h" />
     <ClInclude Include="FloaMove.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Goods.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="PickGoods.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Timer.h" />
