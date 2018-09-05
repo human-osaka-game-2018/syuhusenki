@@ -32,6 +32,8 @@ int PCtv = 0;
 CUSTOMVERTEX PC[4];
 void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[]);
 bool mobMovedRight[3];
+void mobToPCContact(CENTRAL_STATE* charctor, CENTRAL_STATE mobCentralFloa[]);
+
 enum MOBDIRECTION {
 	NORTH,
 	SOUTH,
@@ -66,7 +68,7 @@ SoundEffect Pick{ "PICK1", "PICK2","PICK3", "PICK4","PICK5", "PICK6" , "PICK7" ,
 CUSTOMVERTEX mobFloa[4];
 CENTRAL_STATE mobCentralFloa[3]
 { 
-	{ 1161,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE } ,
+	{ 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE } ,
 	{ 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE }
 
@@ -752,6 +754,7 @@ void playerControl(int* onceSound)
 			g_inCount++;
 		}
 	}
+	mobToPCContact(&g_PCSta, mobCentralFloa);
 	collisionM(&g_PCSta, g_prevPCSta);
 	g_prevPCSta = g_PCSta;
 }
@@ -782,9 +785,9 @@ void collisionM(CENTRAL_STATE* charctor, CENTRAL_STATE prevcentral)
 
 	//商品棚
 	//ジュース1
-	if (charctor->x <= 120.f && charctor->y <= 555.f&& charctor->y >= 185.f)
+	if (charctor->x <= 100.f && charctor->y <= 555.f&& charctor->y >= 185.f)
 	{
-		charctor->x = 120.f;
+		charctor->x = 100.f;
 	}
 	//肉
 	if (charctor->x >= 125.f && charctor->x <= 640.f&& charctor->y <= 155.f)
@@ -797,9 +800,9 @@ void collisionM(CENTRAL_STATE* charctor, CENTRAL_STATE prevcentral)
 		charctor->y = 155.f;
 	}
 	//野菜1
-	if (charctor->x >= 1161.f && charctor->y <= 615.f&& charctor->y >= 165.f)
+	if (charctor->x >= 1200.f && charctor->y <= 615.f&& charctor->y >= 165.f)
 	{
-		charctor->x = 1161.f;
+		charctor->x = 1200.f;
 	}
 	//果実2
 	MoveOutToErea(charctor, prevcentral, 786, 420, 1016, 575);
@@ -816,9 +819,9 @@ void collisionM(CENTRAL_STATE* charctor, CENTRAL_STATE prevcentral)
 	//おやつ2-1
 	MoveOutToErea(charctor, prevcentral, 135, 170, 250, 320);
 	//おやつ2-2
-	MoveOutToErea(charctor, prevcentral, 135, 320, 665, 400);
+	MoveOutToErea(charctor, prevcentral, 135, 320, 600, 400);
 	//おやつ3
-	MoveOutToErea(charctor, prevcentral, 135, 429, 439, 590);
+	MoveOutToErea(charctor, prevcentral, 135, 430, 420, 590);
 
 }
 void leachedGondolaCheck(int* leschgondola,SALESMAN popSales[], int whergondola)
@@ -875,8 +878,7 @@ int salesmanToPCCollision(CENTRAL_STATE central, SALESMAN popSales[])
 {
 	for (int i = 0; i < 3; i++)
 	{
-		if ((central.x <= popSales[i].popPositionCentral.x + popSales[i].popPositionCentral.scaleX) && (popSales[i].popPositionCentral.x - popSales[i].popPositionCentral.scaleX <= central.x )
-			&& (central.y <= popSales[i].popPositionCentral.y + popSales[i].popPositionCentral.scaleY) && (popSales[i].popPositionCentral.y - popSales[i].popPositionCentral.scaleY <= central.y))
+		if (BtoBContact(&central,&popSales[i].popPositionCentral))
 		{
 			return popSales[i].goodsSorting;
 		}
@@ -906,7 +908,7 @@ void floaMoveRenderM()
 //ゲーム画面のテクスチャ
 void floaMoveRenderStaM()
 {
-	EasyCreateSquareVertex(0, 0, WIDTH, 680, FLOAMOVE_BG_TEX);
+	EasyCreateSquareVertex(0, 100, WIDTH, 680, FLOAMOVE_BG_TEX);
 
 	CUSTOMVERTEX startCount[4];
 	CUSTOMVERTEX start[4];
@@ -930,8 +932,8 @@ void floaMoveRenderStaM()
 
 	for (int i = 0; i < 3; i++)
 	{
-		CreateSquareVertex(salesmans, popSales[i].popPositionCentral);
-		SetUpTexture(salesmans, SALESMAN_TEX);
+		CreateSquareVertex/*Color*/(salesmans, popSales[i].popPositionCentral/*,0xaf999999*/);
+		SetUpTexture(salesmans, SALESMAN_TEX/*BLANK*/);
 	}
 
 	//プレイヤーキャラクターのテクスチャの描画
@@ -970,13 +972,13 @@ enum SALESPOSITION
 	POS_MEET,
 	POS_VEGETABLE1,
 	POS_VEGETABLE2,
-	POS_SEAFOOD,
+	POS_SEAFOOD1,
+	POS_SEAFOOD2,
 	POS_SWEET1,
 	POS_SWEET2,
 	POS_SWEET3,
 	POS_DRINK1,
 	POS_DRINK2,
-	POS_DRINK3,
 	POS_FRUIT1,
 	POS_FRUIT2,
 	POS_FRUIT3,
@@ -1004,24 +1006,49 @@ void salesmanPoping(SALESMAN popSales[])
 				popSales[i].popPosition = POS_VEGETABLE2;
 				break;
 			case 2:
-				if (rand() % 2) {
+				if (rand() % 2)
+				{
 					popSales[i].popPositionCentral = { 1089,400,75,75 };
 					popSales[i].popPosition = POS_VEGETABLE2;
 				}
-				else popSales[i].popPositionCentral = { 1190,360,75,75 };
-				popSales[i].popPosition = POS_VEGETABLE1;
+				else
+				{
+					popSales[i].popPositionCentral = { 1190,360,75,75 };
+					popSales[i].popPosition = POS_VEGETABLE1;
+				}
 				break;
 			}
 			continue;
 		case SEAFOOD_SORT:
-			popSales[i].popPositionCentral = { 800,120,75,75 };
-			popSales[i].popPosition = POS_SEAFOOD;
+			switch (i)
+			{
+			case 0:
+				popSales[i].popPositionCentral = { 800,120,75,75 };
+				popSales[i].popPosition = POS_SEAFOOD1;
+				break;
+			case 1:
+				popSales[i].popPositionCentral = { 875,210,75,75 };
+				popSales[i].popPosition = POS_SEAFOOD2;
+				break;
+			case 2:
+				if (rand() % 2)
+				{
+					popSales[i].popPositionCentral = { 875,210,75,75 };
+					popSales[i].popPosition = POS_SEAFOOD2;
+				}
+				else
+				{
+					popSales[i].popPositionCentral = { 800,120,75,75 };
+					popSales[i].popPosition = POS_SEAFOOD1;
+				}
+				break;
+			}
 			continue;
 		case SWEET_SORT:
 			switch (i)
 			{
 			case 0:
-				popSales[i].popPositionCentral = { 390,230,75,75 };
+				popSales[i].popPositionCentral = { 410,260,75,75 };
 				popSales[i].popPosition = POS_SWEET1;
 				break;
 			case 1:
@@ -1038,21 +1065,23 @@ void salesmanPoping(SALESMAN popSales[])
 			switch (i)
 			{
 			case 0:
-				popSales[i].popPositionCentral = { 550,510,100,100 };
+				popSales[i].popPositionCentral = { 610,531,200,150 };
 				popSales[i].popPosition = POS_FRUIT1;
 				break;
 			case 1:
-				popSales[i].popPositionCentral = { 850,490,100,100 };
+				popSales[i].popPositionCentral = { 917,512,100,100 };
 				popSales[i].popPosition = POS_FRUIT2;
 				break;
 			case 2:
 				if (rand() % 2) {
-					popSales[i].popPositionCentral = { 850,490,100,100 };
+					popSales[i].popPositionCentral = { 917,512,100,100 };
 					popSales[i].popPosition = POS_FRUIT2;
 				}
-				else popSales[i].popPositionCentral = { 550,510,100,100 };
-				popSales[i].popPosition = POS_FRUIT1;
-				break;
+				else
+				{
+					popSales[i].popPositionCentral = { 610,531,200,150 };
+					popSales[i].popPosition = POS_FRUIT1;
+				}
 				break;
 			}
 			continue;
@@ -1062,32 +1091,38 @@ void salesmanPoping(SALESMAN popSales[])
 			case 0:
 				popSales[i].popPositionCentral = { 70,450,75,75 };
 				popSales[i].popPosition = POS_DRINK1;
-				break;	 
-			case 1:		 
-				popSales[i].popPositionCentral = { 700,210,75,75 };
-				popSales[i].popPosition = POS_DRINK2;
-				break;	 
-			case 2:		 
+				break;
+			case 1:
 				popSales[i].popPositionCentral = { 820,360,100,100 };
-				popSales[i].popPosition = POS_DRINK3;
+				popSales[i].popPosition = POS_DRINK2;
+				break;
+			case 2:
+				if (rand() % 2) {
+					popSales[i].popPositionCentral = { 820,360,100,100 };
+					popSales[i].popPosition = POS_DRINK2;
+				}
+				else
+				{
+					popSales[i].popPositionCentral = { 70,450,75,75 };
+					popSales[i].popPosition = POS_DRINK1;
+				}
 				break;
 			}
 			continue;
 		}
 	}
 }
-
 void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 {
 	if (!BtoBContact(&mobCentralFloa[0], &g_PCSta))
 	{
-		if (mobCentralFloa[0].x <= 125)
+		if (mobCentralFloa[0].x <= 100)
 		{
 			mobCentralFloa[0].y -= 3;
 			mobMovedRight[0] = false;
 
 		}
-		if (mobCentralFloa[0].x >= 1161)
+		if (mobCentralFloa[0].x >= 1200)
 		{
 			mobCentralFloa[0].y += 3;
 			mobMovedRight[0] = true;
@@ -1133,11 +1168,11 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		switch (rand() % 5)
 		{
 		case NORTH:
-			mobCentralFloa[2].y -= 1;
+			mobCentralFloa[2].y -= 1.5f;
 			mobMovedRight[2] = true;
 			break;
 		case SOUTH:
-			mobCentralFloa[2].y += 1;
+			mobCentralFloa[2].y += 1.5f;
 			mobMovedRight[2] = false;
 			break;
 		case EAST:
@@ -1151,7 +1186,34 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		default:
 			break;
 		}
-		collisionM(&mobCentralFloa[1], prevcentral[1]);
+		collisionM(&mobCentralFloa[2], prevcentral[2]);
 	}
 
+}
+
+void mobToPCContact(CENTRAL_STATE* charctor, CENTRAL_STATE mobCentralFloa[])
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if ((charctor->x <= mobCentralFloa[i].x + mobCentralFloa[i].scaleX) && (mobCentralFloa[i].x <= charctor->x + charctor->scaleX)
+			&& (charctor->y <= mobCentralFloa[i].y + mobCentralFloa[i].scaleY) && (mobCentralFloa[i].y <= charctor->y + charctor->scaleY)) {
+
+			if ((charctor->x <= mobCentralFloa[i].x + mobCentralFloa[i].scaleX))
+			{
+				charctor->x = mobCentralFloa[i].x + mobCentralFloa[i].scaleX;
+			}
+			if ((charctor->x >= mobCentralFloa[i].x - mobCentralFloa[i].scaleX))
+			{
+				charctor->x = mobCentralFloa[i].x - mobCentralFloa[i].scaleX;
+			}
+			if ((charctor->y <= mobCentralFloa[i].y + mobCentralFloa[i].scaleY))
+			{
+				charctor->y = mobCentralFloa[i].y + mobCentralFloa[i].scaleY;
+			}
+			if ((charctor->y >= mobCentralFloa[i].y - mobCentralFloa[i].scaleY))
+			{
+				charctor->y = mobCentralFloa[i].y - mobCentralFloa[i].scaleY;
+			}
+		}
+	}
 }
