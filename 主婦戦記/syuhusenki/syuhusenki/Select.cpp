@@ -11,11 +11,11 @@ CENTRAL_STATE g_stageSelectFrameSta = { 269.f,480.f,140.f,120.f };
 CENTRAL_STATE g_selectCharSta = { 1050.f, 270.f, 230.f, 230.f };
 CENTRAL_STATE g_lastCheckSta = { 500.f, 390.f,20.f,20.f };
 
-int g_inCount = 0;
-
-bool g_pause = false;
-bool g_isGameStart = false;
-bool g_isTimeUp = false;
+//int g_inCount = 0;
+//
+//bool g_pause = false;
+//bool g_isGameStart = false;
+//bool g_isTimeUp = false;
 bool g_isNextSelect = false;
 bool g_isLastCheck = false;
 
@@ -64,7 +64,6 @@ VOID selectControl(VOID)
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("SELECT");
-			g_selectFloa = FOOD;
 			g_isLastCheck = true;
 			g_inCount++;
 		}
