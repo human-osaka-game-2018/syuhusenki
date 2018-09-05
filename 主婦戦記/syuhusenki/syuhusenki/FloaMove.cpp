@@ -12,11 +12,11 @@ CHARACTER_STATE g_mitukoSta = { 2, 1.5f, 1.25 };
 //イソ子のステータス
 CHARACTER_STATE g_isokoSta = { 2, 2.f, 1 };
 
-CENTRAL_STATE g_PCSta = { 900.f, 580.f, 32.f, 53.f };
-CENTRAL_STATE g_startCountSta = { 520.f, 350.f, 150.f, 150.f };
-CENTRAL_STATE g_startSta = { 520.f, 350.f, 200.f, 96.25f };
-
-FLOAT g_PCSpeed = 0.f;
+//CENTRAL_STATE g_PCSta = { 900.f, 580.f, 32.f, 53.f };
+//CENTRAL_STATE g_startCountSta = { 520.f, 350.f, 150.f, 150.f };
+//CENTRAL_STATE g_startSta = { 520.f, 350.f, 200.f, 96.25f };
+//
+//FLOAT g_PCSpeed = 0.f;
 
 //ゲーム制御処理
 VOID floaMoveControl(VOID)
