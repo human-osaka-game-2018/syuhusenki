@@ -263,6 +263,9 @@ void soundLoad() {
 	g_SoundSuccess = soundsManager.AddFile("Sound/madam.mp3", "WISDOM") && g_SoundSuccess;
 	g_SoundSuccess = soundsManager.AddFile("Sound/cutin.mp3", "CUTIN") && g_SoundSuccess;
 	g_SoundSuccess = soundsManager.AddFile("Sound/tin1.mp3", "LOW_SCORE") && g_SoundSuccess;
+	g_SoundSuccess = soundsManager.AddFile("Sound/people.mp3", "MIDLE_SCORE") && g_SoundSuccess;
+	g_SoundSuccess = soundsManager.AddFile("Sound/people2.mp3", "HIGH_SCORE") && g_SoundSuccess;
+
 	g_SoundSuccess = soundsManager.AddFile("Sound/sound.mp3", "LOGO") && g_SoundSuccess;
 	g_SoundSuccess = soundsManager.AddFile("Sound/cash.mp3", "CASHER") && g_SoundSuccess;
 	g_SoundSuccess = soundsManager.AddFile("Sound/drum roll.mp3", "DRUM") && g_SoundSuccess;

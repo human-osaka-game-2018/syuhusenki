@@ -108,10 +108,12 @@ void result()
 				}
 				if (LOW_SCORE <= (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) <= HIGH_SCORE)
 				{
+					g_SoundSuccess = soundsManager.Start("MIDLE_SCORE", false) && g_SoundSuccess;
 
 				}
 				if (HIGH_SCORE < (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus))
 				{
+					g_SoundSuccess = soundsManager.Start("HIGH_SCORE", false) && g_SoundSuccess;
 
 				}
 			}
