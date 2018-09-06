@@ -1118,6 +1118,7 @@ void salesmanPoping(SALESMAN popSales[])
 }
 void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 {
+	static int collisionCount[3] = { 0,0,0 };
 	if (!BtoBContact(&mobCentralFloa[0], &g_PCSta))
 	{
 		if (mobCentralFloa[0].x <= 100)
@@ -1144,6 +1145,36 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 
 		}
 	}
+	else
+	{
+		collisionCount[0]++;
+		if (collisionCount[0] > 30)
+		{
+			if (mobCentralFloa[0].x <= 100)
+			{
+				mobCentralFloa[0].y += 5;
+				mobMovedRight[0] = false;
+
+			}
+			if (mobCentralFloa[0].x >= 1200)
+			{
+				mobCentralFloa[0].y -= 5;
+				mobMovedRight[0] = true;
+			}
+			if (mobCentralFloa[0].y >= 630)
+			{
+				mobCentralFloa[0].x += 6;
+				mobMovedRight[0] = true;
+
+			}
+			if (mobCentralFloa[0].y <= 165)
+			{
+				mobCentralFloa[0].x -= 6;
+				mobMovedRight[0] = false;
+			}
+			collisionCount[0] = 0;
+		}
+	}
 	if (!BtoBContact(&mobCentralFloa[1], &g_PCSta))
 	{
 		switch (rand() % 4)
@@ -1165,7 +1196,17 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 			mobMovedRight[1] = false;
 			break;
 		}
-		collisionM(&mobCentralFloa[1], prevcentral[1]);
+	}
+	else
+	{
+		collisionCount[1]++;
+		if (collisionCount[1] > 30)
+		{
+			mobCentralFloa[1].y += 5;
+			mobCentralFloa[1].x += 5;
+
+		collisionCount[1] = 0;
+		}
 	}
 	if (!BtoBContact(&mobCentralFloa[2], &g_PCSta))
 	{
@@ -1190,9 +1231,20 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		default:
 			break;
 		}
-		collisionM(&mobCentralFloa[2], prevcentral[2]);
+		
 	}
-
+	else
+	{
+		collisionCount[2]++;
+		if (collisionCount[2] > 30)
+		{
+			mobCentralFloa[2].y += 5;
+			mobCentralFloa[2].x += 5;
+			collisionCount[2] = 0;
+		}
+	}
+	collisionM(&mobCentralFloa[1], prevcentral[1]);
+	collisionM(&mobCentralFloa[2], prevcentral[2]);
 }
 
 void mobToPCContact(CENTRAL_STATE* charctor, CENTRAL_STATE mobCentralFloa[])
