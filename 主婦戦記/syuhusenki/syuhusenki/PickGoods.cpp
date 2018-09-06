@@ -51,8 +51,6 @@ void pickGoodsRender() {
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);
 
 	EasyCreateSquareVertexColor(0, 0, WIDTH, HEIGHT, HARFCLEAR, BLANK);
-	EasyCreateSquareVertex(490, 300, 890, 760, BOX_TEX);
-	EasyCreateSquareVertex(560, 300, 960, 760, BOX_TEX);
 
 	for (int i = 0; i < 5; i++) {
 		CreateSquareVertex(mobFloa, mobCentralBlowOff[i]);
