@@ -921,6 +921,8 @@ void floaMoveRenderM()
 
 	EndSetTexture();
 }
+
+//ゲーム画面のテクスチャ
 void floaMoveRenderStaM()
 {
 	EasyCreateSquareVertex(0, 100, WIDTH, 680, FLOAMOVE_BG_TEX);
@@ -985,8 +987,6 @@ void floaMoveRenderStaM()
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, PAUSE_TEX);
 	}
 }
-
-//ゲーム画面のテクスチャ
 void salesmanPoping(SALESMAN popSales[])
 {
 	for (int i = 0; i < 3; i++)
