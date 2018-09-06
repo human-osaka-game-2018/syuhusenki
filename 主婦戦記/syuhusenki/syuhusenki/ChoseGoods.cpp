@@ -23,13 +23,6 @@ void choseGoodsControl() {
 	CheckKeyState(DIK_NUMPADENTER);
 	CheckKeyState(DIK_Q);
 	CheckKeyState(DIK_E);
-#ifdef _DEBUG
-
-	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease)
-	{
-		g_gameScene = PUSHENEMY;
-	}
-#endif
 	if (KeyState[DIK_Q] == KeyRelease)
 	{
 		selectedGoods[g_turn] = popSales[salesChoice].merchandise[0];
@@ -43,13 +36,6 @@ void choseGoodsControl() {
 
 	GetControl(0);
 	BottonCheck();
-#ifdef _DEBUG
-
-	if (PadState[ButtonStart] == PadRelease)
-	{
-		g_gameScene = PUSHENEMY;
-	}
-#endif
 	if (PadState[ButtonA] == PadRelease)
 	{
 
