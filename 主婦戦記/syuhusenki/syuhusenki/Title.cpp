@@ -109,7 +109,7 @@ VOID titleRenderSta(VOID)
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TITLE_TEX);
 
 	CUSTOMVERTEX selectArrow[4];
-	CreateSquareVertex(selectArrow, g_selectArrowSta);
+	CreateSquareVertexColor(selectArrow, g_selectArrowSta, g_cursolColor);
 
 	//タイトル矢印テクスチャの生成
 	SetUpTexture(selectArrow, TITLEICON_TEX);

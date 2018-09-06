@@ -411,7 +411,7 @@ void resultRenderTwo(void)
 void resultRenderThree(void)
 {
 	CUSTOMVERTEX cursor[4];
-	CreateSquareVertex(cursor, cursorResult);
+	CreateSquareVertexColor(cursor, cursorResult, g_cursolColor);
 	EasyCreateSquareVertex(50, 450, 500, 600, RESULT_END_TEX);
 	SetUpTexture(cursor, TITLEICON_TEX);
 }

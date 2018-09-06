@@ -64,6 +64,7 @@ VOID selectControl(VOID)
 		{
 			soundsManager.Start("BUTTON1", false);
 			soundsManager.Stop("SELECT");
+			//g_selectFloa = FOOD;
 			g_isLastCheck = true;
 			g_inCount++;
 		}
