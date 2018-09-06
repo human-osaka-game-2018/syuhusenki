@@ -1056,7 +1056,7 @@ void salesmanPoping(SALESMAN popSales[])
 				popSales[i].popPosition = POS_SWEET1;
 				break;
 			case 1:
-				popSales[i].popPositionCentral = { 270,330,50,50 };
+				popSales[i].popPositionCentral = { 270,360,60,60 };
 				popSales[i].popPosition = POS_SWEET2;
 				break;
 			case 2:

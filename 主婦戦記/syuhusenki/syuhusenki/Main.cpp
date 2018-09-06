@@ -19,7 +19,7 @@ void render(void);//‰¼
 void control(void);//‰¼
 void gamePad(void);
 
-
+DWORD g_cursolColor = 0xffffffff;
 
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdShow) {
 	HWND hWnd = NULL;
@@ -81,8 +81,22 @@ unsigned int gameRoop() {
 		}
 		g_scene = SCENE_RESULT;
 	}
+	static bool clearCursol = false;
+	if (!clearCursol) {
+		g_cursolColor -= 2 << 24;
+	}
+	if (clearCursol) {
+		g_cursolColor += 2 << 24;
+	}
 
-
+	if (g_cursolColor == (0xffffffff))
+	{
+		clearCursol = true;
+	}
+	if (g_cursolColor <= (0xffffff))
+	{
+		clearCursol = false;
+	}
 
 	switch (g_scene) {
 	case SCENE_TEAMLOGO:
