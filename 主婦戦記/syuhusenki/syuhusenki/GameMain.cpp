@@ -125,11 +125,11 @@ void gameMain() {
 			ReadInTexture("Texture/scoretext/ss180e.png", S_HUNDREDEIGHTY_TEX);
 			ReadInTexture("Texture/scoretext/ss200e.png", S_TWEHUNDRED_TEX );
 
-			ReadInTexture("Texture/scoretext/st1.png", T_1);
-			ReadInTexture("Texture/scoretext/st2.png", T_2);
-			ReadInTexture("Texture/scoretext/st3.png", T_3);
-			ReadInTexture("Texture/scoretext/st4.png", T_4);
-			ReadInTexture("Texture/scoretext/st5.png", T_5);
+			ReadInTexture("Texture/scoretext/t1.png", T_1);
+			ReadInTexture("Texture/scoretext/t2.png", T_2);
+			ReadInTexture("Texture/scoretext/t3.png", T_3);
+			ReadInTexture("Texture/scoretext/t4.png", T_4);
+			ReadInTexture("Texture/scoretext/t5.png", T_5);
 
 			ReadInTexture("Texture/button/a.png", A_TEX);
 			ReadInTexture("Texture/button/b.png", B_TEX);

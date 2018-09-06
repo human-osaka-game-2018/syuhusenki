@@ -9,7 +9,7 @@
 #define HURRY_TIME (20*60)
 
 CENTRAL_STATE g_timerSta = { 1210.f, 50.f, 50.f, 50.f };
-CENTRAL_STATE g_timeUpSta = { 520.f, 350.f, 260.f, 100.f };
+CENTRAL_STATE g_timeUpSta = { WIDTH/2, HEIGHT/2, 260.f, 100.f };
 bool g_timeDeadline = false;
 int g_timerCount = 0;
 
