@@ -33,6 +33,23 @@ CUSTOMVERTEX PC[4];
 void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[]);
 bool mobMovedRight[3];
 void mobToPCContact(CENTRAL_STATE* charctor, CENTRAL_STATE mobCentralFloa[]);
+enum SALESPOSITION
+{
+	POS_MEET,
+	POS_VEGETABLE1,
+	POS_VEGETABLE2,
+	POS_SEAFOOD1,
+	POS_SEAFOOD2,
+	POS_SWEET1,
+	POS_SWEET2,
+	POS_SWEET3,
+	POS_DRINK1,
+	POS_DRINK2,
+	POS_FRUIT1,
+	POS_FRUIT2,
+	POS_FRUIT3,
+	POS_NOTING
+};
 
 enum MOBDIRECTION {
 	NORTH,
@@ -333,7 +350,7 @@ void goodsScoreShow()
 
 	char goodsNumBuff[10];
 	EasyCreateSquareVertex(10, 0, 1260, 90, FRAME_TEX);
-	if (!g_timeDeadline) 
+	if (!g_timeDeadline && g_isGameStart) 
 	{
 		switch (g_gameScene)
 		{
@@ -807,7 +824,7 @@ void collisionM(CENTRAL_STATE* charctor, CENTRAL_STATE prevcentral)
 	//果実2
 	MoveOutToErea(charctor, prevcentral, 786, 420, 1016, 575);
 	//野菜2
-	MoveOutToErea(charctor, prevcentral, 1029, 213, 1152, 565);
+	MoveOutToErea(charctor, prevcentral, 1035, 213, 1152, 565);
 	//ジュース2
 	MoveOutToErea(charctor, prevcentral, 640, 170, 1152, 250);
 	//ジュース3
@@ -878,11 +895,12 @@ int salesmanToPCCollision(CENTRAL_STATE central, SALESMAN popSales[])
 {
 	for (int i = 0; i < 3; i++)
 	{
-		if (BtoBContact(&central,&popSales[i].popPositionCentral))
+		if (BtoBContact(&central, &popSales[i].popPositionCentral))
 		{
-			return popSales[i].goodsSorting;
+			return popSales[i].popPosition;
 		}
 	}
+	return POS_NOTING;
 }
 //ゲーム描画処理
 void floaMoveRenderM()
@@ -930,12 +948,15 @@ void floaMoveRenderStaM()
 		else SetUpTexture(salesmans, BOY_TEX);
 	}
 
-	for (int i = 0; i < 3; i++)
-	{
-		CreateSquareVertex/*Color*/(salesmans, popSales[i].popPositionCentral/*,0xaf999999*/);
-		SetUpTexture(salesmans, SALESMAN_TEX/*BLANK*/);
-	}
 
+	if (g_isGameStart)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			CreateSquareVertex/*Color*/(salesmans, popSales[i].popPositionCentral/*,0xaf999999*/);
+			SetUpTexture(salesmans, SALESMAN_TEX/*BLANK*/);
+		}
+	}
 	//プレイヤーキャラクターのテクスチャの描画
 	SetUpTexture(PC, COMBINED_YASUKO_TEX);
 	goodsScoreShow();
@@ -967,23 +988,6 @@ void floaMoveRenderStaM()
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, PAUSE_TEX);
 	}
 }
-enum SALESPOSITION
-{
-	POS_MEET,
-	POS_VEGETABLE1,
-	POS_VEGETABLE2,
-	POS_SEAFOOD1,
-	POS_SEAFOOD2,
-	POS_SWEET1,
-	POS_SWEET2,
-	POS_SWEET3,
-	POS_DRINK1,
-	POS_DRINK2,
-	POS_FRUIT1,
-	POS_FRUIT2,
-	POS_FRUIT3,
-
-};
 void salesmanPoping(SALESMAN popSales[])
 {
 	for (int i = 0; i < 3; i++)
@@ -1002,13 +1006,13 @@ void salesmanPoping(SALESMAN popSales[])
 				popSales[i].popPosition = POS_VEGETABLE1;
 				break;
 			case 1:
-				popSales[i].popPositionCentral = { 1089,400,75,75 };
+				popSales[i].popPositionCentral = { 1095,400,90,75 };
 				popSales[i].popPosition = POS_VEGETABLE2;
 				break;
 			case 2:
 				if (rand() % 2)
 				{
-					popSales[i].popPositionCentral = { 1089,400,75,75 };
+					popSales[i].popPositionCentral = { 1095,400,90,75 };
 					popSales[i].popPosition = POS_VEGETABLE2;
 				}
 				else
@@ -1048,7 +1052,7 @@ void salesmanPoping(SALESMAN popSales[])
 			switch (i)
 			{
 			case 0:
-				popSales[i].popPositionCentral = { 410,260,75,75 };
+				popSales[i].popPositionCentral = { 410,230,75,90 };
 				popSales[i].popPosition = POS_SWEET1;
 				break;
 			case 1:
@@ -1056,7 +1060,7 @@ void salesmanPoping(SALESMAN popSales[])
 				popSales[i].popPosition = POS_SWEET2;
 				break;
 			case 2:
-				popSales[i].popPositionCentral = { 270,510,100,100 };
+				popSales[i].popPositionCentral = { 270,550,100,100 };
 				popSales[i].popPosition = POS_SWEET3;
 				break;
 			}
@@ -1065,7 +1069,7 @@ void salesmanPoping(SALESMAN popSales[])
 			switch (i)
 			{
 			case 0:
-				popSales[i].popPositionCentral = { 610,531,200,150 };
+				popSales[i].popPositionCentral = { 610,540,170,80 };
 				popSales[i].popPosition = POS_FRUIT1;
 				break;
 			case 1:
@@ -1079,7 +1083,7 @@ void salesmanPoping(SALESMAN popSales[])
 				}
 				else
 				{
-					popSales[i].popPositionCentral = { 610,531,200,150 };
+					popSales[i].popPositionCentral = { 610,540,170,80 };
 					popSales[i].popPosition = POS_FRUIT1;
 				}
 				break;
@@ -1089,7 +1093,7 @@ void salesmanPoping(SALESMAN popSales[])
 			switch (i)
 			{
 			case 0:
-				popSales[i].popPositionCentral = { 70,450,75,75 };
+				popSales[i].popPositionCentral = { 65,450,75,100 };
 				popSales[i].popPosition = POS_DRINK1;
 				break;
 			case 1:
@@ -1217,3 +1221,4 @@ void mobToPCContact(CENTRAL_STATE* charctor, CENTRAL_STATE mobCentralFloa[])
 		}
 	}
 }
+
