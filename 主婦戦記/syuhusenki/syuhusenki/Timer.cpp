@@ -54,7 +54,7 @@ VOID timerControl(VOID)
 			g_timerCount = 0;
 			g_SoundSuccess = soundsManager.Stop("HURRY_UP") && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.SetVolume("HURRY_UP", 100) && g_SoundSuccess;
-
+			comandCount = 0;
 
 			g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
 			g_isGameStart = false;
