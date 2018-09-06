@@ -27,37 +27,40 @@ VOID timerControl(VOID)
 		soundsManager.Start("WHISYLE", false);
 
 	}
-
-	if ((Limit_frame + THREE_SECOND) - g_timerCount == DEADLINE_SECOND)
+	if (g_isGameStart)
 	{
-		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
-		g_SoundSuccess = soundsManager.SetVolume("HURRY_UP",10) && g_SoundSuccess;
+		if ((Limit_frame + THREE_SECOND) - g_timerCount == DEADLINE_SECOND)
+		{
+			g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.SetVolume("HURRY_UP", 10) && g_SoundSuccess;
 
-		g_SoundSuccess = soundsManager.Start("TIME_LIMIT", false) && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("TIME_LIMIT", false) && g_SoundSuccess;
 
-		g_timeDeadline = true;
-	}
-	if ((Limit_frame + THREE_SECOND) - g_timerCount < ONE_SECOND)
-	{
-		g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
+			g_timeDeadline = true;
+		}
+		if ((Limit_frame + THREE_SECOND) - g_timerCount < ONE_SECOND)
+		{
+			g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
 
-	}
-	if ((Limit_frame + THREE_SECOND) - g_timerCount < HURRY_TIME)
-	{
-		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
-		g_SoundSuccess = soundsManager.Start("HURRY_UP", true) && g_SoundSuccess;
-	}
-	if (g_timerCount == THREE_SECOND + Limit_frame)
-	{
-		g_timerCount = 0;
-		g_SoundSuccess = soundsManager.Stop("HURRY_UP") && g_SoundSuccess;
-		g_SoundSuccess = soundsManager.SetVolume("HURRY_UP", 100) && g_SoundSuccess;
+		}
+		if ((Limit_frame + THREE_SECOND) - g_timerCount < HURRY_TIME)
+		{
+			g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.Start("HURRY_UP", true) && g_SoundSuccess;
+		}
+		if (g_timerCount == THREE_SECOND + Limit_frame)
+		{
+			g_SoundSuccess = soundsManager.Start("GONG", false) && g_SoundSuccess;
+			g_timerCount = 0;
+			g_SoundSuccess = soundsManager.Stop("HURRY_UP") && g_SoundSuccess;
+			g_SoundSuccess = soundsManager.SetVolume("HURRY_UP", 100) && g_SoundSuccess;
 
 
-		g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
-
-		g_timeDeadline = false;
-		g_isTimeUp = true;
+			g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
+			g_isGameStart = false;
+			g_timeDeadline = false;
+			g_isTimeUp = true;
+		}
 	}
 }
 

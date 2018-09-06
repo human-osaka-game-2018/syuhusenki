@@ -34,6 +34,10 @@ void result()
 
 	if (isFirst) {
 		setNowLoading();
+		g_SoundSuccess = soundsManager.Stop("HURRY_UP") && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.Stop("FOOD") && g_SoundSuccess;
+		g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
+
 		comboCheck(selectedGoods[0], selectedGoods[1], selectedGoods[2]);
 		succeedCombo = comboSucceceCheck();
 		SetUpFont(25, 20, DEFAULT_CHARSET, NULL, RESULT_FONT);

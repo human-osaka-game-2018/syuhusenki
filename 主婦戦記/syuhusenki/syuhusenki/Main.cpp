@@ -120,7 +120,7 @@ unsigned int gameRoop() {
 	case SCENE_MAIN:
 		if (g_isTimeUp)
 		{
-			g_SoundSuccess = soundsManager.Start("GONG", false) && g_SoundSuccess;
+			//g_SoundSuccess = soundsManager.Start("GONG", false) && g_SoundSuccess;
 			g_isFirst = true;
 			g_isTimeUp = false;
 			g_timerCount = 0;
@@ -136,6 +136,7 @@ unsigned int gameRoop() {
 				break;
 			case 2:
 				g_turn = 0;
+
 				g_scene = SCENE_RESULT;
 				break;
 			}
