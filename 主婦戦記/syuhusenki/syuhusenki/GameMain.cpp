@@ -88,7 +88,6 @@ CENTRAL_STATE mobCentralFloa[3]
 	{ 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE } ,
 	{ 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE }
-
 };
 CENTRAL_STATE prevMobCentralFloa[3];
 CENTRAL_STATE mobCentralBlowOff[5];
@@ -922,8 +921,6 @@ void floaMoveRenderM()
 
 	EndSetTexture();
 }
-
-//ゲーム画面のテクスチャ
 void floaMoveRenderStaM()
 {
 	EasyCreateSquareVertex(0, 100, WIDTH, 680, FLOAMOVE_BG_TEX);
@@ -940,7 +937,7 @@ void floaMoveRenderStaM()
 		{
 			CreateSquareVertexEx(salesmans, mobCentralFloa[i], 1, 0, -1, 1);
 		}
-		else CreateSquareVertexEx(salesmans, mobCentralFloa[i],0,0,1,1);
+		else CreateSquareVertexEx(salesmans, mobCentralFloa[i], 0, 0, 1, 1);
 
 		if (i == 2) {
 			SetUpTexture(salesmans, MOB_TEX);
@@ -988,6 +985,8 @@ void floaMoveRenderStaM()
 		EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, PAUSE_TEX);
 	}
 }
+
+//ゲーム画面のテクスチャ
 void salesmanPoping(SALESMAN popSales[])
 {
 	for (int i = 0; i < 3; i++)
@@ -1190,6 +1189,7 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		default:
 			break;
 		}
+		collisionM(&mobCentralFloa[1], prevcentral[1]);
 		collisionM(&mobCentralFloa[2], prevcentral[2]);
 	}
 
@@ -1221,4 +1221,3 @@ void mobToPCContact(CENTRAL_STATE* charctor, CENTRAL_STATE mobCentralFloa[])
 		}
 	}
 }
-
