@@ -156,6 +156,11 @@ void resultControl(void)
 		}
 		case PAGE3:
 			resultPage = PAGE1;
+			g_PCSta = { 900.f, 580.f, 32.f, 53.f };
+			mobCentralFloa[0]= { 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
+			mobCentralFloa[1] = { 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };			
+			mobCentralFloa[1] = { 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
+
 			if (cursorResult.y < 500) {
 				g_gameScene = FLOAMOVE;
 				g_scene = SCENE_MAIN;
@@ -232,6 +237,11 @@ void resultControl(void)
 		}
 		case PAGE3:
 			resultPage = PAGE1;
+			mobCentralFloa[0] = { 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
+			mobCentralFloa[1] = { 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
+			mobCentralFloa[1] = { 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
+
+			g_PCSta = { 900.f, 580.f, 32.f, 53.f };
 			if (cursorResult.y < 500) {
 				g_gameScene = FLOAMOVE;
 				g_scene = SCENE_MAIN;

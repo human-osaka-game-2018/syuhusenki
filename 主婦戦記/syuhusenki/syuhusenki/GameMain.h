@@ -1,6 +1,7 @@
 #ifndef GAMEMAIN_H
 #define GAMEMAIN_H
 
+#define PLAYER_FLOA_SCALE 50
 
 struct SoundEffect {
 	const char SE1[20];
