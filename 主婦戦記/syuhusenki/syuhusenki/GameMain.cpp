@@ -533,8 +533,8 @@ int editMerchandise(int seleChoice,int arrayNum)
 CENTRAL_STATE g_PCSta = { 900.f, 580.f, 32.f, 53.f };
 CENTRAL_STATE g_prevPCSta;
 
-CENTRAL_STATE g_startCountSta = { 520.f, 350.f, 150.f, 150.f };
-CENTRAL_STATE g_startSta = { 520.f, 350.f, 200.f, 96.25f };
+CENTRAL_STATE g_startCountSta = { WIDTH / 2, HEIGHT / 2, 150.f, 150.f };
+CENTRAL_STATE g_startSta = { WIDTH / 2, HEIGHT / 2, 200.f, 96.25f };
 
 FLOAT g_PCSpeed = 2.f;
 
