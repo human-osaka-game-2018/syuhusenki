@@ -24,7 +24,7 @@ void titleControl(void)
 		g_SoundSuccess = soundsManager.Start("OP_BGM", true) && g_SoundSuccess;
 	}
 
-	if (g_Xinput.Gamepad.wButtons == 0 && GetAnalogLValue(ANALOG_X) <= 6000 && GetAnalogLValue(ANALOG_X) >= -6000)
+	if (g_Xinput.Gamepad.wButtons == 0 && GetAnalogLValue(ANALOG_Y) <= 6000 && GetAnalogLValue(ANALOG_Y) >= -6000)
 	{
 		g_inCount = 0;
 	}
@@ -36,16 +36,23 @@ void titleControl(void)
 
 	if (canApperMene)
 	{
-		if (KeyState[DIK_W] == KeyRelease || PadState[ButtonUP] == PadRelease && !(g_inCount) || GetAnalogLValue(ANALOG_Y) <= -6000 && !(g_inCount))
+		if (KeyState[DIK_W] == KeyRelease || PadState[ButtonUP] == PadRelease && !(g_inCount) || GetAnalogLValue(ANALOG_Y) >= 6000 && !(g_inCount))
 		{
-			if (g_selectArrowSta.y == ARROWMIDLE)
+			if (g_selectArrowSta.y == ARROWHIGH)
+			{
+				g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
+				g_selectArrowSta.y = ARROWDOWN;
+				g_inCount++;
+			}
+
+			else if (g_selectArrowSta.y == ARROWMIDLE)
 			{
 
 				g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 				g_selectArrowSta.y = ARROWHIGH;
 				g_inCount++;
 			}
-			if (g_selectArrowSta.y == ARROWDOWN)
+			else if (g_selectArrowSta.y == ARROWDOWN)
 			{
 				g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 				g_selectArrowSta.y = ARROWMIDLE;
@@ -54,18 +61,25 @@ void titleControl(void)
 
 		}
 
-		if (KeyState[DIK_S] == KeyRelease || PadState[ButtonDOWN] == PadRelease && !(g_inCount) || GetAnalogLValue(ANALOG_Y) >= 6000 && !(g_inCount))
+		if (KeyState[DIK_S] == KeyRelease || PadState[ButtonDOWN] == PadRelease && !(g_inCount) || GetAnalogLValue(ANALOG_Y) <= -6000 && !(g_inCount))
 		{
-			if (g_selectArrowSta.y == ARROWMIDLE)
+
+			if (g_selectArrowSta.y == ARROWHIGH)
+			{
+				g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
+				g_selectArrowSta.y = ARROWMIDLE;
+				g_inCount++;
+			}
+			else if (g_selectArrowSta.y == ARROWMIDLE)
 			{
 				g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
 				g_selectArrowSta.y = ARROWDOWN;
 				g_inCount++;
 			}
-			if (g_selectArrowSta.y == ARROWHIGH)
+			else if (g_selectArrowSta.y == ARROWDOWN)
 			{
 				g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
-				g_selectArrowSta.y = ARROWMIDLE;
+				g_selectArrowSta.y = ARROWHIGH;
 				g_inCount++;
 			}
 
@@ -133,6 +147,11 @@ void titleRender(void)
 
 	//タイトル画面のテクスチャの設定
 	titleRenderSta();
+	char Debug[10];
+
+	sprintf_s(Debug, 10, "%d ", GetAnalogLValue(ANALOG_Y));
+	RECT DEBUG = { 100 ,200,900,600 };
+	WriteWord(Debug, DEBUG, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 
 	EndSetTexture();
 }
