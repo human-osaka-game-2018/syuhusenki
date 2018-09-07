@@ -51,6 +51,9 @@ void result()
 		ReadInTexture("Texture/result/bonus.png", RESULT_COMBO_TEX);
 		ReadInTexture("Texture/result/SALE.png", RESULT_SALE_TEX);
 		ReadInTexture("Texture/result/price.png",RESULT_NOMAL_TEX );
+		ReadInTexture("Texture/yasuko_motion1.png", YASUKO_EMOTION1_TEX);
+		ReadInTexture("Texture/yasuko_motion2.png", YASUKO_EMOTION2_TEX);
+		ReadInTexture("Texture/yasuko_motion3.png", YASUKO_EMOTION3_TEX);
 
 		ReadInTexture("Texture/merchandise/buridaikon.png", BURIDAIKON_TEX);
 		ReadInTexture("Texture/merchandise/tumami.png", RELISH_TEX);
@@ -395,15 +398,15 @@ void resultRenderTwo(void)
 	CreateSquareVertex(resultPCTex, resultPC);
 	if ((nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) < LOW_SCORE)
 	{
-		SetUpTexture(resultPCTex, YASUKO_TEX);
+		SetUpTexture(resultPCTex, YASUKO_EMOTION3_TEX);
 	}
 	if (LOW_SCORE <= (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) && (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) <= HIGH_SCORE)
 	{
-		SetUpTexture(resultPCTex, YASUKO_TEX);
+		SetUpTexture(resultPCTex, YASUKO_EMOTION2_TEX);
 	}
 	if (HIGH_SCORE < (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus)) 
 	{
-		SetUpTexture(resultPCTex, YASUKO_TEX);
+		SetUpTexture(resultPCTex, YASUKO_EMOTION1_TEX);
 	}
 
 }

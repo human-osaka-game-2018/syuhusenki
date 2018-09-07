@@ -456,7 +456,8 @@ void floaMoveRenderSta()
 		}
 		else CreateSquareVertexEx(salesmans, mobCentralFloa[i], 0, 0, 1, 1);
 
-		if (i >= 2) {
+		if (i >= 2)
+		{
 			SetUpTexture(salesmans, mobTexNum);
 		}
 		else SetUpTexture(salesmans, BOY_TEX);
@@ -650,7 +651,7 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		if (mobCentralFloa[0].y >= 630)
 		{
 			mobCentralFloa[0].x -= 4;
-			mobMovedRight[0] = true;
+			mobMovedRight[0] = false;
 
 		}
 		if (mobCentralFloa[0].y <= 165)
@@ -674,7 +675,7 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 			if (mobCentralFloa[0].x >= 1200)
 			{
 				mobCentralFloa[0].y -= 5;
-				mobMovedRight[0] = true;
+				mobMovedRight[0] = false;
 			}
 			if (mobCentralFloa[0].y >= 630)
 			{
@@ -696,7 +697,7 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		{
 		case NORTH:
 			mobCentralFloa[1].y -= 3;
-			mobMovedRight[1] = true;
+			mobMovedRight[1] = false;
 			break;
 		case SOUTH:
 			mobCentralFloa[1].y += 3;
@@ -704,11 +705,11 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 			break;
 		case EAST:
 			mobCentralFloa[1].x -= 3;
-			mobMovedRight[1] = true;
+			mobMovedRight[1] = false;
 			break;
 		case WEST:
 			mobCentralFloa[1].x += 3;
-			mobMovedRight[1] = false;
+			mobMovedRight[1] = true;
 			break;
 		}
 	}
@@ -729,7 +730,7 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		{
 		case NORTH:
 			mobCentralFloa[2].y -= 1.5f;
-			mobMovedRight[2] = true;
+			mobMovedRight[2] = false;
 			break;
 		case SOUTH:
 			mobCentralFloa[2].y += 1.5f;
@@ -737,11 +738,11 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 			break;
 		case EAST:
 			mobCentralFloa[2].x -= 2;
-			mobMovedRight[2] = true;
+			mobMovedRight[2] = false;
 			break;
 		case WEST:
 			mobCentralFloa[2].x += 2;
-			mobMovedRight[2] = false;
+			mobMovedRight[2] = true;
 			break;
 		default:
 			break;
@@ -763,7 +764,7 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		{
 		case NORTH:
 			mobCentralFloa[3].y -= 1.5f;
-			mobMovedRight[3] = true;
+			mobMovedRight[3] = false;
 			break;
 		case SOUTH:
 			mobCentralFloa[3].y += 1.5f;
@@ -771,11 +772,11 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 			break;
 		case EAST:
 			mobCentralFloa[3].x -= 2;
-			mobMovedRight[3] = true;
+			mobMovedRight[3] = false;
 			break;
 		case WEST:
 			mobCentralFloa[3].x += 2;
-			mobMovedRight[3] = false;
+			mobMovedRight[3] = true;
 			break;
 		default:
 			break;

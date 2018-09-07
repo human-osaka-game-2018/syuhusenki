@@ -135,11 +135,16 @@ void titleRender(void)
 void titleRenderSta(void)
 {
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, TITLE_BG_TEX);
+	CENTRAL_STATE titleUICentral = { WIDTH / 2, 550, 200.f, 100.f };
+	CUSTOMVERTEX titleUI[4];
+	CreateSquareVertex(titleUI, titleUICentral);
 
 	CUSTOMVERTEX selectArrow[4];
 	CreateSquareVertexColor(selectArrow, g_selectArrowSta, g_cursolColor);
 
 	//タイトル矢印テクスチャの生成
+	SetUpTexture(titleUI, TITLE_UI_TEX);
+
 	SetUpTexture(selectArrow, TITLEICON_TEX);
 }
 //主婦の知恵
