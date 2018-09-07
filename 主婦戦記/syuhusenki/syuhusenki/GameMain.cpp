@@ -454,7 +454,7 @@ int editMerchandise(int seleChoice,int arrayNum)
 void showPressA()
 {
 	CUSTOMVERTEX showA[4];
-	CENTRAL_STATE centralAButton = {1150,600,50,50};
+	CENTRAL_STATE centralAButton = {1200,600,50,50};
 	CreateSquareVertexColor(showA, centralAButton,g_cursolColor);
 	SetUpTexture(showA, A_TEX);
 }
