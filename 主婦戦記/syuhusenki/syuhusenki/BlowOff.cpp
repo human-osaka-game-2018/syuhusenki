@@ -83,7 +83,7 @@ void blowOffControl()
 void blowOffRender()
 {
 
-	CreateSquareVertex(playerHit, playerCentralHit);
+	CreateSquareVertexEx(playerHit, playerCentralHit, 0,0, YASUKO_TU, YASUKO_TV); 
 
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);

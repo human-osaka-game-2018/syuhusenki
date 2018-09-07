@@ -147,11 +147,6 @@ void titleRender(void)
 
 	//タイトル画面のテクスチャの設定
 	titleRenderSta();
-	char Debug[10];
-
-	sprintf_s(Debug, 10, "%d ", GetAnalogLValue(ANALOG_Y));
-	RECT DEBUG = { 100 ,200,900,600 };
-	WriteWord(Debug, DEBUG, DT_LEFT, 0xff00ffff, DEBUG_FONT);
 
 	EndSetTexture();
 }

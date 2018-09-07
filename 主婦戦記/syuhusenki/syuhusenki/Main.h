@@ -22,6 +22,11 @@
 #define BLACK 0xff000000
 #define HARFCLEAR 0x8a000000
 
+#define YASUKO_TU (350.f/2048.f)
+#define YASUKO_TV (679.f/2048.f)
+#define BOY_TU (487.f/2048.f)
+#define BOY_TV (707.f/2048.f)
+
 //ゲームパッドの状態
 #define UP_BUTTON 0x0001
 #define DOWN_BUTTON 0x0002

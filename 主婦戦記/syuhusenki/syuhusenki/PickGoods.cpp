@@ -8,9 +8,9 @@
 
 
 
-CENTRAL_STATE playerCutinCentral = { 1200,350,300,250 };
-
-
+CENTRAL_STATE playerCutinCentral = { 1200,350,320,280 };
+static float cutinAnime = 0.5f;
+static float cutinAnimeCount = 0;
 void pickGoods() {
 	static bool canCutin = true;
 	if (canCutin)
@@ -44,8 +44,8 @@ void pickGoodsControl() {
 
 void pickGoodsRender() {
 	CUSTOMVERTEX playerCutin[4];
-	CreateSquareVertex(playerHit, playerCentralHit);
-	CreateSquareVertexEx(playerCutin, playerCutinCentral, 0, 0, 1, 0.5f);
+	CreateSquareVertexEx(playerHit, playerCentralHit, 0, 0, YASUKO_TU, YASUKO_TV);
+	CreateSquareVertexEx(playerCutin, playerCutinCentral,0, cutinAnimeCount, 0.8f, cutinAnime);
 
 	BeginSetTexture();
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);
@@ -78,7 +78,7 @@ void pickGoodsRender() {
 
 	EasyCreateSquareVertex(0, 150, WIDTH, 550, CUTIN_TEX);
 
-	SetUpTexture(playerCutin, texturePC);
+	SetUpTexture(playerCutin, CUTIN_YASUKO_TEX);
 
 	//char rushButton[10];
 	RECT rushButtonAppear = { 470,200,810,550 };
@@ -273,7 +273,7 @@ void rushButtonCheck(int rushInput, int rushShow)
 	if (rushInput == rushShow)
 	{
 		foodGoods[selectedGoods[g_turn]].haveValue++;
-
+		cutinAnimeCount += 0.5f;
 	}
 	else g_SoundSuccess = soundsManager.Start("MISS", false) && g_SoundSuccess;
 

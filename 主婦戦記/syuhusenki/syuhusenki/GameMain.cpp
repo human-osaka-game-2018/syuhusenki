@@ -65,7 +65,7 @@ void gameMain() {
 			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
 			ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
 			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
-			ReadInTexture("Texture/ヤスコ統合ファイル.png", COMBINED_YASUKO_TEX);
+			ReadInTexture("Texture/yasukoCutin.png", CUTIN_YASUKO_TEX);
 			ReadInTexture("Texture/UI/durabilityBar.jpg", DURABILITY_TEX);
 			ReadInTexture("Texture/smoke.png", SMOKE_TEX);
 			ReadInTexture("Texture/boy.png", BOY_TEX);

@@ -55,7 +55,7 @@ void choseGoodsControl() {
 void choseGoodsReader() {
 
 	BeginSetTexture();
-	CreateSquareVertex(playerHit, playerCentralHit);
+	CreateSquareVertexEx(playerHit, playerCentralHit, 0, 0, YASUKO_TU, YASUKO_TV);
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, FLOAMOVE_BG_TEX);
 
 	EasyCreateSquareVertexColor(0, 0, WIDTH, HEIGHT, HARFCLEAR, BLANK);

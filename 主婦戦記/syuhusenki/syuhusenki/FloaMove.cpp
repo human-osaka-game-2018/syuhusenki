@@ -5,8 +5,6 @@
 #include "Goods.h"
 #include "ChoseGoods.h"
 
-#define YASUKO_TU (325.f/2048.f)
-#define YASUKO_TV (675.f/2048.f)
 #define ANIMETIONTIME 20
 //モブの動く方向
 enum MOBDIRECTION {
@@ -48,14 +46,6 @@ void collision(CENTRAL_STATE* charctor, CENTRAL_STATE prevcentral);
 void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[]);
 void mobToPCContact(CENTRAL_STATE* charctor, CENTRAL_STATE mobCentralFloa[]);
 
-//ヤス子のステータス
-CHARACTER_STATE g_yasukoSta = { 1, 1.5f, 1 };
-
-//ミツ子のステータス
-CHARACTER_STATE g_mitukoSta = { 2, 1.5f, 1.25 };
-
-//イソ子のステータス
-CHARACTER_STATE g_isokoSta = { 2, 2.f, 1 };
 
 CENTRAL_STATE g_PCSta = { 900.f, 580.f, 32.f, 53.f };
 CENTRAL_STATE g_prevPCSta;
@@ -229,9 +219,9 @@ void playerControl(int* onceSound)
 					PCtu++;
 					animeCount = 0;
 				}
-				if (PCtu >= 4)
+				if (PCtu > 4)
 				{
-					PCtu = 2;
+					PCtu = 1;
 				}
 				PCtv = 2;
 			}
@@ -262,9 +252,9 @@ void playerControl(int* onceSound)
 					PCtu++;
 					animeCount = 0;
 				}
-				if (PCtu >= 3)
+				if (PCtu > 3)
 				{
-					PCtu = 1;
+					PCtu = 0;
 				}
 				PCtv = 2;
 			}
@@ -450,12 +440,15 @@ void floaMoveRenderSta()
 	CreateSquareVertex(start, g_startSta);
 	for (int i = 0; i < 4; i++)
 	{
-		if (!mobMovedRight[i])
+		if (i == 0 || i == 1)
 		{
-			CreateSquareVertexEx(salesmans, mobCentralFloa[i], 1, 0, -1, 1);
+			if (mobMovedRight[i])
+			{
+				CreateSquareVertexEx(salesmans, mobCentralFloa[i], mobtu[i] * BOY_TU, mobtv[i] * BOY_TV, -1 * BOY_TU, BOY_TV);
+			}
+			else CreateSquareVertexEx(salesmans, mobCentralFloa[i], mobtu[i] * BOY_TU, mobtv[i] * BOY_TV, BOY_TU, BOY_TV);
 		}
-		else CreateSquareVertexEx(salesmans, mobCentralFloa[i], 0, 0, 1, 1);
-
+		else CreateSquareVertex(salesmans, mobCentralFloa[i]);
 		if (i >= 2)
 		{
 			SetUpTexture(salesmans, mobTexNum);
@@ -474,7 +467,7 @@ void floaMoveRenderSta()
 		}
 	}
 	//プレイヤーキャラクターのテクスチャの描画
-	SetUpTexture(PC, COMBINED_YASUKO_TEX);
+	SetUpTexture(PC, YASUKO_TEX);
 
 	timerRender();
 
@@ -635,31 +628,37 @@ void salesmanPoping(SALESMAN popSales[])
 void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 {
 	static int collisionCount[4] = { 0,0,0,0};
+	static int mobAnimeCount[4] = { 0,0,0,0 };
 	if (!BtoBContact(&mobCentralFloa[0], &g_PCSta))
 	{
 		if (mobCentralFloa[0].x <= 100)
 		{
 			mobCentralFloa[0].y -= 3;
 			mobMovedRight[0] = false;
+			mobtv[0] = 1;
 
 		}
 		if (mobCentralFloa[0].x >= 1200)
 		{
 			mobCentralFloa[0].y += 3;
-			mobMovedRight[0] = true;
+			mobMovedRight[0] = false;
+			mobtv[0] = 0;
 		}
 		if (mobCentralFloa[0].y >= 630)
 		{
 			mobCentralFloa[0].x -= 4;
 			mobMovedRight[0] = false;
+			mobtv[0] = 2;
 
 		}
 		if (mobCentralFloa[0].y <= 165)
 		{
 			mobCentralFloa[0].x += 4;
-			mobMovedRight[0] = false;
+			mobMovedRight[0] = true;
+			mobtv[0] = 2;
 
 		}
+
 	}
 	else
 	{
@@ -670,27 +669,49 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 			{
 				mobCentralFloa[0].y += 5;
 				mobMovedRight[0] = false;
+				mobtv[0] = 0;
 
 			}
 			if (mobCentralFloa[0].x >= 1200)
 			{
 				mobCentralFloa[0].y -= 5;
 				mobMovedRight[0] = false;
+				mobtv[0] = 1;
 			}
 			if (mobCentralFloa[0].y >= 630)
 			{
 				mobCentralFloa[0].x += 6;
 				mobMovedRight[0] = true;
+				mobtv[0] = 2;
+
 
 			}
 			if (mobCentralFloa[0].y <= 165)
 			{
 				mobCentralFloa[0].x -= 6;
 				mobMovedRight[0] = false;
+				mobtv[0] = 2;
+
 			}
 			collisionCount[0] = 0;
 		}
 	}
+	mobAnimeCount[0]++;
+	if (mobAnimeCount[0] >= ANIMETIONTIME)
+	{
+		mobtu[0]++;
+		mobAnimeCount[0] = 0;
+	}
+	if (mobtu[0] > 1 && !mobMovedRight[0])
+	{
+		mobtu[0] = 0;
+	}
+	if (mobtu[0] > 2 && mobMovedRight[0])
+	{
+		mobtu[0] = 1;
+	}
+
+
 	if (!BtoBContact(&mobCentralFloa[1], &g_PCSta))
 	{
 		switch (rand() % 4)
@@ -698,18 +719,22 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		case NORTH:
 			mobCentralFloa[1].y -= 3;
 			mobMovedRight[1] = false;
+			mobtv[1] = 1;
 			break;
 		case SOUTH:
 			mobCentralFloa[1].y += 3;
 			mobMovedRight[1] = false;
+			mobtv[1] = 0;
 			break;
 		case EAST:
 			mobCentralFloa[1].x -= 3;
 			mobMovedRight[1] = false;
+			mobtv[1] = 2;
 			break;
 		case WEST:
 			mobCentralFloa[1].x += 3;
 			mobMovedRight[1] = true;
+			mobtv[1] = 2;
 			break;
 		}
 	}
@@ -724,6 +749,21 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 			collisionCount[1] = 0;
 		}
 	}
+	mobAnimeCount[1]++;
+	if (mobAnimeCount[1] >= ANIMETIONTIME)
+	{
+		mobtu[1]++;
+		mobAnimeCount[1] = 0;
+	}
+	if (mobtu[1] > 1 && !mobMovedRight[1])
+	{
+		mobtu[1] = 0;
+	}
+	if (mobtu[1] > 2 && mobMovedRight[1])
+	{
+		mobtu[1] = 1;
+	}
+
 	if (!BtoBContact(&mobCentralFloa[2], &g_PCSta))
 	{
 		switch (rand() % 5)
