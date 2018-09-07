@@ -5,6 +5,7 @@ void choseGoods();
 void choseGoodsControl();
 void choseGoodsReader();
 
+extern int salesChoice;
 
 
 

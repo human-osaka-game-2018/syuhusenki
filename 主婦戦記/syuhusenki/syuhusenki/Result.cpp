@@ -2,6 +2,7 @@
 #include "Goods.h"
 #include "Main.h"
 #include "GameMain.h"
+#include "FloaMove.h"
 
 enum RESULTSCENE
 {

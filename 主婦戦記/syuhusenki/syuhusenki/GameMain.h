@@ -41,14 +41,7 @@ extern int mobTexNum;
 
 extern CUSTOMVERTEX playerHit[4];
 extern CENTRAL_STATE playerCentralHit;
-//ƒ‚ƒu‚Ì‰æ‘œ’¸“_
-extern CUSTOMVERTEX mobFloa[4];
-extern CENTRAL_STATE mobCentralFloa[3];
-extern CENTRAL_STATE mobCentralBlowOff[5];
 
-extern CENTRAL_STATE g_PCSta;
-extern CENTRAL_STATE g_startCountSta;
-extern CENTRAL_STATE g_startSta;
 
 extern SoundEffect Button;
 extern SoundEffect Button;

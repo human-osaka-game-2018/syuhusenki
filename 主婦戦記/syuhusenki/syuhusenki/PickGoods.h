@@ -4,7 +4,6 @@
 
 
 extern CENTRAL_STATE playerCutinCentral;
-extern int salesChoice;
 
 void pickGoods();
 void pickGoodsControl();
