@@ -88,6 +88,7 @@ void result()
 	{
 	case PAGE1:
 		resultRenderOne();
+		showPressA();
 		break;
 	case PAGE2:
 	{
@@ -118,6 +119,7 @@ void result()
 			}
 		}
 	}
+	showPressA();
 		break;
 	case PAGE3:
 		canSound = true;
@@ -125,7 +127,6 @@ void result()
 		resultRenderTwo();
 		resultRenderThree();
 	}
-	showPressA();
 	EndSetTexture();
 }
 

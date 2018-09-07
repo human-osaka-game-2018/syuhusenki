@@ -21,7 +21,7 @@ enum SALESPOSITION
 
 //ƒ‚ƒu‚Ì‰æ‘œ’¸“_
 extern CUSTOMVERTEX mobFloa[4];
-extern CENTRAL_STATE mobCentralFloa[3];
+extern CENTRAL_STATE mobCentralFloa[4];
 extern CENTRAL_STATE mobCentralBlowOff[5];
 
 extern CENTRAL_STATE g_PCSta;

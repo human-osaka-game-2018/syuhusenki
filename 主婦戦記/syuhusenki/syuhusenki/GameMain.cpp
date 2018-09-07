@@ -67,7 +67,6 @@ void gameMain() {
 			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
 			ReadInTexture("Texture/ヤスコ統合ファイル.png", COMBINED_YASUKO_TEX);
 			ReadInTexture("Texture/UI/durabilityBar.jpg", DURABILITY_TEX);
-			ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
 			ReadInTexture("Texture/smoke.png", SMOKE_TEX);
 			ReadInTexture("Texture/boy.png", BOY_TEX);
 			ReadInTexture("Texture/salesclerk.png", SALESMAN_TEX);
@@ -188,6 +187,19 @@ void gameMain() {
 	{
 	case FLOAMOVE:
 	{
+		switch (g_turn)
+		{
+		case 0:
+			mobTexNum = ISOKO_TEX;
+			break;
+		case 1:
+			mobTexNum = MOB_TEX;
+			break;
+		case 2:
+			mobTexNum = MITUKO_TEX;
+			break;
+		}
+
 		for (int i = 0; i < 5; i++)
 		{
 			comandInput[i] = 10;
@@ -225,18 +237,6 @@ void gameMain() {
 		break;
 	}
 	case CHOSEGOODS:
-		switch (g_turn)
-		{
-		case 0:
-			mobTexNum = ISOKO_TEX;
-			break;
-		case 1:
-			mobTexNum = MOB_TEX;
-			break;
-		case 2:
-			mobTexNum = MITUKO_TEX;
-			break;
-		}
 
 		choseGoods();
 		break;

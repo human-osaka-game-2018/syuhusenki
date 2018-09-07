@@ -25,6 +25,8 @@ void timerControl(void)
 	{
 		g_isGameStart = true;
 		soundsManager.Start("WHISYLE", false);
+		soundsManager.SetVolume("FOOD", 25);
+		g_SoundSuccess = soundsManager.Start("FOOD", true) && g_SoundSuccess;
 
 	}
 	if (g_isGameStart)

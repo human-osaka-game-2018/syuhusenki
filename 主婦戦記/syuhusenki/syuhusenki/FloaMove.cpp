@@ -15,20 +15,25 @@ enum MOBDIRECTION {
 	EAST,
 	WEST
 };
-CENTRAL_STATE mobCentralFloa[3]
+
+CENTRAL_STATE mobCentralFloa[4]
 {
 	{ 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
-	{ 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE }
+	{ 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
+	{ 1030,230 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE }
+
 };
-CENTRAL_STATE prevMobCentralFloa[3];
+CENTRAL_STATE prevMobCentralFloa[4];
 CUSTOMVERTEX PC[4];
 
-static bool mobMovedRight[3];
+static bool mobMovedRight[4];
 static bool isRight = false;
 
 static int PCtu = 0;
 static int PCtv = 0;
+static int mobtu[4] = {0,0,0,0};
+static int mobtv[4] = {0,0,0,0};
 
 
 void playerControl(int* onceSound);
@@ -88,7 +93,7 @@ void floaMoveControl()
 	{
 		playerControl(&onceSound);
 		mobControler(mobCentralFloa, prevMobCentralFloa);
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			collision(&mobCentralFloa[i], prevMobCentralFloa[i]);
 			prevMobCentralFloa[i] = mobCentralFloa[i];
@@ -114,11 +119,6 @@ void playerControl(int* onceSound)
 
 	static int animeCount = 0;
 	animeCount++;
-	for (*onceSound; *onceSound < 1; *onceSound++)
-	{
-		soundsManager.SetVolume("FOOD", 25);
-		soundsManager.Start("FOOD", true);
-	}
 
 	if (g_Xinput.Gamepad.wButtons == 0)
 	{
@@ -131,25 +131,12 @@ void playerControl(int* onceSound)
 
 	if (InputKEY(DIK_RETURN) || (PadState[ButtonA] == PadRelease) && !(g_inCount))
 	{
-		//if (g_pause && !g_isTimeUp)
-		//{
-		//	*onceSound = 0;
-		//	PostQuitMessage(0);
-		//	g_inCount++;
-		//}
-
-		//if (g_isTimeUp)
-		//{
-		//	*onceSound = 0;
-		//	PostQuitMessage(0);
-		//	g_inCount++;
-		//}
 		leachedGondolaCheck(&salesChoice, popSales, salesmanToPCCollision(g_PCSta, popSales));
 	}
 	if ((GetAnalogLValue(ANALOG_Y) && !GetAnalogLValue(ANALOG_X)) || (!GetAnalogLValue(ANALOG_Y) && GetAnalogLValue(ANALOG_X))
 		|| (!GetAnalogLValue(ANALOG_Y) && !GetAnalogLValue(ANALOG_X)))
 	{
-		if (InputKEY(DIK_W) || 0 < GetAnalogLValue(ANALOG_Y))
+		if (InputKEY(DIK_W) || 0 < GetAnalogLValue(ANALOG_Y)|| (PadState[ButtonUP] == PadOn))
 		{
 			isRight = false;
 			if (!g_pause && !g_isTimeUp)
@@ -166,7 +153,7 @@ void playerControl(int* onceSound)
 				{
 					g_PCSta.y -= g_PCSpeed;
 				}
-				else if (InputKEY(DIK_W))g_PCSta.y -= g_PCSpeed;
+				else if (InputKEY(DIK_W) || (PadState[ButtonUP] == PadOn))g_PCSta.y -= g_PCSpeed;
 				if (animeCount >= ANIMETIONTIME)
 				{
 					PCtu++;
@@ -178,10 +165,11 @@ void playerControl(int* onceSound)
 				}
 				PCtv = 1;
 
+
 			}
 		}
 
-		if (InputKEY(DIK_S) || 0 > GetAnalogLValue(ANALOG_Y))
+		if (InputKEY(DIK_S) || 0 > GetAnalogLValue(ANALOG_Y) || (PadState[ButtonDOWN] == PadOn))
 		{
 			isRight = false;
 			if (!g_pause && !g_isTimeUp)
@@ -198,7 +186,7 @@ void playerControl(int* onceSound)
 				{
 					g_PCSta.y += g_PCSpeed;
 				}
-				else if (InputKEY(DIK_S))g_PCSta.y += g_PCSpeed;
+				else if (InputKEY(DIK_S) || (PadState[ButtonDOWN] == PadOn))g_PCSta.y += g_PCSpeed;
 				if (animeCount >= ANIMETIONTIME)
 				{
 					PCtu++;
@@ -213,7 +201,7 @@ void playerControl(int* onceSound)
 			}
 		}
 
-		if (InputKEY(DIK_D) || 0 < GetAnalogLValue(ANALOG_X))
+		if (InputKEY(DIK_D) || 0 < GetAnalogLValue(ANALOG_X) || (PadState[ButtonRIGHT] == PadOn))
 		{
 			isRight = true;
 			if (!g_pause && !g_isTimeUp)
@@ -230,7 +218,7 @@ void playerControl(int* onceSound)
 				{
 					g_PCSta.x += g_PCSpeed;
 				}
-				else if (InputKEY(DIK_D))g_PCSta.x += g_PCSpeed;
+				else if (InputKEY(DIK_D) || (PadState[ButtonRIGHT] == PadOn))g_PCSta.x += g_PCSpeed;
 
 				if (PCtu == 0)
 				{
@@ -250,7 +238,7 @@ void playerControl(int* onceSound)
 		}
 
 
-		if (InputKEY(DIK_A) || 0 > GetAnalogLValue(ANALOG_X))
+		if (InputKEY(DIK_A) || 0 > GetAnalogLValue(ANALOG_X) || (PadState[ButtonLEFT] == PadOn))
 		{
 			isRight = false;
 			if (!g_pause && !g_isTimeUp)
@@ -267,7 +255,7 @@ void playerControl(int* onceSound)
 				{
 					g_PCSta.x -= g_PCSpeed;
 				}
-				else if (InputKEY(DIK_A))g_PCSta.x -= g_PCSpeed;
+				else if (InputKEY(DIK_A) || (PadState[ButtonLEFT] == PadOn))g_PCSta.x -= g_PCSpeed;
 
 				if (animeCount >= ANIMETIONTIME)
 				{
@@ -460,7 +448,7 @@ void floaMoveRenderSta()
 
 	CreateSquareVertex(startCount, g_startCountSta);
 	CreateSquareVertex(start, g_startSta);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		if (!mobMovedRight[i])
 		{
@@ -468,13 +456,14 @@ void floaMoveRenderSta()
 		}
 		else CreateSquareVertexEx(salesmans, mobCentralFloa[i], 0, 0, 1, 1);
 
-		if (i == 2) {
-			SetUpTexture(salesmans, MOB_TEX);
+		if (i >= 2) {
+			SetUpTexture(salesmans, mobTexNum);
 		}
 		else SetUpTexture(salesmans, BOY_TEX);
 	}
 
 
+	goodsScoreShow();
 	if (g_isGameStart)
 	{
 		for (int i = 0; i < 3; i++)
@@ -485,7 +474,7 @@ void floaMoveRenderSta()
 	}
 	//プレイヤーキャラクターのテクスチャの描画
 	SetUpTexture(PC, COMBINED_YASUKO_TEX);
-	goodsScoreShow();
+
 	timerRender();
 
 	if ((g_timerCount > ZERO_SECOND) && (g_timerCount <= ONE_SECOND))
@@ -644,7 +633,7 @@ void salesmanPoping(SALESMAN popSales[])
 }
 void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 {
-	static int collisionCount[3] = { 0,0,0 };
+	static int collisionCount[4] = { 0,0,0,0};
 	if (!BtoBContact(&mobCentralFloa[0], &g_PCSta))
 	{
 		if (mobCentralFloa[0].x <= 100)
@@ -768,13 +757,50 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 			collisionCount[2] = 0;
 		}
 	}
+	if (!BtoBContact(&mobCentralFloa[3], &g_PCSta))
+	{
+		switch (rand() % 5)
+		{
+		case NORTH:
+			mobCentralFloa[3].y -= 1.5f;
+			mobMovedRight[3] = true;
+			break;
+		case SOUTH:
+			mobCentralFloa[3].y += 1.5f;
+			mobMovedRight[3] = false;
+			break;
+		case EAST:
+			mobCentralFloa[3].x -= 2;
+			mobMovedRight[3] = true;
+			break;
+		case WEST:
+			mobCentralFloa[3].x += 2;
+			mobMovedRight[3] = false;
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		collisionCount[3]++;
+		if (collisionCount[3] > 30)
+		{
+			mobCentralFloa[3].y += 5;
+			mobCentralFloa[3].x += 5;
+			collisionCount[3] = 0;
+		}
+	}
+
 	collision(&mobCentralFloa[1], prevcentral[1]);
 	collision(&mobCentralFloa[2], prevcentral[2]);
+	collision(&mobCentralFloa[3], prevcentral[3]);
+
 }
 
 void mobToPCContact(CENTRAL_STATE* charctor, CENTRAL_STATE mobCentralFloa[])
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		if ((charctor->x <= mobCentralFloa[i].x + mobCentralFloa[i].scaleX) && (mobCentralFloa[i].x <= charctor->x + charctor->scaleX)
 			&& (charctor->y <= mobCentralFloa[i].y + mobCentralFloa[i].scaleY) && (mobCentralFloa[i].y <= charctor->y + charctor->scaleY)) {

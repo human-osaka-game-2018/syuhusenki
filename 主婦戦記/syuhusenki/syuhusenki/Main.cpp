@@ -79,7 +79,7 @@ unsigned int gameRoop() {
 		selectedGoods[1] = BEEF;
 		selectedGoods[2] = ONION;
 		for (int i = 0; i < 3; i++) {
-			foodGoods[selectedGoods[i]].haveValue += 100;
+			foodGoods[selectedGoods[i]].haveValue += 300;
 		}
 		g_scene = SCENE_RESULT;
 	}
