@@ -69,10 +69,15 @@ struct CHARACTER_STATE
 	DOUBLE skill;
 };
 
-enum SOUND {
-	SE1,
-	SE2,
-	SOUND_MAX
+enum TITLESCENE {
+ TITLE,
+ WISDOM
+};
+enum SCENEPAGE
+{
+	PAGE1,
+	PAGE2,
+	PAGE3
 };
 
 enum SCENE {
@@ -85,8 +90,8 @@ enum SCENE {
 
 extern SoundLib::SoundsManager soundsManager;
 extern bool g_SoundSuccess;
-extern const char* soundNum[SOUND_MAX];
 extern RECT testWord;
+extern int g_titleScene;
 extern int g_scene;
 
 extern FLOAT g_PCSpeed;

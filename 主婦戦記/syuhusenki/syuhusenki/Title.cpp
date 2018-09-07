@@ -1,16 +1,19 @@
 #include "Main.h"
 #include "Title.h"
+#include "GameMain.h"
 
-CENTRAL_STATE g_selectArrowSta = { 330.f, 600.f, 20.f, 20.f };
-
+CENTRAL_STATE g_selectArrowSta = { 500.f, ARROWHIGH, 20.f, 20.f };
+static int wisdomTex = WISDOM1_TEX;
 //タイトル制御処理
-VOID titleControl(VOID)
+void titleControl(void)
 {
 	static int sceneSuccession = 0;
 	static int BGM = 0;
 	GetControl(0);
 	BottonCheck();
 	static bool entry[2] = { false,false };
+	CheckKeyState(DIK_W);
+	CheckKeyState(DIK_S);
 
 	for (BGM; BGM < 1; BGM++)
 	{
@@ -33,23 +36,44 @@ VOID titleControl(VOID)
 		g_inCount++;
 	}
 
-	if (InputKEY(DIK_A) || PadState[ButtonLEFT] == PadOn && !(g_inCount) || GetAnalogLValue(ANALOG_X) <= -6000 && !(g_inCount))
+	if (KeyState[DIK_W] == KeyRelease || PadState[ButtonUP] == PadRelease && !(g_inCount) || GetAnalogLValue(ANALOG_Y) <= -6000 && !(g_inCount))
 	{
-		g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
-		g_selectArrowSta.x = ARROWRIGHT;
-		g_inCount++;
+		if (g_selectArrowSta.y == ARROWMIDLE)
+		{
+
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
+			g_selectArrowSta.y = ARROWHIGH;
+			g_inCount++;
+		}
+		if (g_selectArrowSta.y == ARROWDOWN)
+		{
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
+			g_selectArrowSta.y = ARROWMIDLE;
+			g_inCount++;
+		}
+
 	}
 
-	if (InputKEY(DIK_D) || PadState[ButtonRIGHT] == PadOn && !(g_inCount) || GetAnalogLValue(ANALOG_X) >= 6000 && !(g_inCount))
+	if (KeyState[DIK_S] == KeyRelease || PadState[ButtonDOWN] == PadRelease && !(g_inCount) || GetAnalogLValue(ANALOG_Y) >= 6000 && !(g_inCount))
 	{
-		g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
-		g_selectArrowSta.x = ARROWLEFT;
-		g_inCount++;
+		if (g_selectArrowSta.y == ARROWMIDLE)
+		{
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
+			g_selectArrowSta.y = ARROWDOWN;
+			g_inCount++;
+		}
+		if (g_selectArrowSta.y == ARROWHIGH)
+		{
+			g_SoundSuccess = soundsManager.Start("CURSOR", false) && g_SoundSuccess;
+			g_selectArrowSta.y = ARROWMIDLE;
+			g_inCount++;
+		}
+
 	}
 	CheckKeyState(DIK_RETURN);
 	CheckKeyState(DIK_NUMPADENTER);
 
-	if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWRIGHT ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.x == ARROWRIGHT &&(!entry[0]))
+	if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.y == ARROWHIGH ||PadState[ButtonA] == PadOn && !(g_inCount) && g_selectArrowSta.y == ARROWHIGH &&(!entry[0]))
 	{
 		g_SoundSuccess = soundsManager.Start("GREETING", false) && g_SoundSuccess;
 		g_SoundSuccess = soundsManager.Start("BUTTON1", false) && g_SoundSuccess;
@@ -61,10 +85,14 @@ VOID titleControl(VOID)
 
 	}
 
-	if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.x == ARROWLEFT ||PadState[ButtonA] == PadOn && g_selectArrowSta.x == ARROWLEFT)
+	if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.y == ARROWMIDLE ||PadState[ButtonA] == PadOn && g_selectArrowSta.y == ARROWMIDLE)
 	{
 		g_SoundSuccess = soundsManager.Start("BOW", false) && g_SoundSuccess;
 		entry[1] = true;
+	}
+	if ((KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease) && g_selectArrowSta.y == ARROWDOWN || PadState[ButtonA] == PadOn && g_selectArrowSta.y == ARROWDOWN)
+	{
+		g_titleScene = WISDOM;
 	}
 
 	if (entry[0])
@@ -93,7 +121,7 @@ VOID titleControl(VOID)
 }
 
 //タイトル描画処理
-VOID titleRender(VOID)
+void titleRender(void)
 {
 	BeginSetTexture();
 
@@ -104,7 +132,7 @@ VOID titleRender(VOID)
 }
 
 //タイトル画面のテクスチャ
-VOID titleRenderSta(VOID)
+void titleRenderSta(void)
 {
 	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TITLE_TEX);
 
@@ -113,4 +141,48 @@ VOID titleRenderSta(VOID)
 
 	//タイトル矢印テクスチャの生成
 	SetUpTexture(selectArrow, TITLEICON_TEX);
+}
+
+void wisdomControl()
+{
+	static int wisdomPage = PAGE1;
+	GetControl(0);
+	BottonCheck();
+
+	CheckKeyState(DIK_RETURN);
+	CheckKeyState(DIK_NUMPADENTER);
+
+	if (KeyState[DIK_RETURN] == KeyRelease || KeyState[DIK_NUMPADENTER] == KeyRelease|| PadState[ButtonA] == PadRelease)
+	{
+		switch (wisdomPage)
+		{
+		case PAGE1:
+			wisdomTex = WISDOM2_TEX;
+			wisdomPage = PAGE2;
+			break;
+		case PAGE2:
+			wisdomTex = WISDOM3_TEX;
+			wisdomPage = PAGE3;
+			break;
+		case PAGE3:
+			wisdomTex = WISDOM1_TEX;
+			wisdomPage = PAGE1;
+			g_titleScene = TITLE;
+			break;
+		}
+
+	}
+
+}
+
+void wisdomRender()
+{
+	BeginSetTexture();
+
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, wisdomTex);
+
+	showPressA();
+
+	EndSetTexture();
+
 }

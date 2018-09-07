@@ -3,9 +3,9 @@
 
 extern bool g_timeDeadline;
 
-VOID timerControl(VOID);
+void timerControl(void);
 
-int timeShow(VOID);
+int timeShow(void);
 
-VOID timerRender(VOID);
+void timerRender(void);
 #endif // !TIMER_H

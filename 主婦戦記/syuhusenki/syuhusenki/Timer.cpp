@@ -14,7 +14,7 @@ bool g_timeDeadline = false;
 int g_timerCount = 0;
 
 //タイマー制御処理
-VOID timerControl(VOID)
+void timerControl(void)
 {
 	if (g_timerCount < THREE_SECOND + Limit_frame)
 	{
@@ -65,7 +65,7 @@ VOID timerControl(VOID)
 }
 
 //タイマー描画処理
-VOID timerRender(VOID)
+void timerRender(void)
 {
 	static float timerRotation = 0.f;
 

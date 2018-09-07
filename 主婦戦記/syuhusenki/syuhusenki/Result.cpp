@@ -4,12 +4,6 @@
 #include "GameMain.h"
 #include "FloaMove.h"
 
-enum RESULTSCENE
-{
-	PAGE1,
-	PAGE2,
-	PAGE3
-};
 
 static CENTRAL_STATE cursorResult{ 100,490,25,25 };
 static int succeedCombo;
@@ -131,6 +125,7 @@ void result()
 		resultRenderTwo();
 		resultRenderThree();
 	}
+	showPressA();
 	EndSetTexture();
 }
 

@@ -66,7 +66,6 @@ void gameMain() {
 			ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
 			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);
 			ReadInTexture("Texture/ヤスコ統合ファイル.png", COMBINED_YASUKO_TEX);
-			ReadInTexture("Texture/cardboard.png", BOX_TEX);
 			ReadInTexture("Texture/UI/durabilityBar.jpg", DURABILITY_TEX);
 			ReadInTexture("Texture/ClothBattle.png", CLOTH_BG_TEX);
 			ReadInTexture("Texture/smoke.png", SMOKE_TEX);
@@ -108,7 +107,6 @@ void gameMain() {
 			ReadInTexture("Texture/scoretext/t4.png", T_4);
 			ReadInTexture("Texture/scoretext/t5.png", T_5);
 
-			ReadInTexture("Texture/button/a.png", A_TEX);
 			ReadInTexture("Texture/button/b.png", B_TEX);
 			ReadInTexture("Texture/button/x.png", X_TEX);
 			ReadInTexture("Texture/button/y.png", Y_TEX);
@@ -453,3 +451,10 @@ int editMerchandise(int seleChoice,int arrayNum)
 }
 
 
+void showPressA()
+{
+	CUSTOMVERTEX showA[4];
+	CENTRAL_STATE centralAButton = {1150,600,50,50};
+	CreateSquareVertexColor(showA, centralAButton,g_cursolColor);
+	SetUpTexture(showA, A_TEX);
+}

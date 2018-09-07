@@ -1,6 +1,5 @@
 #include "Main.h"
 #include "GameMain.h"
-#include "Select.h"
 #include "Title.h"
 #include "Result.h"
 #include "Goods.h"
@@ -13,6 +12,7 @@ bool g_SoundSuccess;
 RECT testWord = { 50,200,1200,500 };
 unsigned int gameRoop();
 void soundLoad();
+int g_titleScene = TITLE;
 int g_scene = SCENE_TEAMLOGO;
 //int g_scene = SCENE_MAIN;
 void render(void);//‰¼
@@ -36,17 +36,19 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
-	ReadInTexture("Texture/title.png", BG_TITLE_TEX);
+	ReadInTexture("Texture/title.jpg", BG_TITLE_TEX);
 	ReadInTexture("Texture/mob.png", MOB_TEX);
 	ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
 
-	ReadInTexture("Texture/kariSelect.png",SELECT_BG_TEX);
 	ReadInTexture("Texture/Mituko.png",MITUKO_TEX);
 	ReadInTexture("Texture/Isoko.png",ISOKO_TEX);
-	ReadInTexture("Texture/selectFrame.png",SELECTFRAME_TEX);
-	ReadInTexture("Texture/lastCheck.png",SELECTLASTCHECK_TEX);
 	ReadInTexture("Texture/UI/arrow.png", TITLEICON_TEX);
 	ReadInTexture("Texture/calculation2", RESULT_BG_TEX);
+	ReadInTexture("Texture/wisdomP1.png", WISDOM1_TEX);
+	ReadInTexture("Texture/wisdomP2.png", WISDOM2_TEX);
+	ReadInTexture("Texture/wisdomP3.png", WISDOM3_TEX);
+
+	ReadInTexture("Texture/button/a.png", A_TEX);
 
 	SetUpFont(100, 70, DEFAULT_CHARSET, NULL, HOGE_FONT);
 	SetUpFont(25, 25, DEFAULT_CHARSET, NULL, DEBUG_FONT);
@@ -119,8 +121,17 @@ unsigned int gameRoop() {
 		//}
 		break;
 	case SCENE_TITLE:
-		titleControl();
-		titleRender();
+		switch (g_titleScene)
+		{
+		case TITLE:
+			titleControl();
+			titleRender();
+			break;
+		case WISDOM:
+			wisdomControl();
+			wisdomRender();
+			break;
+		}
 		break;
 	case SCENE_SERECTCHARANDSTAGE:
 

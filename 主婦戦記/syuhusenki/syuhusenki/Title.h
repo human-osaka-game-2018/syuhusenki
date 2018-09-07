@@ -2,13 +2,17 @@
 #define TITLE_H
 
 //ŠJ“X,•Â“X‘I‘ğ‚ÌÀ•W
-#define ARROWRIGHT 330.f
-#define ARROWLEFT 760.f
+#define ARROWHIGH 340.f
+#define ARROWMIDLE 430.f
+#define ARROWDOWN 520.f
 
-VOID titleControl(VOID);
+void titleControl(void);
 
-VOID titleRender(VOID);
+void titleRender(void);
 
-VOID titleRenderSta(VOID);
+void titleRenderSta(void);
+
+void wisdomControl();
+void wisdomRender();
 
 #endif // !TITLE_H
