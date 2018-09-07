@@ -8,7 +8,7 @@
 #define YASUKO_TU (325.f/2048.f)
 #define YASUKO_TV (675.f/2048.f)
 #define ANIMETIONTIME 20
-
+//ƒ‚ƒu‚Ì“®‚­•ûŒü
 enum MOBDIRECTION {
 	NORTH,
 	SOUTH,
@@ -17,17 +17,18 @@ enum MOBDIRECTION {
 };
 CENTRAL_STATE mobCentralFloa[3]
 {
-	{ 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE } ,
+	{ 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE }
 };
 CENTRAL_STATE prevMobCentralFloa[3];
 CUSTOMVERTEX PC[4];
 
-bool mobMovedRight[3];
-bool leachGondola[SORT_MAX];
-int PCtu = 0;
-int PCtv = 0;
+static bool mobMovedRight[3];
+static bool isRight = false;
+
+static int PCtu = 0;
+static int PCtv = 0;
 
 
 void playerControl(int* onceSound);
@@ -59,7 +60,6 @@ CENTRAL_STATE g_startSta = { WIDTH / 2, HEIGHT / 2, 200.f, 96.25f };
 
 FLOAT g_PCSpeed = 2.f;
 
-static bool isRight = false;
 void floaMove() {
 
 	floaMoveControl();

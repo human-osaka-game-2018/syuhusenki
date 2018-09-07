@@ -134,7 +134,7 @@ void titleRender(void)
 //タイトル画面のテクスチャ
 void titleRenderSta(void)
 {
-	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, BG_TITLE_TEX);
+	EasyCreateSquareVertex(0, 0, WIDTH, HEIGHT, TITLE_BG_TEX);
 
 	CUSTOMVERTEX selectArrow[4];
 	CreateSquareVertexColor(selectArrow, g_selectArrowSta, g_cursolColor);
@@ -142,7 +142,7 @@ void titleRenderSta(void)
 	//タイトル矢印テクスチャの生成
 	SetUpTexture(selectArrow, TITLEICON_TEX);
 }
-
+//主婦の知恵
 void wisdomControl()
 {
 	static int wisdomPage = PAGE1;

@@ -392,13 +392,16 @@ void resultRenderTwo(void)
 	CUSTOMVERTEX resultPCTex[4];
 	CENTRAL_STATE resultPC{ 1050,350,200,300 };
 	CreateSquareVertex(resultPCTex, resultPC);
-	if ((nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) < LOW_SCORE) {
+	if ((nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) < LOW_SCORE)
+	{
 		SetUpTexture(resultPCTex, YASUKO_TEX);
 	}
-	if (LOW_SCORE <= (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) <= HIGH_SCORE) {
+	if (LOW_SCORE <= (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) && (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus) <= HIGH_SCORE)
+	{
 		SetUpTexture(resultPCTex, YASUKO_TEX);
 	}
-	if (HIGH_SCORE < (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus)) {
+	if (HIGH_SCORE < (nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus)) 
+	{
 		SetUpTexture(resultPCTex, YASUKO_TEX);
 	}
 

@@ -36,7 +36,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 
 	ReadInTexture("Texture/Blank.jpg", BLANK);
 	ReadInTexture("Texture/Yasuko.png", YASUKO_TEX);
-	ReadInTexture("Texture/title.jpg", BG_TITLE_TEX);
+	ReadInTexture("Texture/title.jpg", TITLE_BG_TEX);
 	ReadInTexture("Texture/mob.png", MOB_TEX);
 	ReadInTexture("Texture/team_logo.png", TEAMLOGO_TEX);
 
