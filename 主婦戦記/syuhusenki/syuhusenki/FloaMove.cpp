@@ -112,23 +112,13 @@ void playerControl(int* onceSound)
 	static int animeCount = 0;
 	animeCount++;
 
-	if (g_Xinput.Gamepad.wButtons == 0)
-	{
-		g_inCount = 0;
-	}
-	else if (g_inCount)
-	{
-		g_inCount++;
-	}
-
-	if (InputKEY(DIK_RETURN) || InputKEY(DIK_NUMPADENTER) || (PadState[ButtonA] == PadRelease) && !(g_inCount))
+	if (InputKEY(DIK_RETURN) || InputKEY(DIK_NUMPADENTER) || (PadState[ButtonA] == PadRelease))
 	{
 		leachedGondolaCheck(&salesChoice, popSales, salesmanToPCCollision(g_PCSta, popSales));
 	}
-	if ((GetAnalogLValue(ANALOG_Y) && !GetAnalogLValue(ANALOG_X)) || (!GetAnalogLValue(ANALOG_Y) && GetAnalogLValue(ANALOG_X))
-		|| (!GetAnalogLValue(ANALOG_Y) && !GetAnalogLValue(ANALOG_X)))
+	if (!(GetAnalogLValue(ANALOG_Y) && GetAnalogLValue(ANALOG_X)))
 	{
-		if (InputKEY(DIK_W) || 0 < GetAnalogLValue(ANALOG_Y)|| (PadState[ButtonUP] == PadOn))
+		if ( 0 < GetAnalogLValue(ANALOG_Y))
 		{
 			isRight = false;
 			if (!g_pause && !g_isTimeUp)
@@ -145,7 +135,6 @@ void playerControl(int* onceSound)
 				{
 					g_PCSta.y -= g_PCSpeed;
 				}
-				else if (InputKEY(DIK_W) || (PadState[ButtonUP] == PadOn))g_PCSta.y -= g_PCSpeed;
 				if (animeCount >= ANIMETIONTIME)
 				{
 					PCtu++;
@@ -161,7 +150,7 @@ void playerControl(int* onceSound)
 			}
 		}
 
-		if (InputKEY(DIK_S) || 0 > GetAnalogLValue(ANALOG_Y) || (PadState[ButtonDOWN] == PadOn))
+		if (0 > GetAnalogLValue(ANALOG_Y))
 		{
 			isRight = false;
 			if (!g_pause && !g_isTimeUp)
@@ -178,7 +167,6 @@ void playerControl(int* onceSound)
 				{
 					g_PCSta.y += g_PCSpeed;
 				}
-				else if (InputKEY(DIK_S) || (PadState[ButtonDOWN] == PadOn))g_PCSta.y += g_PCSpeed;
 				if (animeCount >= ANIMETIONTIME)
 				{
 					PCtu++;
@@ -193,7 +181,7 @@ void playerControl(int* onceSound)
 			}
 		}
 
-		if (InputKEY(DIK_D) || 0 < GetAnalogLValue(ANALOG_X) || (PadState[ButtonRIGHT] == PadOn))
+		if ( 0 < GetAnalogLValue(ANALOG_X) )
 		{
 			isRight = true;
 			if (!g_pause && !g_isTimeUp)
@@ -210,7 +198,98 @@ void playerControl(int* onceSound)
 				{
 					g_PCSta.x += g_PCSpeed;
 				}
-				else if (InputKEY(DIK_D) || (PadState[ButtonRIGHT] == PadOn))g_PCSta.x += g_PCSpeed;
+				if (animeCount >= ANIMETIONTIME)
+				{
+					PCtu++;
+					animeCount = 0;
+				}
+				if (PCtu > 4)
+				{
+					PCtu = 1;
+				}
+				PCtv = 2;
+			}
+		}
+
+
+		if (0 > GetAnalogLValue(ANALOG_X))
+		{
+			isRight = false;
+			if (!g_pause && !g_isTimeUp)
+			{
+				if (GetAnalogLValue(ANALOG_X) <= -6000 && GetAnalogLValue(ANALOG_X) >= -10000)
+				{
+					g_PCSta.x -= g_PCSpeed / 4;
+				}
+				else if (GetAnalogLValue(ANALOG_X) <= -10000 && GetAnalogLValue(ANALOG_X) >= -18000)
+				{
+					g_PCSta.x -= g_PCSpeed / 2;
+				}
+				else if (GetAnalogLValue(ANALOG_X) <= -18000)
+				{
+					g_PCSta.x -= g_PCSpeed;
+				}
+				if (animeCount >= ANIMETIONTIME)
+				{
+					PCtu++;
+					animeCount = 0;
+				}
+				if (PCtu > 3)
+				{
+					PCtu = 0;
+				}
+				PCtv = 2;
+			}
+		}
+	}
+		/////////////////////////////////////////
+	if (InputKEY(DIK_W) || (PadState[ButtonUP] == PadOn))
+	{
+		isRight = false;
+		if (!g_pause && !g_isTimeUp)
+		{
+			g_PCSta.y -= g_PCSpeed;
+			if (animeCount >= ANIMETIONTIME)
+			{
+				PCtu++;
+				animeCount = 0;
+			}
+			if (PCtu >= 3)
+			{
+				PCtu = 1;
+			}
+			PCtv = 1;
+
+
+		}
+	}
+
+	if (InputKEY(DIK_S) || (PadState[ButtonDOWN] == PadOn))
+	{
+		isRight = false;
+		if (!g_pause && !g_isTimeUp)
+		{
+			g_PCSta.y += g_PCSpeed;
+			if (animeCount >= ANIMETIONTIME)
+			{
+				PCtu++;
+				animeCount = 0;
+			}
+			if (PCtu >= 3)
+			{
+				PCtu = 1;
+			}
+			PCtv = 0;
+
+		}
+	}
+
+	if (InputKEY(DIK_D) || (PadState[ButtonRIGHT] == PadOn))
+		{
+			isRight = true;
+			if (!g_pause && !g_isTimeUp)
+			{
+				g_PCSta.x += g_PCSpeed;
 
 				if (PCtu == 0)
 				{
@@ -229,25 +308,12 @@ void playerControl(int* onceSound)
 			}
 		}
 
-
-		if (InputKEY(DIK_A) || 0 > GetAnalogLValue(ANALOG_X) || (PadState[ButtonLEFT] == PadOn))
+	if (InputKEY(DIK_A) || (PadState[ButtonLEFT] == PadOn))
 		{
 			isRight = false;
 			if (!g_pause && !g_isTimeUp)
 			{
-				if (GetAnalogLValue(ANALOG_X) <= -6000 && GetAnalogLValue(ANALOG_X) >= -10000)
-				{
-					g_PCSta.x -= g_PCSpeed / 4;
-				}
-				else if (GetAnalogLValue(ANALOG_X) <= -10000 && GetAnalogLValue(ANALOG_X) >= -18000)
-				{
-					g_PCSta.x -= g_PCSpeed / 2;
-				}
-				else if (GetAnalogLValue(ANALOG_X) <= -18000)
-				{
-					g_PCSta.x -= g_PCSpeed;
-				}
-				else if (InputKEY(DIK_A) || (PadState[ButtonLEFT] == PadOn))g_PCSta.x -= g_PCSpeed;
+				g_PCSta.x -= g_PCSpeed;
 
 				if (animeCount >= ANIMETIONTIME)
 				{
@@ -261,22 +327,6 @@ void playerControl(int* onceSound)
 				PCtv = 2;
 			}
 		}
-	}
-	if (PadState[ButtonStart] == PadRelease && !(g_inCount))
-	{
-		if (g_pause && !g_isTimeUp)
-		{
-			buttonSE(Button, 3);
-			g_pause = false;
-			g_inCount++;
-		}
-		else if (!g_pause && !g_isTimeUp)
-		{
-			buttonSE(Button, 3);
-			g_pause = true;
-			g_inCount++;
-		}
-	}
 	mobToPCContact(&g_PCSta, mobCentralFloa);
 	collision(&g_PCSta, g_prevPCSta);
 	g_prevPCSta = g_PCSta;
