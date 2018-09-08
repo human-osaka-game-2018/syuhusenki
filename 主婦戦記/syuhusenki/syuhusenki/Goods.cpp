@@ -68,7 +68,7 @@ void comboCheck(int goodsId1, int goodsId2, int goodsId3 )
 {
 	if (foodGoods[goodsId1].haveValue)
 	{
-		for (int i = 0; i < COMBOMAX; i++) {
+		for (int i = COMBOMAX-1; i >= 0; i--) {
 			checkOk.one = false;
 			checkOk.twe = false;
 			checkOk.three = false;

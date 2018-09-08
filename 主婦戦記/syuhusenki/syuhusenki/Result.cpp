@@ -244,6 +244,8 @@ void resultControl(void)
 		{
 		case PAGE1:
 			g_SoundSuccess = soundsManager.Start("DRUM", false) && g_SoundSuccess;
+			SyncOld = timeGetTime();
+
 			resultPage = PAGE2;
 			break;
 		case PAGE2:
@@ -253,11 +255,18 @@ void resultControl(void)
 		}
 		case PAGE3:
 			resultPage = PAGE1;
+			g_PCSta = { 900.f, 580.f, 32.f, 53.f };
 			mobCentralFloa[0] = { 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
 			mobCentralFloa[1] = { 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
 			mobCentralFloa[1] = { 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
-
-			g_PCSta = { 900.f, 580.f, 32.f, 53.f };
+			nomalSum = 0;
+			saleSale = 0;
+			isFirst = true;
+			memset(apperText, false, 10);
+			for (int i = 0; i < 3; i++)
+			{
+				foodGoods[selectedGoods[i]].haveValue = 0;
+			}
 			if (cursorResult.y < 500) {
 				g_gameScene = FLOAMOVE;
 				g_scene = SCENE_MAIN;

@@ -15,9 +15,8 @@ void soundLoad();
 int g_titleScene = TITLE;
 int g_scene = SCENE_TEAMLOGO;
 //int g_scene = SCENE_MAIN;
-void render(void);//仮
-void control(void);//仮
-void gamePad(void);
+void teamlogoRender(void);//仮
+void teamlogoControl(void);//仮
 
 DWORD g_cursolColor = 0xffffffff;
 
@@ -112,16 +111,8 @@ unsigned int gameRoop() {
 			isFirst = false;
 		}
 		g_SoundSuccess = soundsManager.SetVolume("FOOD", 25) && g_SoundSuccess;
-		control();
-		render();
-		//商品情報の仮入れ
-		//selectedGoods[0] = ICE;
-		//selectedGoods[1] = ORANGE;
-		//selectedGoods[2] = APPLE;
-		//for (int i = 0; i < 3; i++)
-		//{
-		//	foodGoods[selectedGoods[i]].haveValue = 100;
-		//}
+		teamlogoControl();
+		teamlogoRender();
 		break;
 	case SCENE_TITLE:
 		switch (g_titleScene)
@@ -136,19 +127,9 @@ unsigned int gameRoop() {
 			break;
 		}
 		break;
-	case SCENE_SERECTCHARANDSTAGE:
-
-		//selectControl();
-		//selectRender();
-		//for (int i = 0; i < 3; i++)
-		//{
-		//	selectedGoods[i] = BLANKGOODS;
-		//}
-		break;
 	case SCENE_MAIN:
 		if (g_isTimeUp)
 		{
-			//g_SoundSuccess = soundsManager.Start("GONG", false) && g_SoundSuccess;
 			g_isFirst = true;
 			g_isTimeUp = false;
 			g_timerCount = 0;
@@ -185,8 +166,7 @@ unsigned int gameRoop() {
 	return WM_NULL;
 }
 
-void control(void) {
-	gamePad();
+void teamlogoControl(void) {
 	
 	static DWORD SyncOld = timeGetTime();
 	DWORD SyncNow = timeGetTime();
@@ -200,9 +180,16 @@ void control(void) {
 	{
 			g_scene = SCENE_TITLE;
 	}
+	GetControl(0);
+	BottonCheck();
+	if (PadState[ButtonA] == PadRelease)
+	{
+		g_scene = SCENE_TITLE;
+	}
+
 }
 
-void render(void) {
+void teamlogoRender(void) {
 	CUSTOMVERTEX teamlogo[4];
 	CENTRAL_STATE logo{ 640,320,400,400 };
 	static DWORD logoColor = 0x00ffffff;
@@ -229,16 +216,6 @@ void render(void) {
 	SetUpTexture(teamlogo, TEAMLOGO_TEX);
 
 	EndSetTexture();
-
-}
-void gamePad() {
-	//XInputデバイス操作
-	GetControl(0);
-	BottonCheck();
-	if (PadState[ButtonA] == PadRelease) 
-	{
-			g_scene = SCENE_TITLE;
-	}
 
 }
 

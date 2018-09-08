@@ -168,21 +168,6 @@ void gameMain() {
 		g_isBlowOff = false;
 		g_isFirst = false;
 	}
-#ifdef _DEBUG
-	//CheckKeyState(DIK_F1);
-	//if (KeyState[DIK_F1] == KeyRelease)
-	//{
-	//}
-	//CheckKeyState(DIK_F2);
-	//if (KeyState[DIK_F2] == KeyRelease)
-	//{
-	//}
-	//CheckKeyState(DIK_F3);
-	//if (KeyState[DIK_F3] == KeyRelease)
-	//{
-	//}
-
-#endif
 	switch (g_gameScene) 
 	{
 	case FLOAMOVE:

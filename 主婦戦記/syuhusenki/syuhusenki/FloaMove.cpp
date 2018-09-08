@@ -88,12 +88,14 @@ void floaMoveControl()
 			collision(&mobCentralFloa[i], prevMobCentralFloa[i]);
 			prevMobCentralFloa[i] = mobCentralFloa[i];
 		}
+#ifdef _DEBUG
 		CheckKeyState(DIK_SPACE);
 		if (KeyState[DIK_SPACE] == KeyRelease)
 		{
 			g_gameScene = CHOSEGOODS;
 			onceSound = 0;
 		}
+#endif
 	}
 	if (isRight)
 	{
@@ -119,7 +121,7 @@ void playerControl(int* onceSound)
 		g_inCount++;
 	}
 
-	if (InputKEY(DIK_RETURN) || (PadState[ButtonA] == PadRelease) && !(g_inCount))
+	if (InputKEY(DIK_RETURN) || InputKEY(DIK_NUMPADENTER) || (PadState[ButtonA] == PadRelease) && !(g_inCount))
 	{
 		leachedGondolaCheck(&salesChoice, popSales, salesmanToPCCollision(g_PCSta, popSales));
 	}
