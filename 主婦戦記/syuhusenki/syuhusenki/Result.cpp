@@ -56,13 +56,13 @@ void result()
 		ReadInTexture("Texture/yasuko_motion3.png", YASUKO_EMOTION3_TEX);
 
 		ReadInTexture("Texture/merchandise/buridaikon.png", BURIDAIKON_TEX);
-		ReadInTexture("Texture/merchandise/tumami.png", RELISH_TEX);
+		ReadInTexture("Texture/merchandise/tsumami.png", RELISH_TEX);
 		ReadInTexture("Texture/merchandise/teatime.png", TEATIME_TEX);
 
 		ReadInTexture("Texture/merchandise/curry.png", CURRY_TEX);
 		ReadInTexture("Texture/merchandise/hamberg.png", HAMBERG_TEX);
 		ReadInTexture("Texture/merchandise/sashimi.png", ASSORTEDSASHIMI_TEX);
-		ReadInTexture("Texture/merchandise/oyatu.png", AFTERNOONREFRESHMENT_TEX);
+		ReadInTexture("Texture/merchandise/oyatsu.png", AFTERNOONREFRESHMENT_TEX);
 
 		ReadInTexture("Texture/merchandise/soup.png", SOUP_TEX);
 		ReadInTexture("Texture/merchandise/nimono.png", NIMONO_TEX);
