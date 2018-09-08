@@ -26,6 +26,10 @@
 #define YASUKO_TV (679.f/2048.f)
 #define BOY_TU (487.f/2048.f)
 #define BOY_TV (707.f/2048.f)
+#define MOB_TU (430.f/2048.f)
+#define MOB_TV (685.f/2048.f)
+#define SALE_TU (480.f/2048.f)
+#define SALE_TV (785.f/2048.f)
 
 //ゲームパッドの状態
 #define UP_BUTTON 0x0001

@@ -16,5 +16,6 @@ int comandCheck(int comand[], int inputComand[], int count);
 void comandMake();
 char comandButton(int comand);
 int comandButtonTexture(int comand);
+void RevolveZTuTv(CUSTOMVERTEX* Vertex, float Rad, CENTRAL_STATE Central, float tu, float tv, float scaleTu, float scaleTv);
 
 #endif

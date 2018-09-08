@@ -444,11 +444,17 @@ void floaMoveRenderSta()
 		{
 			if (mobMovedRight[i])
 			{
-				CreateSquareVertexEx(salesmans, mobCentralFloa[i], mobtu[i] * BOY_TU, mobtv[i] * BOY_TV, -1 * BOY_TU, BOY_TV);
+				CreateSquareVertexEx(salesmans, mobCentralFloa[i], mobtu[i] * BOY_TU, mobtv[i] * BOY_TV, -BOY_TU, BOY_TV);
 			}
 			else CreateSquareVertexEx(salesmans, mobCentralFloa[i], mobtu[i] * BOY_TU, mobtv[i] * BOY_TV, BOY_TU, BOY_TV);
 		}
-		else CreateSquareVertex(salesmans, mobCentralFloa[i]);
+		else {
+			if (mobMovedRight[i])
+			{
+				CreateSquareVertexEx(salesmans, mobCentralFloa[i], MOB_TU, mobtv[i] * MOB_TV, -MOB_TU, MOB_TV);
+			}
+			else CreateSquareVertexEx(salesmans, mobCentralFloa[i], 0, mobtv[i] * MOB_TV, MOB_TU, MOB_TV);
+		}
 		if (i >= 2)
 		{
 			SetUpTexture(salesmans, mobTexNum);
@@ -460,10 +466,29 @@ void floaMoveRenderSta()
 	goodsScoreShow();
 	if (g_isGameStart)
 	{
+		static int saleAnimeCount = 0;
+		int saleAnimeTv;
+		static bool saleAnimeChainger = false;
+		saleAnimeCount++;
+		if (saleAnimeCount > ANIMETIONTIME && !saleAnimeChainger)
+		{
+			saleAnimeCount = 0;
+			saleAnimeChainger = true;
+		}
+		if(saleAnimeCount > ANIMETIONTIME && saleAnimeChainger)
+		{
+			saleAnimeCount = 0;
+			saleAnimeChainger = false;
+		}
+		if (saleAnimeChainger)
+		{
+			saleAnimeTv = 1;
+		}
+		else saleAnimeTv = 0;
 		for (int i = 0; i < 3; i++)
 		{
-			CreateSquareVertex/*Color*/(salesmans, popSales[i].popPositionCentral/*,0xaf999999*/);
-			SetUpTexture(salesmans, SALESMAN_TEX/*BLANK*/);
+			CreateSquareVertexEx(salesmans, popSales[i].popPositionCentral, 0, saleAnimeTv * SALE_TV, SALE_TU, SALE_TV);
+			SetUpTexture(salesmans, SALESMAN_TEX);
 		}
 	}
 	//プレイヤーキャラクターのテクスチャの描画
@@ -771,18 +796,22 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		case NORTH:
 			mobCentralFloa[2].y -= 1.5f;
 			mobMovedRight[2] = false;
+			mobtv[2] = 1;
 			break;
 		case SOUTH:
 			mobCentralFloa[2].y += 1.5f;
 			mobMovedRight[2] = false;
+			mobtv[2] = 0;
 			break;
 		case EAST:
 			mobCentralFloa[2].x -= 2;
 			mobMovedRight[2] = false;
+			mobtv[2] = 2;
 			break;
 		case WEST:
 			mobCentralFloa[2].x += 2;
 			mobMovedRight[2] = true;
+			mobtv[2] = 2;
 			break;
 		default:
 			break;
@@ -805,18 +834,22 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		case NORTH:
 			mobCentralFloa[3].y -= 1.5f;
 			mobMovedRight[3] = false;
+			mobtv[3] = 1;
 			break;
 		case SOUTH:
 			mobCentralFloa[3].y += 1.5f;
 			mobMovedRight[3] = false;
+			mobtv[3] = 0;
 			break;
 		case EAST:
 			mobCentralFloa[3].x -= 2;
 			mobMovedRight[3] = false;
+			mobtv[3] = 2;
 			break;
 		case WEST:
 			mobCentralFloa[3].x += 2;
 			mobMovedRight[3] = true;
+			mobtv[3] = 2;
 			break;
 		default:
 			break;

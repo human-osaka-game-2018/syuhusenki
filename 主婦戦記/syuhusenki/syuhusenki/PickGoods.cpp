@@ -53,7 +53,7 @@ void pickGoodsRender() {
 	EasyCreateSquareVertexColor(0, 0, WIDTH, HEIGHT, HARFCLEAR, BLANK);
 
 	for (int i = 0; i < 5; i++) {
-		CreateSquareVertex(mobFloa, mobCentralBlowOff[i]);
+		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i],0, 0, MOB_TU, MOB_TV);
 		if (g_isBlowOff) {
 			g_effectCount++;
 
@@ -67,7 +67,7 @@ void pickGoodsRender() {
 			{
 				mobRad = mobRad * -1;
 			}
-			RevolveZ(mobFloa, mobRad, mobCentralBlowOff[i]);
+			RevolveZTuTv(mobFloa, mobRad, mobCentralBlowOff[i], 0, 0, MOB_TU, MOB_TV);
 		}
 		SetUpTexture(mobFloa, mobTexNum);
 	}

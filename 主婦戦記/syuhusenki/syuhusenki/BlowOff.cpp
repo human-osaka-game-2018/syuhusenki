@@ -91,7 +91,7 @@ void blowOffRender()
 	EasyCreateSquareVertexColor(0, 0, WIDTH, HEIGHT, HARFCLEAR, BLANK);
 
 	for (int i = 0; i < 5; i++) {
-		CreateSquareVertex(mobFloa, mobCentralBlowOff[i]);
+		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i],0,0,MOB_TU, MOB_TV);
 		if (g_isBlowOff) {
 			g_effectCount++;
 
@@ -105,7 +105,7 @@ void blowOffRender()
 			{
 				mobRad = mobRad * -1;
 			}
-			RevolveZ(mobFloa, mobRad, mobCentralBlowOff[i]);
+			RevolveZTuTv(mobFloa, mobRad, mobCentralBlowOff[i], 0, 0, MOB_TU, MOB_TV);
 		}
 		SetUpTexture(mobFloa, mobTexNum);
 	}
@@ -465,5 +465,42 @@ void madamBlowOff() {
 			mobCentralBlowOff[i].y += 35;
 		}
 	}
+
+}
+
+void RevolveZTuTv(CUSTOMVERTEX* Vertex, float Rad, CENTRAL_STATE Central, float tu, float tv, float scaleTu, float scaleTv) {
+
+	float CharVertexX[4];
+	float CharVertexY[4];
+
+	CharVertexX[0] = Central.x - Central.scaleX;
+	CharVertexX[1] = Central.x + Central.scaleX;
+	CharVertexX[2] = Central.x + Central.scaleX;
+	CharVertexX[3] = Central.x - Central.scaleX;
+
+	CharVertexY[0] = Central.y - Central.scaleY;
+	CharVertexY[1] = Central.y - Central.scaleY;
+	CharVertexY[2] = Central.y + Central.scaleY;
+	CharVertexY[3] = Central.y + Central.scaleY;
+
+	for (int RoteCnt = 0; RoteCnt < 4; RoteCnt++) {
+
+		CharVertexX[RoteCnt] -= Central.x;
+		CharVertexY[RoteCnt] -= Central.y;
+
+		float KEEPER = CharVertexX[RoteCnt];
+
+		CharVertexX[RoteCnt] = (CharVertexX[RoteCnt] * cos(-Rad)) - (CharVertexY[RoteCnt] * sin(-Rad));
+		CharVertexY[RoteCnt] = (CharVertexY[RoteCnt] * cos(-Rad)) + (KEEPER * sin(-Rad));
+
+		CharVertexX[RoteCnt] += Central.x;
+		CharVertexY[RoteCnt] += Central.y;
+
+	}
+
+	Vertex[0] = { CharVertexX[0], CharVertexY[0], 1.f, 1.f, 0xffffffff,  tu, tv };
+	Vertex[1] = { CharVertexX[1], CharVertexY[1], 1.f, 1.f, 0xffffffff,  tu + scaleTu, tv };
+	Vertex[2] = { CharVertexX[2], CharVertexY[2], 1.f, 1.f, 0xffffffff,  tu + scaleTu, tv + scaleTv };
+	Vertex[3] = { CharVertexX[3], CharVertexY[3], 1.f, 1.f, 0xffffffff,  tu, tv + scaleTv };
 
 }

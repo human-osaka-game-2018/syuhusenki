@@ -44,7 +44,7 @@ CUSTOMVERTEX mobFloa[4];
 CENTRAL_STATE mobCentralBlowOff[5];
 
 CUSTOMVERTEX playerHit[4];
-CENTRAL_STATE playerCentralHit = {200,350,300,250};
+CENTRAL_STATE playerCentralHit = {200,350,200,250};
 
 CENTRAL_STATE durabilityPointCentral = { 900,75 ,15,40};
 

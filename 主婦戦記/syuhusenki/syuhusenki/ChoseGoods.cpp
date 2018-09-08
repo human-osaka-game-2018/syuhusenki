@@ -63,7 +63,7 @@ void choseGoodsReader() {
 
 
 	for (int i = 0; i < 5; i++) {
-		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i], 1, 0, -1, 1);
+		CreateSquareVertexEx(mobFloa, mobCentralBlowOff[i],0, 0, MOB_TU, MOB_TV);
 		SetUpTexture(mobFloa, mobTexNum);
 	}
 	SetUpTexture(playerHit, texturePC);
