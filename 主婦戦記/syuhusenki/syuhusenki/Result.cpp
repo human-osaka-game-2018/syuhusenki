@@ -11,21 +11,21 @@ static bool apperText[10];
 static int resultPage;
 static int nomalSum = 0;
 static int saleSale = 0;
-
+static int resultCounter = 0;
 void resultControl(void);
 void resultRenderOne(void);
 void resultRenderTwo(void);
 void resultRenderThree(void);
-void apperResult(void);
+void apperResult(int* resultCounter);
 
 int addPrice(int num, int nomalOrSale);
 
 static bool isFirst = true;
+static DWORD SyncOld;
+static DWORD SyncNow;
 
 void result() 
 {
-	static DWORD SyncOld = timeGetTime();
-	DWORD SyncNow = timeGetTime();
 
 	if (isFirst) {
 		setNowLoading();
@@ -78,7 +78,7 @@ void result()
 			apperText[i] = false;
 		}
 		g_SoundSuccess = soundsManager.Start("LOAD", false) && g_SoundSuccess;
-
+		resultCounter = 0;
 		isFirst = false;
 		g_timerCount = 0;
 
@@ -95,8 +95,7 @@ void result()
 		break;
 	case PAGE2:
 	{
-		static DWORD SyncOld = timeGetTime();
-		DWORD SyncNow = timeGetTime();
+		SyncNow = timeGetTime();
 
 		resultRenderOne();
 		if (SyncNow - SyncOld > 3000) 
@@ -135,7 +134,8 @@ void result()
 
 void resultControl(void)
 {
-	apperResult();
+	resultCounter++;
+	apperResult(&resultCounter);
 	GetControl(0);
 	BottonCheck();
 
@@ -151,6 +151,8 @@ void resultControl(void)
 		{
 		case PAGE1:
 			g_SoundSuccess = soundsManager.Start("DRUM", false) && g_SoundSuccess;
+			SyncOld = timeGetTime();
+
 			resultPage = PAGE2;
 			break;
 		case PAGE2:
@@ -164,12 +166,22 @@ void resultControl(void)
 			mobCentralFloa[0]= { 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
 			mobCentralFloa[1] = { 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };			
 			mobCentralFloa[1] = { 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE };
-
+			nomalSum = 0; 
+			saleSale = 0; 
+			isFirst = true;
+			memset(apperText, false, 10);
+			for (int i = 0; i < 3; i++)
+			{
+				foodGoods[selectedGoods[i]].haveValue = 0;
+			}
 			if (cursorResult.y < 500) {
 				g_gameScene = FLOAMOVE;
 				g_scene = SCENE_MAIN;
 			}
-			else g_scene = SCENE_TITLE;
+			else
+			{
+				g_scene = SCENE_TITLE;
+			}
 			break;
 		}
 	}
@@ -282,8 +294,8 @@ void resultRenderOne(void)
 	CENTRAL_STATE SeleTexCentral2{ 850,250,50,50 };
 	CENTRAL_STATE SeleTexCentral3{ 850,350,50,50 };
 	CENTRAL_STATE comboTexCentral{ 640,315,100,100 };
-	CENTRAL_STATE saleTResult{ 200,30,100,25 };
-	CENTRAL_STATE nomalTResult{ 1020,30,100,25 };
+	CENTRAL_STATE nomalTResult{ 200,30,100,25 };
+	CENTRAL_STATE saleTResult{ 1020,30,100,25 };
 	CENTRAL_STATE comboTResult{ 640,30,100,25 };
 	CENTRAL_STATE comboStarResult{ 640,150,100,25 };
 	CENTRAL_STATE comboTextResult{ 640,650,300,25 };
@@ -357,7 +369,7 @@ void resultRenderOne(void)
 	if (apperText[4]) 
 	{
 		sprintf_s(resulttantValue, 32, "%d-%d=%d", nomalSum, saleSale, nomalSum - saleSale);
-		RECT resultTotal{ 140,525,1140,700 };
+		RECT resultTotal{ 100,525,1180,700 };
 		WriteWord(resulttantValue, resultTotal, DT_CENTER, BLACK, SCORE_FONT);
 	}
 	if (apperText[5]) 
@@ -391,7 +403,7 @@ void resultRenderTwo(void)
 
 	char resulttantValue[32];
 	sprintf_s(resulttantValue, 32, "%d",nomalSum - saleSale + foodCombo[comboSucceceCheck()].comboBonus);
-	RECT resultTotal{ 50,235,430,400 };
+	RECT resultTotal{ 0,235,435,400 };
 	WriteWord(resulttantValue, resultTotal, DT_RIGHT, BLACK, LAST_SCORE_FONT);
 	CUSTOMVERTEX resultPCTex[4];
 	CENTRAL_STATE resultPC{ 1050,350,200,300 };
@@ -432,31 +444,30 @@ int addPrice(int num, int nomalOrSale)
 	}
 }
 
-void apperResult(void)
+void apperResult(int* resultCounter)
 {
-	static int resultCounter = 0;
-	resultCounter++;
-	if (resultCounter == 30) {
+	
+	if (*resultCounter == 30) {
 		apperText[0] = true;
 		g_SoundSuccess = soundsManager.Start("COIN1", false) && g_SoundSuccess;
 	}
-	if (resultCounter == 60) {
+	if (*resultCounter == 60) {
 		apperText[1] = true;
 		g_SoundSuccess = soundsManager.Start("COIN2", false) && g_SoundSuccess;
 	}
-	if (resultCounter == 90) {
+	if (*resultCounter == 90) {
 		apperText[2] = true;
 		g_SoundSuccess = soundsManager.Start("COIN3", false) && g_SoundSuccess;
 	}
-	if (resultCounter == 120) {
+	if (*resultCounter == 120) {
 		apperText[3] = true;
 		g_SoundSuccess = soundsManager.Start("COIN4", false) && g_SoundSuccess;
 	}
-	if (resultCounter == 150) {
+	if (*resultCounter == 150) {
 		apperText[4] = true;
 		g_SoundSuccess = soundsManager.Start("CASHER", false) && g_SoundSuccess;
 	}
-	if ((resultCounter == 180) && (foodCombo[succeedCombo].comboSucceed)) {
+	if ((*resultCounter == 180) && (foodCombo[succeedCombo].comboSucceed)) {
 		apperText[5] = true;
 		g_SoundSuccess = soundsManager.Start("WIN", false) && g_SoundSuccess;
 	}
