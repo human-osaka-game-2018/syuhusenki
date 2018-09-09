@@ -4,6 +4,7 @@
 #include "Result.h"
 #include "Goods.h"
 #include "Timer.h"
+#include "resource.h"
 
 SoundLib::SoundsManager soundsManager;
 
@@ -24,9 +25,9 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hInstance, LPSTR szStr, INT iCmdSh
 	HWND hWnd = NULL;
 
 #ifdef _DEBUG
-	InitWindowEx("™å•wí‹L™", &hWnd, WIDTH, HEIGHT, hInst, hInstance, NULL, "Texture/Yasuko.png");
+	InitWindowEx("™å•wí‹L™", &hWnd, WIDTH, HEIGHT, hInst, hInstance, IDI_ICON1, "Texture/Yasuko.png");
 #else
-	InitWindowFullscreenEx("™å•wí‹L™", &hWnd, WIDTH, HEIGHT, hInst, hInstance, NULL, "Texture/Yasuko.png");
+	InitWindowFullscreenEx("™å•wí‹L™", &hWnd, WIDTH, HEIGHT, hInst, hInstance, IDI_ICON1, "Texture/Yasuko.png");
 #endif
 	g_SoundSuccess = soundsManager.Initialize() && g_SoundSuccess;
 	ReadInTexture("Texture/nowloading.png", LOAD_TEX);

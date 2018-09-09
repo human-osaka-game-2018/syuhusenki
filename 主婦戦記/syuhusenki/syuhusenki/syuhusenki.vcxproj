@@ -40,10 +40,17 @@
     <ClInclude Include="Goods.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="PickGoods.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Title.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Texture\icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="syuhusenki.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
