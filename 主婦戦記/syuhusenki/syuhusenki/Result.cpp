@@ -67,6 +67,15 @@ void result()
 		ReadInTexture("Texture/merchandise/soup.png", SOUP_TEX);
 		ReadInTexture("Texture/merchandise/nimono.png", NIMONO_TEX);
 		ReadInTexture("Texture/merchandise/parfait.png", PARFAIT_TEX);
+		if (selectedGoods[0] == selectedGoods[1] && selectedGoods[0] == selectedGoods[2]) {
+			foodGoods[selectedGoods[0]].haveValue = (foodGoods[selectedGoods[0]].haveValue / 3);
+		}
+		else if (selectedGoods[0] == selectedGoods[1] || selectedGoods[0] == selectedGoods[2]) {
+			foodGoods[selectedGoods[0]].haveValue = (foodGoods[selectedGoods[0]].haveValue / 2);
+		}
+		else if (selectedGoods[1] == selectedGoods[2]) {
+			foodGoods[selectedGoods[1]].haveValue = (foodGoods[selectedGoods[1]].haveValue / 2);
+		}
 
 		for (int i = 0; i < 3; i++)
 		{
