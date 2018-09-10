@@ -13,16 +13,21 @@ enum MOBDIRECTION {
 	EAST,
 	WEST
 };
+enum CONTACTDIRECTION
+{
+	SIDE,
+	UPPER,
+	UNDER
+};
 
 CENTRAL_STATE mobCentralFloa[4]
 {
-	{ 1200,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
+	{ 1190,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 1030,230 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE }
 
 };
-CENTRAL_STATE prevMobCentralFloa[4];
 CUSTOMVERTEX PC[4];
 
 static bool mobMovedRight[4];
@@ -36,19 +41,18 @@ static int mobtv[4] = {0,0,0,0};
 
 void playerControl(int* onceSound);
 void leachedGondolaCheck(int* leschgondola, SALESMAN popSales[], int whergondola);
-bool MoveOutToErea(CENTRAL_STATE* central, CENTRAL_STATE prevcentral, float Left, float Top, float Right, float Bottom);
+bool MoveOutToErea(CENTRAL_STATE* central, float Left, float Top, float Right, float Bottom, int direction);
 void salesmanPoping(SALESMAN popSales[]);
 int salesmanToPCCollision(CENTRAL_STATE central, SALESMAN popSales[]);
 void floaMoveControl();
 void floaMoveRender();
 void floaMoveRenderSta();
-void collision(CENTRAL_STATE* charctor, CENTRAL_STATE prevcentral);
-void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[]);
+void collision(CENTRAL_STATE* charctor);
+void mobControler(CENTRAL_STATE mobCentralFloa[]);
 void mobToPCContact(CENTRAL_STATE* charctor, CENTRAL_STATE mobCentralFloa[]);
 
 
 CENTRAL_STATE g_PCSta = { 900.f, 580.f, 32.f, 53.f };
-CENTRAL_STATE g_prevPCSta;
 
 CENTRAL_STATE g_startCountSta = { WIDTH / 2, HEIGHT / 2, 150.f, 150.f };
 CENTRAL_STATE g_startSta = { WIDTH / 2, HEIGHT / 2, 200.f, 96.25f };
@@ -82,12 +86,11 @@ void floaMoveControl()
 	if (g_isGameStart)
 	{
 		playerControl(&onceSound);
-		mobControler(mobCentralFloa, prevMobCentralFloa);
+		mobControler(mobCentralFloa);
 		for (int i = 0; i < 4; i++)
 		{
-			collision(&mobCentralFloa[i], prevMobCentralFloa[i]);
-			prevMobCentralFloa[i] = mobCentralFloa[i];
-		}
+			collision(&mobCentralFloa[i]);
+;		}
 #ifdef _DEBUG
 		CheckKeyState(DIK_SPACE);
 		if (KeyState[DIK_SPACE] == KeyRelease)
@@ -116,9 +119,7 @@ void playerControl(int* onceSound)
 	{
 		leachedGondolaCheck(&salesChoice, popSales, salesmanToPCCollision(g_PCSta, popSales));
 	}
-	if (!(GetAnalogLValue(ANALOG_Y) && GetAnalogLValue(ANALOG_X)))
-	{
-		if ( 0 < GetAnalogLValue(ANALOG_Y))
+	if ( 0 < GetAnalogLValue(ANALOG_Y))
 		{
 			isRight = false;
 			if (!g_pause && !g_isTimeUp)
@@ -150,7 +151,7 @@ void playerControl(int* onceSound)
 			}
 		}
 
-		if (0 > GetAnalogLValue(ANALOG_Y))
+	if ( 0 > GetAnalogLValue(ANALOG_Y))
 		{
 			isRight = false;
 			if (!g_pause && !g_isTimeUp)
@@ -181,7 +182,7 @@ void playerControl(int* onceSound)
 			}
 		}
 
-		if ( 0 < GetAnalogLValue(ANALOG_X) )
+	if ( 0 < GetAnalogLValue(ANALOG_X) )
 		{
 			isRight = true;
 			if (!g_pause && !g_isTimeUp)
@@ -211,8 +212,7 @@ void playerControl(int* onceSound)
 			}
 		}
 
-
-		if (0 > GetAnalogLValue(ANALOG_X))
+	if ( 0 > GetAnalogLValue(ANALOG_X))
 		{
 			isRight = false;
 			if (!g_pause && !g_isTimeUp)
@@ -241,7 +241,6 @@ void playerControl(int* onceSound)
 				PCtv = 2;
 			}
 		}
-	}
 		/////////////////////////////////////////
 	if (InputKEY(DIK_W) || (PadState[ButtonUP] == PadOn))
 	{
@@ -328,73 +327,67 @@ void playerControl(int* onceSound)
 			}
 		}
 	mobToPCContact(&g_PCSta, mobCentralFloa);
-	collision(&g_PCSta, g_prevPCSta);
-	g_prevPCSta = g_PCSta;
+	collision(&g_PCSta);
 }
 
 //当たり判定処理
-void collision(CENTRAL_STATE* charctor, CENTRAL_STATE prevcentral)
+void collision(CENTRAL_STATE* charctor)
 {
-	//壁
-	if (charctor->x <= 50.f)
-	{
-		charctor->x = 50.f;
-	}
-
-	if (charctor->x >= 1230.f)
-	{
-		charctor->x = 1230.f;
-	}
-
-	if (charctor->y <= 145.f)
-	{
-		charctor->y = 145.f;
-	}
-
-	if (charctor->y >= 630.f)
-	{
-		charctor->y = 630.f;
-	}
-
+	MoveInToErea(charctor, 0.f, 145.f, 1280.f, 690.f);
 	//商品棚
 	//ジュース1
-	if (charctor->x <= 100.f && charctor->y <= 555.f&& charctor->y >= 185.f)
-	{
-		charctor->x = 100.f;
-	}
+	MoveOutToErea(charctor, -50, 195, 100, 545, SIDE);//左右
+	MoveOutToErea(charctor, 0, 185, 100, 194, UPPER);//上
+	MoveOutToErea(charctor, 0, 545, 100, 555, UNDER);//下
+
 	//肉
-	if (charctor->x >= 125.f && charctor->x <= 640.f&& charctor->y <= 155.f)
-	{
-		charctor->y = 155.f;
-	}
-	//魚
-	if (charctor->x <= 1230.f && charctor->x >= 640.f&& charctor->y <= 155.f)
-	{
-		charctor->y = 155.f;
-	}
+	MoveOutToErea(charctor, 125, -50, 640, 139, SIDE);//左右
+	MoveOutToErea(charctor, 125, 140, 640, 145, UNDER);//下
+
+	//魚1
+	MoveOutToErea(charctor, 640, -50, 1230, 139, SIDE);//左右
+	MoveOutToErea(charctor, 640, 140, 1230, 145, UNDER);//下
 	//野菜1
-	if (charctor->x >= 1200.f && charctor->y <= 615.f&& charctor->y >= 165.f)
-	{
-		charctor->x = 1200.f;
-	}
+	MoveOutToErea(charctor, 1200, 170, 1380, 608, SIDE);//左右
+	MoveOutToErea(charctor, 1200, 165, 1280, 169, UPPER);//上
+	MoveOutToErea(charctor, 1200, 609, 1280, 615, UNDER);//下
+
 	//果実2
-	MoveOutToErea(charctor, prevcentral, 786, 420, 1016, 575);
+	MoveOutToErea(charctor, 786, 425, 1016, 568, SIDE);//左右
+	MoveOutToErea(charctor, 786, 420, 1016, 425, UPPER);//上
+	MoveOutToErea(charctor, 786, 568, 1016, 575, UNDER);//下
+
 	//野菜2
-	MoveOutToErea(charctor, prevcentral, 1035, 213, 1152, 565);
-	//ジュース2
-	MoveOutToErea(charctor, prevcentral, 640, 170, 1152, 250);
+	MoveOutToErea(charctor, 1035, 218, 1152, 558, SIDE);//左右
+	MoveOutToErea(charctor, 1035, 213, 1152, 217, UPPER);//上
+	MoveOutToErea(charctor, 1035, 557, 1152, 565, UNDER);//下
+	//魚2
+	MoveOutToErea(charctor, 640, 178, 1152, 246, SIDE);//左右
+	MoveOutToErea(charctor, 640, 170, 1152, 177, UPPER);//上
+	MoveOutToErea(charctor, 640, 245, 1152, 250, UNDER);//下
 	//ジュース3
-	MoveOutToErea(charctor, prevcentral, 682, 260, 1016, 405);
+	MoveOutToErea(charctor, 682, 265, 1016, 399, SIDE);//左右
+	MoveOutToErea(charctor, 682, 260, 1016, 264, UPPER);//上
+	MoveOutToErea(charctor, 682, 400, 1016, 405, UNDER);//下
 	//果実1
-	MoveOutToErea(charctor, prevcentral, 442, 429, 770, 590);
+	MoveOutToErea(charctor, 442, 436, 770, 584, SIDE);//左右
+	MoveOutToErea(charctor, 442, 429, 770, 435, UPPER);//上
+	MoveOutToErea(charctor, 442, 585, 770, 590, UNDER);//下
 	//おやつ1
-	MoveOutToErea(charctor, prevcentral, 270, 170, 595, 290);
+	MoveOutToErea(charctor, 270, 176, 595, 284, SIDE);//左右
+	MoveOutToErea(charctor, 270, 170, 595, 175, UPPER);//上
+	MoveOutToErea(charctor, 270, 285, 595, 290, UNDER);//下
 	//おやつ2-1
-	MoveOutToErea(charctor, prevcentral, 135, 170, 250, 320);
+	MoveOutToErea(charctor, 135, 175, 250, 330, SIDE);//左右
+	MoveOutToErea(charctor, 135, 170, 250, 174, UPPER);//上
 	//おやつ2-2
-	MoveOutToErea(charctor, prevcentral, 135, 320, 600, 400);
+	MoveOutToErea(charctor, 135, 328, 600, 389, SIDE);//左右
+	MoveOutToErea(charctor, 135, 320, 600, 327, UPPER);//上
+	MoveOutToErea(charctor, 135, 390, 600, 400, UNDER);//下
 	//おやつ3
-	MoveOutToErea(charctor, prevcentral, 135, 430, 420, 590);
+	MoveOutToErea(charctor, 135, 436, 420, 584, SIDE);//左右
+	MoveOutToErea(charctor, 135, 430, 420, 435, UPPER);//上
+	MoveOutToErea(charctor, 135, 585, 420, 590, UNDER);//下
 
 }
 void leachedGondolaCheck(int* leschgondola, SALESMAN popSales[], int whergondola)
@@ -408,44 +401,41 @@ void leachedGondolaCheck(int* leschgondola, SALESMAN popSales[], int whergondola
 		}
 	}
 }
-bool MoveOutToErea(CENTRAL_STATE* central, CENTRAL_STATE prevcentral, float Left, float Top, float Right, float Bottom)
+bool MoveOutToErea(CENTRAL_STATE* central,float Left, float Top, float Right, float Bottom, int direction)
 {
 	static float posBuff = 0;
 	posBuff = central->y;
 	if ((Left <= central->x) && (central->x <= Right)
 		&& (Top <= central->y) && (central->y <= Bottom))
 	{
-		if ((Left <= prevcentral.x) && (prevcentral.x <= Right) && (central->x != prevcentral.x))
+		switch (direction)
 		{
-			if ((Left <= central->x) && (central->x <= Right))
-			{
-				if ((Left + (Right - Left) / 2) >= central->x) {
-					central->x = Left - 1;
-					return true;
-				}
-				if (central->x >= (Right - (Right - Left) / 2)) {
-					central->x = Right + 1;
-					return true;
-				}
+		case 0:
+			if ((Left + (Right - Left) / 2) >= central->x) {
+				central->x = Left - 1;
+				return true;
 			}
-		}
-		if ((Top <= prevcentral.y) && (prevcentral.y <= Bottom) && (central->y != prevcentral.y))
-		{
-			if ((Top <= central->y) && (central->y <= Bottom))
-			{
-				if ((Top + (Bottom - Top) / 2) >= central->y) {
-					central->y = Top - 1;
-					return true;
-				}
-				if (central->y >= (Bottom - (Bottom - Top) / 2)) {
-					central->y = Bottom + 1;
-					return true;
-				}
+			if (central->x >= (Right - (Right - Left) / 2)) {
+				central->x = Right + 1;
+				return true;
 			}
+			break;
+		case 1:
+			if ((Top + (Bottom - Top) / 2) >= central->y) {
+				central->y = Top - 1;
+				return true;
+			}
+			break;
+		case 2:
+			if (central->y >= (Bottom - (Bottom - Top) / 2)) {
+				central->y = Bottom + 1;
+				return true;
+			}
+			break;
+		default:
+			return false;
 		}
-
 	}
-	else return false;
 }
 int salesmanToPCCollision(CENTRAL_STATE central, SALESMAN popSales[])
 {
@@ -702,20 +692,20 @@ void salesmanPoping(SALESMAN popSales[])
 		}
 	}
 }
-void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
+void mobControler(CENTRAL_STATE mobCentralFloa[])
 {
 	static int collisionCount[4] = { 0,0,0,0};
 	static int mobAnimeCount[4] = { 0,0,0,0 };
 	if (!BtoBContact(&mobCentralFloa[0], &g_PCSta))
 	{
-		if (mobCentralFloa[0].x <= 100)
+		if (mobCentralFloa[0].x <= 120)
 		{
 			mobCentralFloa[0].y -= 3;
 			mobMovedRight[0] = false;
 			mobtv[0] = 1;
 
 		}
-		if (mobCentralFloa[0].x >= 1200)
+		if (mobCentralFloa[0].x >= 1190)
 		{
 			mobCentralFloa[0].y += 3;
 			mobMovedRight[0] = false;
@@ -918,9 +908,9 @@ void mobControler(CENTRAL_STATE mobCentralFloa[], CENTRAL_STATE prevcentral[])
 		}
 	}
 
-	collision(&mobCentralFloa[1], prevcentral[1]);
-	collision(&mobCentralFloa[2], prevcentral[2]);
-	collision(&mobCentralFloa[3], prevcentral[3]);
+	collision(&mobCentralFloa[1]);
+	collision(&mobCentralFloa[2]);
+	collision(&mobCentralFloa[3]);
 
 }
 
