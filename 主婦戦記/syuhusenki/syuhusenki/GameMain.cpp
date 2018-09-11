@@ -311,8 +311,8 @@ void goodsScoreShow()
 			EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[g_turn], 1));
 
 			sprintf_s(goodsNumBuff, 10, "%dƒR", foodGoods[selectedGoods[g_turn]].haveValue);
-			RECT GoodsNUM = { 900 ,10,1100,80 };
-			WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
+			RECT GoodsNUM = { 850 ,10,1100,80 };
+			WriteWord(goodsNumBuff, GoodsNUM, DT_RIGHT, BLACK, HAVEGOODS_FONT);
 
 			break;
 		}
@@ -323,8 +323,8 @@ void goodsScoreShow()
 
 			EasyCreateSquareVertex(650, 10, 800, 80, priceEdit(foodGoods, selectedGoods[g_turn], 1));
 			sprintf_s(goodsNumBuff, 10, "%dƒR", foodGoods[selectedGoods[g_turn]].haveValue);
-			RECT GoodsNUM = { 900 ,10,1100,80 };
-			WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
+			RECT GoodsNUM = { 850 ,10,1100,80 };
+			WriteWord(goodsNumBuff, GoodsNUM, DT_RIGHT, BLACK, HAVEGOODS_FONT);
 
 			break;
 		}
@@ -365,8 +365,8 @@ void goodsScoreShow()
 			break;
 		}
 		sprintf_s(goodsNumBuff, 10, "%dƒR", foodGoods[selectedGoods[g_turn]].haveValue);
-		RECT GoodsNUM = { 900 ,10,1100,80 };
-		WriteWord(goodsNumBuff, GoodsNUM, DT_LEFT, BLACK, HAVEGOODS_FONT);
+		RECT GoodsNUM = { 850 ,10,1100,80 };
+		WriteWord(goodsNumBuff, GoodsNUM, DT_RIGHT, BLACK, HAVEGOODS_FONT);
 
 		CUSTOMVERTEX timeLimitShow[4];
 		CENTRAL_STATE timeLimitShowCentral = { 640,posYTimmer,scaleTimmer,scaleTimmer };

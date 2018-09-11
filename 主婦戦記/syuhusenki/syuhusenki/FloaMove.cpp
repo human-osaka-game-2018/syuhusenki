@@ -22,7 +22,7 @@ enum CONTACTDIRECTION
 
 CENTRAL_STATE mobCentralFloa[4]
 {
-	{ 1190,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
+	{ 620,630 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 600,300 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 120,500 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE },
 	{ 1030,230 ,PLAYER_FLOA_SCALE,PLAYER_FLOA_SCALE }
@@ -732,16 +732,16 @@ void mobControler(CENTRAL_STATE mobCentralFloa[])
 		collisionCount[0]++;
 		if (collisionCount[0] > 30)
 		{
-			if (mobCentralFloa[0].x <= 100)
+			if (mobCentralFloa[0].x <= 120)
 			{
-				mobCentralFloa[0].y += 5;
+				mobCentralFloa[0].y += 10;
 				mobMovedRight[0] = false;
 				mobtv[0] = 0;
 
 			}
-			if (mobCentralFloa[0].x >= 1200)
+			if (mobCentralFloa[0].x >= 1190)
 			{
-				mobCentralFloa[0].y -= 5;
+				mobCentralFloa[0].y -= 10;
 				mobMovedRight[0] = false;
 				mobtv[0] = 1;
 			}
