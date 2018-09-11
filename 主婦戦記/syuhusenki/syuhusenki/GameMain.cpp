@@ -62,6 +62,8 @@ void gameMain() {
 			setNowLoading();
 
 			ReadInTexture("Texture/UI/frame_goods.png", FRAME_TEX);
+			ReadInTexture("Texture/effect.png", YASUKO_EFFECT_TEX);
+
 			ReadInTexture("Texture/FoodSection.png", FOOD_STAGE_TEX);
 			ReadInTexture("Texture/maxresdefault.png", CUTIN_TEX);
 			ReadInTexture("Texture/bakuhuhathu.png", EXPLOSION_TEX);

@@ -37,6 +37,7 @@ static int PCtu = 0;
 static int PCtv = 0;
 static int mobtu[4] = {0,0,0,0};
 static int mobtv[4] = {0,0,0,0};
+static int effectCount = 0;
 
 
 void playerControl(int* onceSound);
@@ -69,6 +70,17 @@ void floaMove() {
 void floaMoveControl()
 {
 	static int onceSound = 0;
+	static int effectIntervalPrev = g_timerCount;
+	int effectIntervalCurrnt = g_timerCount;
+	if (effectIntervalCurrnt - effectIntervalPrev > 3)
+	{
+		effectCount++;
+		effectIntervalPrev = g_timerCount;
+	}
+	if (effectCount > 3)
+	{
+		effectCount = 0;
+	}
 
 	timerControl();
 	if (g_timerCount < THREE_SECOND)
@@ -477,7 +489,10 @@ void floaMoveRenderSta()
 	CUSTOMVERTEX startCount[4];
 	CUSTOMVERTEX start[4];
 	CUSTOMVERTEX salesmans[4];
+	CUSTOMVERTEX effectPC[4];
+	CENTRAL_STATE effectCentral = { g_PCSta.x,g_PCSta.y-7,40,70 };
 
+	CreateSquareVertexEx(effectPC, effectCentral, (effectCount * EFFECT_TU), 0, EFFECT_TU, EFFECT_TV);
 	CreateSquareVertex(startCount, g_startCountSta);
 	CreateSquareVertex(start, g_startSta);
 	for (int i = 0; i < 4; i++)
@@ -534,6 +549,7 @@ void floaMoveRenderSta()
 		}
 	}
 	//プレイヤーキャラクターのテクスチャの描画
+	SetUpTexture(effectPC, YASUKO_EFFECT_TEX);
 	SetUpTexture(PC, YASUKO_TEX);
 
 	timerRender();

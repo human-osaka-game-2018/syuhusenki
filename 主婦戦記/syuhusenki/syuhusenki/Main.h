@@ -30,6 +30,8 @@
 #define MOB_TV (685.f/2048.f)
 #define SALE_TU (480.f/2048.f)
 #define SALE_TV (785.f/2048.f)
+#define EFFECT_TU (500.f/2048.f)
+#define EFFECT_TV (700.f/2048.f)
 
 //ゲームパッドの状態
 #define UP_BUTTON 0x0001
