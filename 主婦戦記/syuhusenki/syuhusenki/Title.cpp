@@ -2,6 +2,7 @@
 #include "Title.h"
 #include "GameMain.h"
 
+
 CENTRAL_STATE g_selectArrowSta = { 500.f, ARROWHIGH, 20.f, 20.f };
 static int wisdomTex = WISDOM1_TEX;
 static bool canApperMene = false;
@@ -24,7 +25,7 @@ void titleControl(void)
 		g_SoundSuccess = soundsManager.Start("OP_BGM", true) && g_SoundSuccess;
 	}
 
-	if (g_Xinput.Gamepad.wButtons == 0 && GetAnalogLValue(ANALOG_Y) <= 6000 && GetAnalogLValue(ANALOG_Y) >= -6000)
+	if ( GetAnalogLValue(ANALOG_Y) <= 6000 && GetAnalogLValue(ANALOG_Y) >= -6000)
 	{
 		g_inCount = 0;
 	}

@@ -70,7 +70,7 @@ void floaMove() {
 void floaMoveControl()
 {
 	static int onceSound = 0;
-	static int effectIntervalPrev = g_timerCount;
+	static int effectIntervalPrev = 0;
 	int effectIntervalCurrnt = g_timerCount;
 	if (effectIntervalCurrnt - effectIntervalPrev > 3)
 	{
@@ -89,9 +89,11 @@ void floaMoveControl()
 	}
 	if (g_isTimeUp)
 	{
+		effectIntervalPrev = 0;
 		for (onceSound; onceSound < 2; onceSound++)
 		{
 			soundsManager.Start("GONG", false);
+			
 		}
 	}
 

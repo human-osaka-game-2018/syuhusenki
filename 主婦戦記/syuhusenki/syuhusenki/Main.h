@@ -33,22 +33,6 @@
 #define EFFECT_TU (500.f/2048.f)
 #define EFFECT_TV (700.f/2048.f)
 
-//ゲームパッドの状態
-#define UP_BUTTON 0x0001
-#define DOWN_BUTTON 0x0002
-#define LEFT_BUTTON 0x0004
-#define RIGHT_BUTTON 0x0008
-#define START_BUTTOM 0x0010
-#define BACK_BUTTON 0x0020
-#define LEFT_STICK 0x0040
-#define RIGHT_STICK 0x0080
-#define LEFT_SHOULDER 0x0100
-#define RIGHT_SHOULDER 0x0200
-#define A_BUTTON 0x1000
-#define B_BUTTON 0x2000
-#define X_BUTTON 0x4000
-#define Y_BUTTON 0x8000
-
 //0秒
 #define ZERO_SECOND 0
 
@@ -64,13 +48,7 @@
 //4秒
 #define FOUR_SECOND 240
 
-//3分
-#define THREE_MINUTE 10800
 
-//3分で3周するRad
-#define THREE_MINUTE_RADIAN 0.001745f
-
-extern XINPUT_STATE g_Xinput;
 
 //主婦のステータス
 struct CHARACTER_STATE
