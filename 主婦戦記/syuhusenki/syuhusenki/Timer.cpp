@@ -1,6 +1,7 @@
 #include "Main.h"
 #include "Timer.h"
 #include "GameMain.h"
+#include "FloaMove.h"
 
 #define PI 3.14159265358979
 #define LIMIT_TIME 60//•b
@@ -57,6 +58,7 @@ void timerControl(void)
 			g_SoundSuccess = soundsManager.Stop("HURRY_UP") && g_SoundSuccess;
 			g_SoundSuccess = soundsManager.SetVolume("HURRY_UP", 100) && g_SoundSuccess;
 			comandCount = 0;
+			effectIntervalPrev = 0;
 
 			g_SoundSuccess = soundsManager.Stop("TIME_LIMIT") && g_SoundSuccess;
 			g_isGameStart = false;

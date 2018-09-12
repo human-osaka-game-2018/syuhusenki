@@ -27,7 +27,8 @@ extern CENTRAL_STATE mobCentralBlowOff[5];
 extern CENTRAL_STATE g_PCSta;
 extern CENTRAL_STATE g_startCountSta;
 extern CENTRAL_STATE g_startSta;
-
+extern int effectCount;
+extern int effectIntervalPrev;
 void floaMove();
 
 #endif // !FLOAMOVE_H

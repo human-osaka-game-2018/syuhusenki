@@ -37,7 +37,8 @@ static int PCtu = 0;
 static int PCtv = 0;
 static int mobtu[4] = {0,0,0,0};
 static int mobtv[4] = {0,0,0,0};
-static int effectCount = 0;
+int effectCount = 0;
+int effectIntervalPrev = 0;
 
 
 void playerControl(int* onceSound);
@@ -70,7 +71,6 @@ void floaMove() {
 void floaMoveControl()
 {
 	static int onceSound = 0;
-	static int effectIntervalPrev = 0;
 	int effectIntervalCurrnt = g_timerCount;
 	if (effectIntervalCurrnt - effectIntervalPrev > 3)
 	{
@@ -89,7 +89,6 @@ void floaMoveControl()
 	}
 	if (g_isTimeUp)
 	{
-		effectIntervalPrev = 0;
 		for (onceSound; onceSound < 2; onceSound++)
 		{
 			soundsManager.Start("GONG", false);
