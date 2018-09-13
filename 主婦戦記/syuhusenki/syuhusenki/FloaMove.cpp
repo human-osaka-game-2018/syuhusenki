@@ -491,7 +491,7 @@ void floaMoveRenderSta()
 	CUSTOMVERTEX start[4];
 	CUSTOMVERTEX salesmans[4];
 	CUSTOMVERTEX effectPC[4];
-	CENTRAL_STATE effectCentral = { g_PCSta.x,g_PCSta.y-7,40,70 };
+	CENTRAL_STATE effectCentral = { g_PCSta.x-2,g_PCSta.y-14,60,75 };
 
 	CreateSquareVertexEx(effectPC, effectCentral, (effectCount * EFFECT_TU), 0, EFFECT_TU, EFFECT_TV);
 	CreateSquareVertex(startCount, g_startCountSta);
